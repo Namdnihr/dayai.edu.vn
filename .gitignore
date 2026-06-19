@@ -1,0 +1,46 @@
+.docker/
+.env
+.env.*
+!.env.example
+!.env.docker.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.cursor/
+.zed/
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/.vercel/
+frontend/*.tsbuildinfo
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.env*
+!frontend/.env.example
+
+# Backend
+backend/vendor/
+backend/node_modules/
+backend/public/build/
+backend/public/hot
+backend/public/storage
+backend/storage/*.key
+backend/storage/pail/
+backend/.phpunit.cache/
+backend/.phpunit.result.cache
+backend/.env
+backend/.env.*
+!backend/.env.example
+!backend/.env.docker.example
+
+# Logs / temp
+*.log
+tmp/
+temp/
