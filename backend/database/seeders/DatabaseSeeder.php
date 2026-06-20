@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
                 'code' => 'main',
             ],
             [
-                'name' => 'Cơ sở chính',
+                'name' => 'CÆ¡ sá»Ÿ chÃ­nh',
                 'status' => 'active',
             ],
         );
@@ -212,11 +212,18 @@ class DatabaseSeeder extends Seeder
             'description' => 'Initial DAYAI tenant, branch, admin user, and roles seeded.',
         ]);
 
-        $sources = collect([
+        $sources$sources = collect([
             ['name' => 'Website', 'code' => 'website', 'source_type' => 'website'],
             ['name' => 'Facebook', 'code' => 'facebook', 'source_type' => 'social'],
             ['name' => 'Zalo', 'code' => 'zalo', 'source_type' => 'social'],
             ['name' => 'Giới thiệu', 'code' => 'referral', 'source_type' => 'referral'],
+            ['name' => 'Affiliate / Đối tác giới thiệu', 'code' => 'affiliate', 'source_type' => 'affiliate'],
+            ['name' => 'Google Ads', 'code' => 'google_ads', 'source_type' => 'paid_media'],
+            ['name' => 'TikTok', 'code' => 'tiktok', 'source_type' => 'paid_media'],
+            ['name' => 'YouTube', 'code' => 'youtube', 'source_type' => 'paid_media'],
+            ['name' => 'SEO Organic', 'code' => 'organic_search', 'source_type' => 'organic'],
+            ['name' => 'Chatbot', 'code' => 'chatbot', 'source_type' => 'chatbot'],
+            ['name' => 'Sự kiện / Workshop', 'code' => 'event', 'source_type' => 'event'],
             ['name' => 'Nhập thủ công', 'code' => 'manual', 'source_type' => 'manual'],
         ])->mapWithKeys(fn (array $source) => [
             $source['code'] => LeadSource::query()->firstOrCreate(
@@ -237,11 +244,11 @@ class DatabaseSeeder extends Seeder
                 'lead_type' => 'parent',
                 'status' => 'new',
                 'priority' => 'high',
-                'full_name' => 'Nguyễn Minh Anh',
+                'full_name' => 'Nguyá»…n Minh Anh',
                 'phone' => '0901000001',
                 'email' => 'minhanh.parent@example.com',
-                'learning_goal' => 'Muốn tìm khóa AI cho con lớp 7.',
-                'message' => 'Cần tư vấn lộ trình học thử cuối tuần.',
+                'learning_goal' => 'Muá»‘n tÃ¬m khÃ³a AI cho con lá»›p 7.',
+                'message' => 'Cáº§n tÆ° váº¥n lá»™ trÃ¬nh há»c thá»­ cuá»‘i tuáº§n.',
                 'source' => 'website',
                 'next_follow_up_at' => now()->addDay(),
             ],
@@ -249,11 +256,11 @@ class DatabaseSeeder extends Seeder
                 'lead_type' => 'student',
                 'status' => 'contacting',
                 'priority' => 'normal',
-                'full_name' => 'Trần Quốc Bảo',
+                'full_name' => 'Tráº§n Quá»‘c Báº£o',
                 'phone' => '0901000002',
                 'email' => 'baostudent@example.com',
-                'learning_goal' => 'Muốn học AI để làm đồ án đại học.',
-                'message' => 'Quan tâm khóa AI ứng dụng cho sinh viên.',
+                'learning_goal' => 'Muá»‘n há»c AI Ä‘á»ƒ lÃ m Ä‘á»“ Ã¡n Ä‘áº¡i há»c.',
+                'message' => 'Quan tÃ¢m khÃ³a AI á»©ng dá»¥ng cho sinh viÃªn.',
                 'source' => 'facebook',
                 'last_contacted_at' => now()->subHours(5),
                 'next_follow_up_at' => now()->addDays(2),
@@ -262,12 +269,12 @@ class DatabaseSeeder extends Seeder
                 'lead_type' => 'business_owner',
                 'status' => 'consulting',
                 'priority' => 'urgent',
-                'full_name' => 'Lê Hoàng Nam',
+                'full_name' => 'LÃª HoÃ ng Nam',
                 'phone' => '0901000003',
                 'email' => 'nam.ceo@example.com',
                 'company_name' => 'Nam Digital',
-                'learning_goal' => 'Ứng dụng AI vào marketing và vận hành.',
-                'message' => 'Chủ doanh nghiệp muốn học lớp tối.',
+                'learning_goal' => 'á»¨ng dá»¥ng AI vÃ o marketing vÃ  váº­n hÃ nh.',
+                'message' => 'Chá»§ doanh nghiá»‡p muá»‘n há»c lá»›p tá»‘i.',
                 'source' => 'zalo',
                 'last_contacted_at' => now()->subDay(),
                 'next_follow_up_at' => now()->addHours(6),
@@ -276,12 +283,12 @@ class DatabaseSeeder extends Seeder
                 'lead_type' => 'company',
                 'status' => 'trial_scheduled',
                 'priority' => 'high',
-                'full_name' => 'Phạm Thu Hà',
+                'full_name' => 'Pháº¡m Thu HÃ ',
                 'phone' => '0901000004',
                 'email' => 'hr@examplecorp.test',
                 'company_name' => 'Example Corp',
-                'learning_goal' => 'Đào tạo AI cho đội sales và marketing.',
-                'message' => 'Công ty muốn mua khóa cho 20 nhân sự.',
+                'learning_goal' => 'ÄÃ o táº¡o AI cho Ä‘á»™i sales vÃ  marketing.',
+                'message' => 'CÃ´ng ty muá»‘n mua khÃ³a cho 20 nhÃ¢n sá»±.',
                 'source' => 'referral',
                 'last_contacted_at' => now()->subDays(2),
                 'next_follow_up_at' => now()->addDays(1),
@@ -323,7 +330,7 @@ class DatabaseSeeder extends Seeder
                 [
                     'assigned_by_user_id' => $user->id,
                     'assigned_at' => now(),
-                    'note' => 'Dữ liệu demo Sprint 2',
+                    'note' => 'Dá»¯ liá»‡u demo Sprint 2',
                 ],
             );
         }
@@ -336,12 +343,12 @@ class DatabaseSeeder extends Seeder
                     'tenant_id' => $tenant->id,
                     'lead_id' => $companyLead->id,
                     'activity_type' => 'call',
-                    'subject' => 'Gọi HR xác nhận nhu cầu đào tạo',
+                    'subject' => 'Gá»i HR xÃ¡c nháº­n nhu cáº§u Ä‘Ã o táº¡o',
                 ],
                 [
                     'organization_id' => $companyLead->organization_id,
                     'direction' => 'outbound',
-                    'content' => 'HR quan tâm lớp AI ứng dụng cho team sales/marketing, cần đề xuất lịch học thử.',
+                    'content' => 'HR quan tÃ¢m lá»›p AI á»©ng dá»¥ng cho team sales/marketing, cáº§n Ä‘á» xuáº¥t lá»‹ch há»c thá»­.',
                     'outcome' => 'trial_booked',
                     'activity_at' => now()->subDay(),
                     'next_follow_up_at' => now()->addDay(),
@@ -359,7 +366,7 @@ class DatabaseSeeder extends Seeder
                     'preferred_date' => now()->addDays(3)->toDateString(),
                     'preferred_time' => '19:30 - 20:30',
                     'status' => 'scheduled',
-                    'note' => 'Demo học thử cho nhóm công ty.',
+                    'note' => 'Demo há»c thá»­ cho nhÃ³m cÃ´ng ty.',
                     'created_by_id' => $user->id,
                 ],
             );
@@ -372,7 +379,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'branch_id' => $branch->id,
-                'full_name' => 'Giảng viên DAYAI',
+                'full_name' => 'Giáº£ng viÃªn DAYAI',
                 'display_name' => 'Mentor AI',
                 'phone' => '0901999000',
             ],
@@ -387,8 +394,8 @@ class DatabaseSeeder extends Seeder
                 'branch_id' => $branch->id,
                 'teacher_code' => 'GV-000001',
                 'title' => 'AI Mentor',
-                'bio' => 'Giảng viên phụ trách các lớp AI ứng dụng.',
-                'specialties' => ['AI căn bản', 'Prompt Engineering', 'Tự động hóa'],
+                'bio' => 'Giáº£ng viÃªn phá»¥ trÃ¡ch cÃ¡c lá»›p AI á»©ng dá»¥ng.',
+                'specialties' => ['AI cÄƒn báº£n', 'Prompt Engineering', 'Tá»± Ä‘á»™ng hÃ³a'],
                 'status' => 'active',
             ],
         );
@@ -399,13 +406,13 @@ class DatabaseSeeder extends Seeder
                 'course_code' => 'AI-FUNDAMENTALS',
             ],
             [
-                'name' => 'AI Căn Bản Cho Người Mới',
+                'name' => 'AI CÄƒn Báº£n Cho NgÆ°á»i Má»›i',
                 'slug' => 'ai-can-ban-cho-nguoi-moi',
                 'audience_type' => 'mixed',
                 'level' => 'beginner',
-                'short_description' => 'Khóa nhập môn giúp học viên hiểu và ứng dụng AI vào học tập/công việc.',
-                'description' => 'Học viên làm quen với AI, prompt, công cụ phổ biến và một số bài thực hành ứng dụng.',
-                'outcomes' => ['Hiểu nền tảng AI', 'Viết prompt hiệu quả', 'Ứng dụng AI vào công việc hằng ngày'],
+                'short_description' => 'KhÃ³a nháº­p mÃ´n giÃºp há»c viÃªn hiá»ƒu vÃ  á»©ng dá»¥ng AI vÃ o há»c táº­p/cÃ´ng viá»‡c.',
+                'description' => 'Há»c viÃªn lÃ m quen vá»›i AI, prompt, cÃ´ng cá»¥ phá»• biáº¿n vÃ  má»™t sá»‘ bÃ i thá»±c hÃ nh á»©ng dá»¥ng.',
+                'outcomes' => ['Hiá»ƒu ná»n táº£ng AI', 'Viáº¿t prompt hiá»‡u quáº£', 'á»¨ng dá»¥ng AI vÃ o cÃ´ng viá»‡c háº±ng ngÃ y'],
                 'duration_hours' => 12,
                 'default_session_count' => 6,
                 'default_price_vnd' => 3500000,
@@ -419,9 +426,9 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'kien-thuc-ai',
             ],
             [
-                'name' => 'Kho kiến thức AI',
+                'name' => 'Kho kiáº¿n thá»©c AI',
                 'category_type' => 'knowledge',
-                'description' => 'Bài viết, checklist, prompt mẫu và case study AI.',
+                'description' => 'BÃ i viáº¿t, checklist, prompt máº«u vÃ  case study AI.',
                 'sort_order' => 10,
                 'is_active' => true,
             ],
@@ -435,7 +442,7 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Video Academy',
                 'category_type' => 'video',
-                'description' => 'Video bài học, workshop replay và học thử.',
+                'description' => 'Video bÃ i há»c, workshop replay vÃ  há»c thá»­.',
                 'sort_order' => 20,
                 'is_active' => true,
             ],
@@ -443,22 +450,22 @@ class DatabaseSeeder extends Seeder
 
         foreach ([
             [
-                'title' => 'AI là gì và người mới nên bắt đầu từ đâu?',
+                'title' => 'AI lÃ  gÃ¬ vÃ  ngÆ°á»i má»›i nÃªn báº¯t Ä‘áº§u tá»« Ä‘Ã¢u?',
                 'slug' => 'ai-la-gi-nguoi-moi-bat-dau-tu-dau',
                 'content_type' => 'article',
-                'excerpt' => 'Bài nhập môn giúp phụ huynh, sinh viên và người đi làm hiểu cách bắt đầu học AI.',
+                'excerpt' => 'BÃ i nháº­p mÃ´n giÃºp phá»¥ huynh, sinh viÃªn vÃ  ngÆ°á»i Ä‘i lÃ m hiá»ƒu cÃ¡ch báº¯t Ä‘áº§u há»c AI.',
             ],
             [
-                'title' => 'Checklist ứng dụng AI cho học tập và công việc',
+                'title' => 'Checklist á»©ng dá»¥ng AI cho há»c táº­p vÃ  cÃ´ng viá»‡c',
                 'slug' => 'checklist-ung-dung-ai-hoc-tap-cong-viec',
                 'content_type' => 'checklist',
-                'excerpt' => 'Danh sách việc cần chuẩn bị trước khi dùng AI vào học tập, báo cáo và tự động hóa.',
+                'excerpt' => 'Danh sÃ¡ch viá»‡c cáº§n chuáº©n bá»‹ trÆ°á»›c khi dÃ¹ng AI vÃ o há»c táº­p, bÃ¡o cÃ¡o vÃ  tá»± Ä‘á»™ng hÃ³a.',
             ],
             [
-                'title' => '10 prompt mẫu cho người mới học AI',
+                'title' => '10 prompt máº«u cho ngÆ°á»i má»›i há»c AI',
                 'slug' => '10-prompt-mau-cho-nguoi-moi-hoc-ai',
                 'content_type' => 'prompt_library',
-                'excerpt' => 'Bộ prompt mẫu để người học thực hành ngay sau buổi đầu tiên.',
+                'excerpt' => 'Bá»™ prompt máº«u Ä‘á»ƒ ngÆ°á»i há»c thá»±c hÃ nh ngay sau buá»•i Ä‘áº§u tiÃªn.',
             ],
         ] as $contentItem) {
             ContentItem::query()->firstOrCreate(
@@ -474,7 +481,7 @@ class DatabaseSeeder extends Seeder
                     'content_type' => $contentItem['content_type'],
                     'status' => 'published',
                     'excerpt' => $contentItem['excerpt'],
-                    'body' => 'Nội dung demo Sprint 7. Khi triển khai thật, đội nội dung sẽ thay bằng bài viết đầy đủ.',
+                    'body' => 'Ná»™i dung demo Sprint 7. Khi triá»ƒn khai tháº­t, Ä‘á»™i ná»™i dung sáº½ thay báº±ng bÃ i viáº¿t Ä‘áº§y Ä‘á»§.',
                     'tags' => ['ai', 'dayai', 'mvp'],
                     'published_at' => now(),
                 ],
@@ -483,19 +490,19 @@ class DatabaseSeeder extends Seeder
 
         foreach ([
             [
-                'title' => 'Học thử: AI căn bản trong 20 phút',
+                'title' => 'Há»c thá»­: AI cÄƒn báº£n trong 20 phÃºt',
                 'slug' => 'hoc-thu-ai-can-ban-20-phut',
                 'duration_minutes' => 20,
                 'access_level' => 'public',
             ],
             [
-                'title' => 'Workshop replay: Prompt Engineering cho người mới',
+                'title' => 'Workshop replay: Prompt Engineering cho ngÆ°á»i má»›i',
                 'slug' => 'workshop-replay-prompt-engineering-nguoi-moi',
                 'duration_minutes' => 45,
                 'access_level' => 'lead_magnet',
             ],
             [
-                'title' => 'Bài tập thực hành: tạo trợ lý học tập bằng AI',
+                'title' => 'BÃ i táº­p thá»±c hÃ nh: táº¡o trá»£ lÃ½ há»c táº­p báº±ng AI',
                 'slug' => 'bai-tap-tao-tro-ly-hoc-tap-bang-ai',
                 'duration_minutes' => 30,
                 'access_level' => 'student',
@@ -514,7 +521,7 @@ class DatabaseSeeder extends Seeder
                     'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
                     'duration_minutes' => $videoLesson['duration_minutes'],
                     'access_level' => $videoLesson['access_level'],
-                    'summary' => 'Video demo cho module Video Academy của DAYAI.',
+                    'summary' => 'Video demo cho module Video Academy cá»§a DAYAI.',
                     'resources' => ['worksheet' => 'Demo worksheet'],
                     'published_at' => now(),
                     'metadata' => ['category_id' => $videoCategory->id],
@@ -523,9 +530,9 @@ class DatabaseSeeder extends Seeder
         }
 
         foreach ([
-            ['sort_order' => 1, 'title' => 'Tổng quan AI và ứng dụng thực tế', 'duration_minutes' => 120],
-            ['sort_order' => 2, 'title' => 'Prompt Engineering căn bản', 'duration_minutes' => 120],
-            ['sort_order' => 3, 'title' => 'Thực hành AI cho học tập và công việc', 'duration_minutes' => 120],
+            ['sort_order' => 1, 'title' => 'Tá»•ng quan AI vÃ  á»©ng dá»¥ng thá»±c táº¿', 'duration_minutes' => 120],
+            ['sort_order' => 2, 'title' => 'Prompt Engineering cÄƒn báº£n', 'duration_minutes' => 120],
+            ['sort_order' => 3, 'title' => 'Thá»±c hÃ nh AI cho há»c táº­p vÃ  cÃ´ng viá»‡c', 'duration_minutes' => 120],
         ] as $module) {
             CourseModule::query()->firstOrCreate(
                 [
@@ -549,13 +556,13 @@ class DatabaseSeeder extends Seeder
                 'branch_id' => $branch->id,
                 'course_id' => $course->id,
                 'teacher_profile_id' => $teacherProfile->id,
-                'name' => 'AI Căn Bản - Lớp tối T2/T4',
+                'name' => 'AI CÄƒn Báº£n - Lá»›p tá»‘i T2/T4',
                 'learning_format' => 'hybrid',
                 'start_date' => now()->addWeek()->toDateString(),
                 'end_date' => now()->addWeeks(4)->toDateString(),
                 'max_students' => 20,
                 'status' => 'enrolling',
-                'schedule_note' => 'Tối thứ 2/4, 19:30 - 21:30',
+                'schedule_note' => 'Tá»‘i thá»© 2/4, 19:30 - 21:30',
                 'location' => 'DAYAI Main / Google Meet',
             ],
         );
@@ -572,7 +579,7 @@ class DatabaseSeeder extends Seeder
                 [
                     'course_module_id' => $modules->get($sessionNo - 1)?->id,
                     'teacher_profile_id' => $teacherProfile->id,
-                    'title' => $modules->get($sessionNo - 1)?->title ?? "Buổi {$sessionNo}",
+                    'title' => $modules->get($sessionNo - 1)?->title ?? "Buá»•i {$sessionNo}",
                     'starts_at' => now()->addWeek()->addDays(($sessionNo - 1) * 2)->setTime(19, 30),
                     'ends_at' => now()->addWeek()->addDays(($sessionNo - 1) * 2)->setTime(21, 30),
                     'status' => 'scheduled',
@@ -588,7 +595,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'branch_id' => $branch->id,
-                'full_name' => 'Học viên Demo',
+                'full_name' => 'Há»c viÃªn Demo',
                 'display_name' => 'Demo Student',
                 'phone' => '0901888000',
             ],
@@ -603,7 +610,7 @@ class DatabaseSeeder extends Seeder
                 'branch_id' => $branch->id,
                 'student_code' => 'HV-000001',
                 'student_type' => 'university_student',
-                'learning_goal' => 'Học AI để áp dụng vào học tập và đồ án.',
+                'learning_goal' => 'Há»c AI Ä‘á»ƒ Ã¡p dá»¥ng vÃ o há»c táº­p vÃ  Ä‘á»“ Ã¡n.',
                 'entry_level' => 'beginner',
                 'status' => 'active',
             ],
@@ -621,7 +628,7 @@ class DatabaseSeeder extends Seeder
                 'status' => 'active',
                 'enrolled_at' => now(),
                 'started_at' => now()->addWeek(),
-                'notes' => 'Dữ liệu demo Sprint 3',
+                'notes' => 'Dá»¯ liá»‡u demo Sprint 3',
             ],
         );
 
@@ -639,7 +646,7 @@ class DatabaseSeeder extends Seeder
                     'status' => 'present',
                     'checked_in_at' => $firstSession->starts_at,
                     'checked_by_id' => $user->id,
-                    'teacher_note' => 'Điểm danh demo Sprint 3.',
+                    'teacher_note' => 'Äiá»ƒm danh demo Sprint 3.',
                 ],
             );
         }
@@ -648,7 +655,7 @@ class DatabaseSeeder extends Seeder
             [
                 'tenant_id' => $tenant->id,
                 'class_group_id' => $classGroup->id,
-                'title' => 'Đánh giá đầu vào AI Căn Bản',
+                'title' => 'ÄÃ¡nh giÃ¡ Ä‘áº§u vÃ o AI CÄƒn Báº£n',
             ],
             [
                 'course_id' => $course->id,
@@ -657,7 +664,7 @@ class DatabaseSeeder extends Seeder
                 'max_score' => 10,
                 'weight_percent' => 20,
                 'assessment_at' => now()->subDays(2),
-                'description' => 'Kiểm tra tư duy logic, khả năng dùng công cụ AI và mục tiêu học tập.',
+                'description' => 'Kiá»ƒm tra tÆ° duy logic, kháº£ nÄƒng dÃ¹ng cÃ´ng cá»¥ AI vÃ  má»¥c tiÃªu há»c táº­p.',
             ],
         );
 
@@ -674,9 +681,9 @@ class DatabaseSeeder extends Seeder
                 'max_score' => 10,
                 'level' => 'on_track',
                 'status' => 'published',
-                'feedback' => 'Nắm tốt khái niệm cơ bản, cần luyện thêm cách đặt câu hỏi cho AI.',
-                'strengths' => 'Tò mò, chủ động thử nghiệm công cụ mới.',
-                'improvements' => 'Cần viết prompt rõ mục tiêu và biết kiểm chứng kết quả.',
+                'feedback' => 'Náº¯m tá»‘t khÃ¡i niá»‡m cÆ¡ báº£n, cáº§n luyá»‡n thÃªm cÃ¡ch Ä‘áº·t cÃ¢u há»i cho AI.',
+                'strengths' => 'TÃ² mÃ², chá»§ Ä‘á»™ng thá»­ nghiá»‡m cÃ´ng cá»¥ má»›i.',
+                'improvements' => 'Cáº§n viáº¿t prompt rÃµ má»¥c tiÃªu vÃ  biáº¿t kiá»ƒm chá»©ng káº¿t quáº£.',
                 'assessed_at' => now()->subDay(),
             ],
         );
@@ -687,14 +694,14 @@ class DatabaseSeeder extends Seeder
                     'tenant_id' => $tenant->id,
                     'student_profile_id' => $studentProfile->id,
                     'class_session_id' => $firstSession->id,
-                    'title' => 'Nhận xét buổi học đầu tiên',
+                    'title' => 'Nháº­n xÃ©t buá»•i há»c Ä‘áº§u tiÃªn',
                 ],
                 [
                     'enrollment_id' => $enrollment->id,
                     'teacher_profile_id' => $teacherProfile->id,
                     'comment_type' => 'session',
                     'visibility' => 'guardian',
-                    'comment' => 'Học viên tham gia tích cực, đặt câu hỏi tốt và hoàn thành bài thực hành cơ bản.',
+                    'comment' => 'Há»c viÃªn tham gia tÃ­ch cá»±c, Ä‘áº·t cÃ¢u há»i tá»‘t vÃ  hoÃ n thÃ nh bÃ i thá»±c hÃ nh cÆ¡ báº£n.',
                     'rating' => 4,
                     'commented_at' => now(),
                 ],
@@ -705,7 +712,7 @@ class DatabaseSeeder extends Seeder
             [
                 'tenant_id' => $tenant->id,
                 'student_profile_id' => $studentProfile->id,
-                'title' => 'Báo cáo tiến bộ tuần 1',
+                'title' => 'BÃ¡o cÃ¡o tiáº¿n bá»™ tuáº§n 1',
             ],
             [
                 'enrollment_id' => $enrollment->id,
@@ -716,9 +723,9 @@ class DatabaseSeeder extends Seeder
                 'status' => 'published',
                 'overall_level' => 'on_track',
                 'progress_percent' => 35,
-                'strengths' => 'Hiểu nhanh ví dụ thực tế, biết liên hệ AI với việc học.',
-                'improvements' => 'Cần luyện thêm cấu trúc prompt và ghi chú sau mỗi buổi.',
-                'recommendation' => 'Phụ huynh khuyến khích học viên hoàn thành worksheet trước buổi 2.',
+                'strengths' => 'Hiá»ƒu nhanh vÃ­ dá»¥ thá»±c táº¿, biáº¿t liÃªn há»‡ AI vá»›i viá»‡c há»c.',
+                'improvements' => 'Cáº§n luyá»‡n thÃªm cáº¥u trÃºc prompt vÃ  ghi chÃº sau má»—i buá»•i.',
+                'recommendation' => 'Phá»¥ huynh khuyáº¿n khÃ­ch há»c viÃªn hoÃ n thÃ nh worksheet trÆ°á»›c buá»•i 2.',
                 'published_at' => now(),
             ],
         );
@@ -727,20 +734,20 @@ class DatabaseSeeder extends Seeder
             [
                 'type' => 'schedule',
                 'priority' => 'high',
-                'title' => 'Nhắc lịch học buổi 2',
-                'body' => 'Lớp AI Căn Bản học buổi 2 vào tối thứ 4, vui lòng chuẩn bị worksheet trước giờ học.',
+                'title' => 'Nháº¯c lá»‹ch há»c buá»•i 2',
+                'body' => 'Lá»›p AI CÄƒn Báº£n há»c buá»•i 2 vÃ o tá»‘i thá»© 4, vui lÃ²ng chuáº©n bá»‹ worksheet trÆ°á»›c giá» há»c.',
             ],
             [
                 'type' => 'finance',
                 'priority' => 'normal',
-                'title' => 'Cập nhật học phí',
-                'body' => 'Trung tâm đã ghi nhận thanh toán một phần. Phần công nợ còn lại sẽ hiển thị trong mục học phí.',
+                'title' => 'Cáº­p nháº­t há»c phÃ­',
+                'body' => 'Trung tÃ¢m Ä‘Ã£ ghi nháº­n thanh toÃ¡n má»™t pháº§n. Pháº§n cÃ´ng ná»£ cÃ²n láº¡i sáº½ hiá»ƒn thá»‹ trong má»¥c há»c phÃ­.',
             ],
             [
                 'type' => 'progress',
                 'priority' => 'normal',
-                'title' => 'Đã có báo cáo tiến bộ tuần 1',
-                'body' => 'Giáo viên đã cập nhật nhận xét và khuyến nghị học tập cho học viên.',
+                'title' => 'ÄÃ£ cÃ³ bÃ¡o cÃ¡o tiáº¿n bá»™ tuáº§n 1',
+                'body' => 'GiÃ¡o viÃªn Ä‘Ã£ cáº­p nháº­t nháº­n xÃ©t vÃ  khuyáº¿n nghá»‹ há»c táº­p cho há»c viÃªn.',
             ],
         ] as $notification) {
             Notification::query()->firstOrCreate(
@@ -773,12 +780,12 @@ class DatabaseSeeder extends Seeder
                 'course_id' => $course->id,
                 'class_group_id' => $classGroup->id,
                 'verification_token' => 'verify-dayai-demo-000001',
-                'title' => 'Chứng chỉ hoàn thành AI Căn Bản',
+                'title' => 'Chá»©ng chá»‰ hoÃ n thÃ nh AI CÄƒn Báº£n',
                 'status' => 'issued',
                 'final_score' => 8.5,
-                'grade' => 'Giỏi',
+                'grade' => 'Giá»i',
                 'issued_at' => now(),
-                'notes' => 'Chứng chỉ demo Sprint 14.',
+                'notes' => 'Chá»©ng chá»‰ demo Sprint 14.',
             ],
         );
 
@@ -789,7 +796,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'branch_id' => $branch->id,
-                'full_name' => 'Phụ huynh Demo',
+                'full_name' => 'Phá»¥ huynh Demo',
                 'display_name' => 'Demo Parent',
                 'phone' => '0901777000',
             ],
@@ -822,7 +829,7 @@ class DatabaseSeeder extends Seeder
                 'order_type' => 'b2c',
                 'status' => 'confirmed',
                 'ordered_at' => now(),
-                'notes' => 'Đơn demo Sprint 4.',
+                'notes' => 'ÄÆ¡n demo Sprint 4.',
                 'created_by_id' => $user->id,
             ],
         );
@@ -895,7 +902,7 @@ class DatabaseSeeder extends Seeder
                 'amount_vnd' => 1500000,
                 'paid_at' => now(),
                 'reference_no' => 'DEMO-S4-001',
-                'notes' => 'Thanh toán một phần demo Sprint 4.',
+                'notes' => 'Thanh toÃ¡n má»™t pháº§n demo Sprint 4.',
                 'created_by_id' => $user->id,
             ],
         );
@@ -915,7 +922,7 @@ class DatabaseSeeder extends Seeder
                 'issued_by_id' => $user->id,
                 'payer_name' => $customerAccount->display_name,
                 'amount_vnd' => $payment->amount_vnd,
-                'content' => 'Phiếu thu demo Sprint 4.',
+                'content' => 'Phiáº¿u thu demo Sprint 4.',
             ],
         );
 
@@ -936,7 +943,7 @@ class DatabaseSeeder extends Seeder
                 'phone' => '02839990000',
                 'email' => 'hr@examplecorp.test',
                 'status' => 'active',
-                'notes' => 'Dữ liệu demo Sprint 11 cho cổng doanh nghiệp/HR.',
+                'notes' => 'Dá»¯ liá»‡u demo Sprint 11 cho cá»•ng doanh nghiá»‡p/HR.',
                 'created_by_id' => $user->id,
                 'updated_by_id' => $user->id,
             ],
@@ -949,7 +956,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'branch_id' => $branch->id,
-                'full_name' => 'Phạm Thu Hà',
+                'full_name' => 'Pháº¡m Thu HÃ ',
                 'display_name' => 'HR Example',
                 'phone' => '0901000004',
             ],
@@ -999,14 +1006,14 @@ class DatabaseSeeder extends Seeder
                 'order_type' => 'b2b',
                 'status' => 'confirmed',
                 'ordered_at' => now(),
-                'notes' => 'Đơn demo Sprint 11: công ty mua khóa cho nhân sự.',
+                'notes' => 'ÄÆ¡n demo Sprint 11: cÃ´ng ty mua khÃ³a cho nhÃ¢n sá»±.',
                 'created_by_id' => $user->id,
             ],
         );
 
         foreach ([
             [
-                'name' => 'Nguyễn B2B An',
+                'name' => 'Nguyá»…n B2B An',
                 'email' => 'an@examplecorp.test',
                 'phone' => '0901888101',
                 'code' => 'HV-B2B-001',
@@ -1017,7 +1024,7 @@ class DatabaseSeeder extends Seeder
                 'attendance_status' => 'present',
             ],
             [
-                'name' => 'Trần B2B Bình',
+                'name' => 'Tráº§n B2B BÃ¬nh',
                 'email' => 'binh@examplecorp.test',
                 'phone' => '0901888102',
                 'code' => 'HV-B2B-002',
@@ -1053,7 +1060,7 @@ class DatabaseSeeder extends Seeder
                     'organization_id' => $company->id,
                     'current_company' => $company->name,
                     'job_title' => $companyLearner['job_title'],
-                    'learning_goal' => 'Ứng dụng AI vào công việc hằng ngày của phòng ban.',
+                    'learning_goal' => 'á»¨ng dá»¥ng AI vÃ o cÃ´ng viá»‡c háº±ng ngÃ y cá»§a phÃ²ng ban.',
                     'entry_level' => 'beginner',
                     'status' => 'active',
                 ],
@@ -1072,7 +1079,7 @@ class DatabaseSeeder extends Seeder
                     'status' => 'active',
                     'enrolled_at' => now(),
                     'started_at' => now()->addWeek(),
-                    'notes' => 'Dữ liệu demo Sprint 11 B2B.',
+                    'notes' => 'Dá»¯ liá»‡u demo Sprint 11 B2B.',
                 ],
             );
 
@@ -1105,7 +1112,7 @@ class DatabaseSeeder extends Seeder
                         'status' => $companyLearner['attendance_status'],
                         'checked_in_at' => $firstSession->starts_at,
                         'checked_by_id' => $user->id,
-                        'teacher_note' => 'Điểm danh demo Sprint 11 B2B.',
+                        'teacher_note' => 'Äiá»ƒm danh demo Sprint 11 B2B.',
                     ],
                 );
             }
@@ -1123,7 +1130,7 @@ class DatabaseSeeder extends Seeder
                     'max_score' => 10,
                     'level' => $companyLearner['level'],
                     'status' => 'published',
-                    'feedback' => 'Đánh giá demo cho nhân sự doanh nghiệp.',
+                    'feedback' => 'ÄÃ¡nh giÃ¡ demo cho nhÃ¢n sá»± doanh nghiá»‡p.',
                     'assessed_at' => now()->subDay(),
                 ],
             );
@@ -1132,7 +1139,7 @@ class DatabaseSeeder extends Seeder
                 [
                     'tenant_id' => $tenant->id,
                     'student_profile_id' => $learnerProfile->id,
-                    'title' => 'Báo cáo tiến bộ B2B tuần 1',
+                    'title' => 'BÃ¡o cÃ¡o tiáº¿n bá»™ B2B tuáº§n 1',
                 ],
                 [
                     'enrollment_id' => $companyEnrollment->id,
@@ -1143,9 +1150,9 @@ class DatabaseSeeder extends Seeder
                     'status' => 'published',
                     'overall_level' => $companyLearner['level'],
                     'progress_percent' => $companyLearner['progress'],
-                    'strengths' => 'Có khả năng liên hệ bài học với công việc thực tế.',
-                    'improvements' => 'Cần chuẩn hóa quy trình dùng AI theo phòng ban.',
-                    'recommendation' => 'HR nên nhắc nhân sự hoàn thành bài thực hành trước buổi kế tiếp.',
+                    'strengths' => 'CÃ³ kháº£ nÄƒng liÃªn há»‡ bÃ i há»c vá»›i cÃ´ng viá»‡c thá»±c táº¿.',
+                    'improvements' => 'Cáº§n chuáº©n hÃ³a quy trÃ¬nh dÃ¹ng AI theo phÃ²ng ban.',
+                    'recommendation' => 'HR nÃªn nháº¯c nhÃ¢n sá»± hoÃ n thÃ nh bÃ i thá»±c hÃ nh trÆ°á»›c buá»•i káº¿ tiáº¿p.',
                     'published_at' => now(),
                 ],
             );
@@ -1161,12 +1168,12 @@ class DatabaseSeeder extends Seeder
                     'course_id' => $course->id,
                     'class_group_id' => $classGroup->id,
                     'verification_token' => 'verify-' . strtolower($companyLearner['code']),
-                    'title' => 'Chứng chỉ hoàn thành AI Cho Doanh Nghiệp',
+                    'title' => 'Chá»©ng chá»‰ hoÃ n thÃ nh AI Cho Doanh Nghiá»‡p',
                     'status' => 'issued',
                     'final_score' => $companyLearner['score'],
-                    'grade' => $companyLearner['level'] === 'needs_support' ? 'Đạt' : 'Khá',
+                    'grade' => $companyLearner['level'] === 'needs_support' ? 'Äáº¡t' : 'KhÃ¡',
                     'issued_at' => now(),
-                    'notes' => 'Chứng chỉ demo Sprint 14 cho nhân sự doanh nghiệp.',
+                    'notes' => 'Chá»©ng chá»‰ demo Sprint 14 cho nhÃ¢n sá»± doanh nghiá»‡p.',
                 ],
             );
 
@@ -1223,7 +1230,7 @@ class DatabaseSeeder extends Seeder
                 'amount_vnd' => 3000000,
                 'paid_at' => now(),
                 'reference_no' => 'DEMO-S11-001',
-                'notes' => 'Thanh toán một phần demo Sprint 11 B2B.',
+                'notes' => 'Thanh toÃ¡n má»™t pháº§n demo Sprint 11 B2B.',
                 'created_by_id' => $user->id,
             ],
         );
@@ -1236,14 +1243,14 @@ class DatabaseSeeder extends Seeder
             [
                 'type' => 'progress',
                 'priority' => 'normal',
-                'title' => 'Báo cáo nhóm tuần 1 đã sẵn sàng',
-                'body' => 'HR có thể xem tiến độ trung bình và từng nhân sự trong cổng doanh nghiệp.',
+                'title' => 'BÃ¡o cÃ¡o nhÃ³m tuáº§n 1 Ä‘Ã£ sáºµn sÃ ng',
+                'body' => 'HR cÃ³ thá»ƒ xem tiáº¿n Ä‘á»™ trung bÃ¬nh vÃ  tá»«ng nhÃ¢n sá»± trong cá»•ng doanh nghiá»‡p.',
             ],
             [
                 'type' => 'finance',
                 'priority' => 'high',
-                'title' => 'Cập nhật công nợ đào tạo B2B',
-                'body' => 'Example Corp đã thanh toán một phần đơn đào tạo. Công nợ còn lại được cập nhật trong portal.',
+                'title' => 'Cáº­p nháº­t cÃ´ng ná»£ Ä‘Ã o táº¡o B2B',
+                'body' => 'Example Corp Ä‘Ã£ thanh toÃ¡n má»™t pháº§n Ä‘Æ¡n Ä‘Ã o táº¡o. CÃ´ng ná»£ cÃ²n láº¡i Ä‘Æ°á»£c cáº­p nháº­t trong portal.',
             ],
         ] as $notification) {
             Notification::query()->firstOrCreate(

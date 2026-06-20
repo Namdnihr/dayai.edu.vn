@@ -41,7 +41,7 @@ class LeadForm
                     ->label('Loại khách')
                     ->options([
                         'parent' => 'Phụ huynh mua cho con',
-                        'student' => 'Sinh viên tự đăng ký',
+                        'student' => 'Sinh viên / cá nhân tự đăng ký',
                         'business_owner' => 'Chủ doanh nghiệp đi học',
                         'company' => 'Công ty mua cho nhân sự',
                         'unknown' => 'Chưa rõ',
@@ -52,6 +52,7 @@ class LeadForm
                     ->label('Trạng thái')
                     ->options([
                         'new' => 'Mới',
+                        'trial_requested' => 'Yêu cầu học thử',
                         'contacting' => 'Đang liên hệ',
                         'consulting' => 'Đang tư vấn',
                         'trial_scheduled' => 'Đã hẹn học thử',
@@ -89,6 +90,12 @@ class LeadForm
                 TextInput::make('company_name')
                     ->label('Tên công ty')
                     ->maxLength(255),
+                TextInput::make('interested_course_id')
+                    ->label('Mã khóa quan tâm')
+                    ->maxLength(255),
+                TextInput::make('course_slug')
+                    ->label('Slug khóa/landing')
+                    ->maxLength(255),
                 Select::make('person_id')
                     ->label('Liên kết cá nhân có sẵn')
                     ->relationship('person', 'full_name')
@@ -114,6 +121,28 @@ class LeadForm
                         'messenger' => 'Messenger',
                         'other' => 'Khác',
                     ]),
+                TextInput::make('utm_source')->label('UTM source')->maxLength(255),
+                TextInput::make('utm_medium')->label('UTM medium')->maxLength(255),
+                TextInput::make('utm_campaign')->label('UTM campaign')->maxLength(255),
+                TextInput::make('utm_content')->label('UTM content')->maxLength(255),
+                TextInput::make('utm_term')->label('UTM term')->maxLength(255),
+                TextInput::make('affiliate_code')->label('Affiliate code')->maxLength(255),
+                TextInput::make('referral_code')->label('Referral code')->maxLength(255),
+                TextInput::make('click_id')->label('Click ID')->maxLength(255),
+                TextInput::make('first_touch_source')->label('First-touch source')->maxLength(255),
+                TextInput::make('last_touch_source')->label('Last-touch source')->maxLength(255),
+                TextInput::make('page_url')
+                    ->label('Page URL')
+                    ->maxLength(1000)
+                    ->columnSpanFull(),
+                TextInput::make('landing_page')
+                    ->label('Landing page')
+                    ->maxLength(1000)
+                    ->columnSpanFull(),
+                TextInput::make('referrer_url')
+                    ->label('Referrer URL')
+                    ->maxLength(1000)
+                    ->columnSpanFull(),
                 DateTimePicker::make('last_contacted_at')
                     ->label('Lần liên hệ gần nhất'),
                 DateTimePicker::make('next_follow_up_at')

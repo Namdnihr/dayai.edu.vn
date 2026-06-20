@@ -43,7 +43,6 @@ export type LandingCourse = {
 };
 
 type SubmitState = "idle" | "submitting" | "success" | "error";
-
 const fallbackCourse: LandingCourse = {
   name: "AI Căn Bản",
   subtitle: "Học AI bài bản để làm chủ tương lai số",
@@ -160,7 +159,10 @@ export function CinematicAiLanding({ course = fallbackCourse }: { course?: Landi
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries());
+    const payload = {
+      ...Object.fromEntries(formData.entries()),
+      ...getTrackingPayload(normalizedCourse.slug),
+    };
 
     try {
       const response = await fetch("/api/leads", {
@@ -360,11 +362,9 @@ export function CinematicAiLanding({ course = fallbackCourse }: { course?: Landi
 
             <input type="hidden" name="lead_type" value={getLeadType(normalizedCourse.audience_type)} />
             <input type="hidden" name="interested_course_id" value={normalizedCourse.course_code ?? normalizedCourse.slug} />
+            <input type="hidden" name="course_slug" value={normalizedCourse.slug} />
             <input type="hidden" name="request_type" value="trial" />
             <input type="hidden" name="preferred_contact_method" value="phone" />
-            <input type="hidden" name="utm_source" value="website" />
-            <input type="hidden" name="utm_medium" value="course_landing" />
-            <input type="hidden" name="utm_campaign" value={normalizedCourse.slug} />
 
             <button
               type="submit"
@@ -491,4 +491,28 @@ function getLeadType(audience?: string | null) {
     business: "business_owner",
     enterprise: "company",
   }[audience ?? "student"] ?? "student";
+}
+
+function getTrackingPayload(courseSlug: string) {
+  const params = new URLSearchParams(window.location.search);
+  const affiliateCode = params.get("aff") ?? params.get("affiliate") ?? params.get("ref") ?? "";
+  const referralCode = params.get("ref") ?? "";
+  const utmSource = params.get("utm_source") ?? (affiliateCode ? "affiliate" : "website");
+  const pageUrl = window.location.href;
+
+  return {
+    utm_source: utmSource,
+    utm_medium: params.get("utm_medium") ?? "course_landing",
+    utm_campaign: params.get("utm_campaign") ?? courseSlug,
+    utm_content: params.get("utm_content") ?? "",
+    utm_term: params.get("utm_term") ?? "",
+    page_url: pageUrl,
+    landing_page: pageUrl,
+    referrer_url: document.referrer,
+    affiliate_code: affiliateCode,
+    referral_code: referralCode,
+    click_id: params.get("click_id") ?? params.get("fbclid") ?? params.get("gclid") ?? "",
+    first_touch_source: utmSource,
+    last_touch_source: utmSource,
+  };
 }

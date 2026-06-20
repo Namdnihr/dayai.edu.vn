@@ -78,11 +78,15 @@ Mọi form public phải tạo lead có nguồn rõ ràng, UTM đầy đủ và 
 
 ### Checklist
 
-- [ ] Chuẩn hóa payload form lead.
-- [ ] Lưu UTM source/medium/campaign/content/term.
-- [ ] Lưu page URL/referrer.
-- [ ] Gắn lead với course/campaign/segment.
-- [ ] Auto phân loại: phụ huynh, student, work, business, enterprise.
+- [x] Chuẩn hóa payload form lead cho landing khóa học.
+- [x] Lưu UTM source/medium/campaign/content/term.
+- [x] Lưu page URL, landing page và referrer.
+- [x] Gắn lead với course code và course slug.
+- [x] Bổ sung affiliate/referral/click ID để chuẩn bị module affiliate.
+- [x] Auto nhận diện nguồn affiliate khi có `ref`, `aff` hoặc `affiliate`.
+- [x] Mở rộng danh mục nguồn: affiliate, Google Ads, TikTok, YouTube, SEO, chatbot, event.
+- [x] Admin lead form xem/sửa được field tracking.
+- [x] Test form landing -> CRM lead tracking.
 - [ ] Tạo activity đầu tiên khi lead vào CRM.
 
 ## Sprint 24 - CRM Pipeline Advanced

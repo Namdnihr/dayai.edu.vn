@@ -85,6 +85,18 @@ class LeadsTable
                 TextColumn::make('source.name')
                     ->label('Nguồn')
                     ->searchable(),
+                TextColumn::make('utm_campaign')
+                    ->label('Campaign')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('course_slug')
+                    ->label('Landing')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('affiliate_code')
+                    ->label('Affiliate')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('assignedUser.name')
                     ->label('Tư vấn viên')
                     ->searchable(),
