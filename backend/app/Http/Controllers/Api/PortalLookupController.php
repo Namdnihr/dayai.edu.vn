@@ -95,6 +95,14 @@ class PortalLookupController extends Controller
             ])
             ->values();
 
+        $attendanceSummary = [
+            'total' => $student->attendanceRecords->count(),
+            'present' => $student->attendanceRecords->where('status', 'present')->count(),
+            'absent' => $student->attendanceRecords->where('status', 'absent')->count(),
+            'late' => $student->attendanceRecords->where('status', 'late')->count(),
+            'excused' => $student->attendanceRecords->where('status', 'excused')->count(),
+        ];
+
         $assessmentResults = $student->assessmentResults
             ->where('status', 'published')
             ->sortByDesc('assessed_at')
@@ -232,6 +240,14 @@ class PortalLookupController extends Controller
                 'student_type' => $student->student_type,
                 'learning_goal' => $student->learning_goal,
                 'status' => $student->status,
+            ],
+            'summary' => [
+                'active_enrollments' => $student->enrollments->where('status', 'active')->count(),
+                'next_session' => $upcomingSessions->first(),
+                'latest_progress_percent' => $progressReports->first()['progress_percent'] ?? null,
+                'attendance' => $attendanceSummary,
+                'finance_balance_vnd' => (int) $finance['balance_vnd'],
+                'unread_notifications' => $notifications->count(),
             ],
             'guardians' => $student->guardians->map(fn (GuardianRelation $guardian): array => [
                 'full_name' => $guardian->guardianPerson?->full_name,

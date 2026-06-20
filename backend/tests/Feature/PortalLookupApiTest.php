@@ -240,6 +240,9 @@ class PortalLookupApiTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonPath('student.full_name', 'Học viên Portal')
+            ->assertJsonPath('summary.active_enrollments', 1)
+            ->assertJsonPath('summary.latest_progress_percent', 35)
+            ->assertJsonPath('summary.finance_balance_vnd', 1500000)
             ->assertJsonPath('enrollments.0.course', 'AI Căn Bản')
             ->assertJsonPath('assessment_results.0.assessment', 'Đánh giá đầu vào')
             ->assertJsonPath('teacher_comments.0.title', 'Nhận xét tuần 1')

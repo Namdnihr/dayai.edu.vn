@@ -117,12 +117,17 @@ Portal đủ để phụ huynh/học viên tra cứu lịch học, điểm danh,
 
 ### Checklist
 
-- [ ] Chuẩn hóa cơ chế tra cứu/đăng nhập portal.
-- [ ] Trang tổng quan học viên.
-- [ ] Lịch học/lớp đang học.
-- [ ] Điểm danh và buổi vắng.
-- [ ] Học phí/công nợ/phiếu thu.
-- [ ] Báo cáo tiến bộ và nhận xét giáo viên.
+- [x] Chuẩn hóa trang portal không index và không nằm menu public.
+- [x] Trang tổng quan học viên với khóa đang học, tiến độ, điểm danh, công nợ.
+- [x] API trả summary nhanh cho portal.
+- [x] Hiển thị buổi học kế tiếp.
+- [x] Lịch học/lớp đang học.
+- [x] Điểm danh và buổi vắng/muộn/xin nghỉ.
+- [x] Học phí/công nợ theo đơn.
+- [x] Báo cáo tiến bộ và nhận xét giáo viên.
+- [x] Thông báo, video liên quan và chứng chỉ.
+- [ ] Cơ chế đăng nhập portal bằng OTP/tài khoản.
+- [ ] Tải phiếu thu/chứng chỉ dạng file.
 
 ## Sprint 26 - LMS Learner Experience
 
