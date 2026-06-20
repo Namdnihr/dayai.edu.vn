@@ -2,12 +2,16 @@ import { NextResponse } from "next/server";
 
 const backendUrl = process.env.BACKEND_API_URL ?? "http://localhost:8080/api";
 
+export const revalidate = 300;
+
 export async function GET() {
   const response = await fetch(`${backendUrl}/content/home`, {
     headers: {
       Accept: "application/json",
     },
-    cache: "no-store",
+    next: {
+      revalidate,
+    },
   });
 
   const result = await response.json().catch(() => ({
