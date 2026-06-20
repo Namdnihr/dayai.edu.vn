@@ -85,6 +85,10 @@ trait AuthorizesResourceAccess
 
         $permissionMap = [
             'ActivityLogResource' => 'manage_admin',
+            'AffiliateClickResource' => 'manage_crm',
+            'AffiliateCommissionResource' => 'manage_finance',
+            'AffiliateLinkResource' => 'manage_crm',
+            'AffiliatePartnerResource' => 'manage_crm',
             'AssessmentResource' => 'manage_progress',
             'AssessmentResultResource' => 'manage_progress',
             'AttendanceRecordResource' => 'manage_learning',

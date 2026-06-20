@@ -542,3 +542,12 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä‘Ã¢u vÃ  bÆ°á»›c tiáº¿p th
 - [x] Commission có tr?ng thái d? duy?t/tr? sau: pending, approved, paid, rejected.
 - [x] Test lead affiliate -> click -> order -> commission.
 - [ ] Dashboard hi?u qu? affiliate và portal d?i tác làm ? bu?c ti?p theo n?u c?n.
+
+### Sprint 30 Deepening Update
+
+- [x] Thêm admin resources cho partner, link, click và commission affiliate.
+- [x] Thêm affiliate performance vào dashboard v?n hành.
+- [x] B? sung readiness metrics: partner active, click, hoa h?ng ch? duy?t.
+- [x] G?n quy?n truy c?p affiliate theo nhóm CRM/finance.
+- [x] B? sung test dashboard affiliate.
+- [ ] Portal ho?c màn hình lite cho partner xem k?t qu? s? tách sang backlog sau Sprint 30.

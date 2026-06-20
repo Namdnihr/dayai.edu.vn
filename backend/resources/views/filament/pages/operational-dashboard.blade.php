@@ -10,6 +10,7 @@
         $atRiskStudents = $this->getAtRiskStudents();
         $courseRevenue = $this->getCourseRevenue();
         $phase2Readiness = $this->getPhase2Readiness();
+        $affiliatePerformance = $this->getAffiliatePerformance();
     @endphp
 
     <div class="grid gap-4 md:grid-cols-4">
@@ -82,6 +83,14 @@
                 <div class="mt-2 text-xl font-semibold text-gray-950 dark:text-white">{{ number_format($phase2Readiness['lead_source_count']) }} / {{ number_format($phase2Readiness['affiliate_lead_count']) }}</div>
             </div>
             <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Đối tác / click affiliate</div>
+                <div class="mt-2 text-xl font-semibold text-gray-950 dark:text-white">{{ number_format($phase2Readiness['affiliate_partner_count']) }} / {{ number_format($phase2Readiness['affiliate_click_count']) }}</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Hoa hồng chờ duyệt</div>
+                <div class="mt-2 text-xl font-semibold text-warning-600">{{ $this->formatVnd($phase2Readiness['pending_commission_vnd']) }}</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
                 <div class="text-xs text-gray-500 dark:text-gray-400">Học viên đang học</div>
                 <div class="mt-2 text-xl font-semibold text-gray-950 dark:text-white">{{ number_format($phase2Readiness['active_student_count']) }}</div>
             </div>
@@ -89,6 +98,41 @@
                 <div class="text-xs text-gray-500 dark:text-gray-400">Báo cáo tiến bộ public</div>
                 <div class="mt-2 text-xl font-semibold text-gray-950 dark:text-white">{{ number_format($phase2Readiness['published_progress_report_count']) }}</div>
             </div>
+        </div>
+    </div>
+
+    <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
+        <div class="border-b border-gray-200 px-5 py-4 dark:border-white/10">
+            <h2 class="text-base font-semibold text-gray-950 dark:text-white">Hiệu quả affiliate</h2>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Theo dõi doanh số, hoa hồng và khoản chờ duyệt theo đối tác.</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full divide-y divide-gray-200 text-left text-sm dark:divide-white/10">
+                <thead>
+                    <tr class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        <th class="px-5 py-3">Đối tác</th>
+                        <th class="px-5 py-3 text-right">Số commission</th>
+                        <th class="px-5 py-3 text-right">Doanh số</th>
+                        <th class="px-5 py-3 text-right">Hoa hồng</th>
+                        <th class="px-5 py-3 text-right">Chờ duyệt</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-white/10">
+                    @forelse ($affiliatePerformance as $row)
+                        <tr>
+                            <td class="px-5 py-3 font-medium text-gray-950 dark:text-white">{{ $row->partner_name }}</td>
+                            <td class="px-5 py-3 text-right text-gray-700 dark:text-gray-200">{{ number_format($row->commission_count) }}</td>
+                            <td class="px-5 py-3 text-right text-gray-700 dark:text-gray-200">{{ $this->formatVnd($row->order_total_vnd) }}</td>
+                            <td class="px-5 py-3 text-right font-semibold text-gray-950 dark:text-white">{{ $this->formatVnd($row->commission_vnd) }}</td>
+                            <td class="px-5 py-3 text-right font-semibold text-warning-600">{{ $this->formatVnd($row->pending_commission_vnd) }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-5 py-8 text-center text-gray-500 dark:text-gray-400">Chưa có commission affiliate.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 

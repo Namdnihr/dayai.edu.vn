@@ -3,6 +3,10 @@
 namespace Tests\Feature;
 
 use App\Filament\Pages\OperationalDashboard;
+use App\Models\AffiliateClick;
+use App\Models\AffiliateCommission;
+use App\Models\AffiliateLink;
+use App\Models\AffiliatePartner;
 use App\Models\AttendanceRecord;
 use App\Models\Branch;
 use App\Models\ClassGroup;
@@ -266,6 +270,61 @@ class OperationalDashboardTest extends TestCase
         $this->assertTrue($dashboard->getAtRiskStudents()->isNotEmpty());
         $this->assertTrue($dashboard->getCourseRevenue()->isNotEmpty());
 
+        $affiliatePartner = AffiliatePartner::query()->create([
+            'tenant_id' => $tenant->id,
+            'name' => 'Partner Dashboard',
+            'code' => 'PARTNER-DASH',
+            'partner_type' => 'creator',
+            'default_commission_percent' => 10,
+            'status' => 'active',
+        ]);
+
+        $affiliateLink = AffiliateLink::query()->create([
+            'tenant_id' => $tenant->id,
+            'affiliate_partner_id' => $affiliatePartner->id,
+            'name' => 'Link dashboard',
+            'code' => 'REF-DASH',
+            'campaign' => 'dashboard',
+            'target_url' => 'https://dayai.edu.vn/khoa-hoc/khoa-hoc-ai-co-ban',
+            'commission_percent' => 10,
+            'status' => 'active',
+        ]);
+
+        $affiliateLead = Lead::query()->create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branch->id,
+            'lead_type' => 'student',
+            'status' => 'new',
+            'full_name' => 'Lead affiliate',
+            'phone' => '0901000099',
+            'affiliate_code' => 'PARTNER-DASH',
+            'referral_code' => 'REF-DASH',
+        ]);
+
+        AffiliateClick::query()->create([
+            'tenant_id' => $tenant->id,
+            'affiliate_partner_id' => $affiliatePartner->id,
+            'affiliate_link_id' => $affiliateLink->id,
+            'lead_id' => $affiliateLead->id,
+            'affiliate_code' => 'PARTNER-DASH',
+            'referral_code' => 'REF-DASH',
+            'click_id' => 'click-dashboard',
+            'clicked_at' => now(),
+        ]);
+
+        AffiliateCommission::query()->create([
+            'tenant_id' => $tenant->id,
+            'affiliate_partner_id' => $affiliatePartner->id,
+            'affiliate_link_id' => $affiliateLink->id,
+            'lead_id' => $affiliateLead->id,
+            'order_id' => $order->id,
+            'affiliate_code' => 'PARTNER-DASH',
+            'commission_percent' => 10,
+            'order_total_vnd' => 3000000,
+            'commission_vnd' => 300000,
+            'status' => 'pending',
+        ]);
+
         $phase2Readiness = $dashboard->getPhase2Readiness();
 
         $this->assertSame(1, $phase2Readiness['published_course_count']);
@@ -273,8 +332,12 @@ class OperationalDashboardTest extends TestCase
         $this->assertSame(1, $phase2Readiness['published_video_count']);
         $this->assertSame(1, $phase2Readiness['tracked_lesson_progress_count']);
         $this->assertSame(2, $phase2Readiness['lead_source_count']);
-        $this->assertSame(0, $phase2Readiness['affiliate_lead_count']);
+        $this->assertSame(1, $phase2Readiness['affiliate_lead_count']);
+        $this->assertSame(1, $phase2Readiness['affiliate_partner_count']);
+        $this->assertSame(1, $phase2Readiness['affiliate_click_count']);
+        $this->assertSame(300000, $phase2Readiness['pending_commission_vnd']);
         $this->assertSame(1, $phase2Readiness['active_student_count']);
         $this->assertSame(1, $phase2Readiness['published_progress_report_count']);
+        $this->assertTrue($dashboard->getAffiliatePerformance()->isNotEmpty());
     }
 }

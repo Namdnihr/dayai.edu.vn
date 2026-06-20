@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Filament\Resources\AffiliateLinks\Pages;
+
+use App\Filament\Resources\AffiliateLinks\AffiliateLinkResource;
+use Filament\Resources\Pages\EditRecord;
+
+class EditAffiliateLink extends EditRecord
+{
+    protected static string $resource = AffiliateLinkResource::class;
+}

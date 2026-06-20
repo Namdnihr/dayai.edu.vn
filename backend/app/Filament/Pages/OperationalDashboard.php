@@ -3,6 +3,9 @@
 namespace App\Filament\Pages;
 
 use App\Models\AttendanceRecord;
+use App\Models\AffiliateClick;
+use App\Models\AffiliateCommission;
+use App\Models\AffiliatePartner;
 use App\Models\ClassGroup;
 use App\Models\ClassSession;
 use App\Models\ContentItem;
@@ -113,9 +116,30 @@ class OperationalDashboard extends Page
             'tracked_lesson_progress_count' => VideoLessonProgress::query()->count(),
             'lead_source_count' => Lead::query()->whereNotNull('lead_source_id')->count(),
             'affiliate_lead_count' => Lead::query()->whereNotNull('affiliate_code')->count(),
+            'affiliate_partner_count' => AffiliatePartner::query()->where('status', 'active')->count(),
+            'affiliate_click_count' => AffiliateClick::query()->count(),
+            'pending_commission_vnd' => (int) AffiliateCommission::query()->where('status', 'pending')->sum('commission_vnd'),
             'active_student_count' => Enrollment::query()->where('status', 'active')->distinct('student_profile_id')->count('student_profile_id'),
             'published_progress_report_count' => ProgressReport::query()->where('status', 'published')->count(),
         ];
+    }
+
+    /**
+     * @return Collection<int, object>
+     */
+    public function getAffiliatePerformance(): Collection
+    {
+        return DB::table('affiliate_commissions')
+            ->leftJoin('affiliate_partners', 'affiliate_partners.id', '=', 'affiliate_commissions.affiliate_partner_id')
+            ->selectRaw("coalesce(affiliate_partners.name, affiliate_commissions.affiliate_code, 'Chưa rõ') as partner_name")
+            ->selectRaw('count(affiliate_commissions.id) as commission_count')
+            ->selectRaw('sum(affiliate_commissions.order_total_vnd) as order_total_vnd')
+            ->selectRaw('sum(affiliate_commissions.commission_vnd) as commission_vnd')
+            ->selectRaw("sum(case when affiliate_commissions.status = 'pending' then affiliate_commissions.commission_vnd else 0 end) as pending_commission_vnd")
+            ->groupBy('partner_name')
+            ->orderByDesc('commission_vnd')
+            ->limit(8)
+            ->get();
     }
 
     /**
