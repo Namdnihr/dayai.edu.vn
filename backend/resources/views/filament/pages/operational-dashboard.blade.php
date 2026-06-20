@@ -9,6 +9,7 @@
         $upcomingSessions = $this->getUpcomingSessions();
         $atRiskStudents = $this->getAtRiskStudents();
         $courseRevenue = $this->getCourseRevenue();
+        $phase2Readiness = $this->getPhase2Readiness();
     @endphp
 
     <div class="grid gap-4 md:grid-cols-4">
@@ -51,6 +52,43 @@
         <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
             <div class="text-sm text-gray-500 dark:text-gray-400">CÃ´ng ná»£</div>
             <div class="mt-2 text-2xl font-semibold text-warning-600">{{ $this->formatVnd($summary['receivable_vnd']) }}</div>
+        </div>
+    </div>
+
+    <div class="rounded-xl bg-white p-5 shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
+        <div class="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+            <div>
+                <h2 class="text-base font-semibold text-gray-950 dark:text-white">Phase 2 readiness</h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Bức tranh nhanh trước UAT/staging: nội dung, LMS, tuyển sinh, học viên và báo cáo.</p>
+            </div>
+            <div class="text-xs font-semibold uppercase tracking-wide text-primary-600">Sprint 27</div>
+        </div>
+
+        <div class="mt-5 grid gap-4 md:grid-cols-4">
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Khóa đã public</div>
+                <div class="mt-2 text-xl font-semibold text-gray-950 dark:text-white">{{ number_format($phase2Readiness['published_course_count']) }}</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Bài viết/video public</div>
+                <div class="mt-2 text-xl font-semibold text-gray-950 dark:text-white">{{ number_format($phase2Readiness['published_content_count']) }} / {{ number_format($phase2Readiness['published_video_count']) }}</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Tiến độ video đã ghi nhận</div>
+                <div class="mt-2 text-xl font-semibold text-primary-600">{{ number_format($phase2Readiness['tracked_lesson_progress_count']) }}</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Lead có nguồn / affiliate</div>
+                <div class="mt-2 text-xl font-semibold text-gray-950 dark:text-white">{{ number_format($phase2Readiness['lead_source_count']) }} / {{ number_format($phase2Readiness['affiliate_lead_count']) }}</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Học viên đang học</div>
+                <div class="mt-2 text-xl font-semibold text-gray-950 dark:text-white">{{ number_format($phase2Readiness['active_student_count']) }}</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Báo cáo tiến bộ public</div>
+                <div class="mt-2 text-xl font-semibold text-gray-950 dark:text-white">{{ number_format($phase2Readiness['published_progress_report_count']) }}</div>
+            </div>
         </div>
     </div>
 

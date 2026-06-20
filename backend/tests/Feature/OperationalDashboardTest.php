@@ -7,7 +7,9 @@ use App\Models\AttendanceRecord;
 use App\Models\Branch;
 use App\Models\ClassGroup;
 use App\Models\ClassSession;
+use App\Models\ContentItem;
 use App\Models\Course;
+use App\Models\CourseModule;
 use App\Models\CustomerAccount;
 use App\Models\Enrollment;
 use App\Models\Invoice;
@@ -21,6 +23,8 @@ use App\Models\ProgressReport;
 use App\Models\Receivable;
 use App\Models\StudentProfile;
 use App\Models\Tenant;
+use App\Models\VideoLesson;
+use App\Models\VideoLessonProgress;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -95,6 +99,23 @@ class OperationalDashboardTest extends TestCase
             'course_code' => 'AI-DASH',
             'default_price_vnd' => 3000000,
             'status' => 'published',
+        ]);
+
+        $module = CourseModule::query()->create([
+            'tenant_id' => $tenant->id,
+            'course_id' => $course->id,
+            'sort_order' => 1,
+            'title' => 'Module dashboard',
+            'duration_minutes' => 60,
+        ]);
+
+        ContentItem::query()->create([
+            'tenant_id' => $tenant->id,
+            'title' => 'Bài viết dashboard',
+            'slug' => 'bai-viet-dashboard',
+            'content_type' => 'article',
+            'status' => 'published',
+            'published_at' => now(),
         ]);
 
         $classGroup = ClassGroup::query()->create([
@@ -206,6 +227,28 @@ class OperationalDashboardTest extends TestCase
             'published_at' => now(),
         ]);
 
+        $videoLesson = VideoLesson::query()->create([
+            'tenant_id' => $tenant->id,
+            'course_id' => $course->id,
+            'course_module_id' => $module->id,
+            'title' => 'Video dashboard',
+            'slug' => 'video-dashboard',
+            'status' => 'published',
+            'video_provider' => 'youtube',
+            'access_level' => 'student',
+            'published_at' => now(),
+        ]);
+
+        VideoLessonProgress::query()->create([
+            'tenant_id' => $tenant->id,
+            'student_profile_id' => $student->id,
+            'enrollment_id' => $enrollment->id,
+            'video_lesson_id' => $videoLesson->id,
+            'status' => 'in_progress',
+            'progress_percent' => 40,
+            'last_watched_at' => now(),
+        ]);
+
         $dashboard = new OperationalDashboard();
         $summary = $dashboard->getSummary();
 
@@ -222,5 +265,16 @@ class OperationalDashboardTest extends TestCase
         $this->assertTrue($dashboard->getUpcomingSessions()->isNotEmpty());
         $this->assertTrue($dashboard->getAtRiskStudents()->isNotEmpty());
         $this->assertTrue($dashboard->getCourseRevenue()->isNotEmpty());
+
+        $phase2Readiness = $dashboard->getPhase2Readiness();
+
+        $this->assertSame(1, $phase2Readiness['published_course_count']);
+        $this->assertSame(1, $phase2Readiness['published_content_count']);
+        $this->assertSame(1, $phase2Readiness['published_video_count']);
+        $this->assertSame(1, $phase2Readiness['tracked_lesson_progress_count']);
+        $this->assertSame(2, $phase2Readiness['lead_source_count']);
+        $this->assertSame(0, $phase2Readiness['affiliate_lead_count']);
+        $this->assertSame(1, $phase2Readiness['active_student_count']);
+        $this->assertSame(1, $phase2Readiness['published_progress_report_count']);
     }
 }

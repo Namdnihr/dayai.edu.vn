@@ -153,10 +153,10 @@ Học viên có trải nghiệm học video/tài liệu cơ bản trong hệ sin
 
 ### Checklist
 
-- [ ] Dashboard tuyển sinh Phase 2.
-- [ ] Dashboard học viên/lớp học.
-- [ ] Dashboard doanh thu/công nợ.
-- [ ] Checklist UAT cho admin, tư vấn, giáo viên, phụ huynh, học viên.
-- [ ] Tài liệu staging/deploy.
-- [ ] Backup/restore checklist.
-- [ ] Release note Phase 2.
+- [x] Dashboard tuyển sinh Phase 2.
+- [x] Dashboard học viên/lớp học.
+- [x] Dashboard doanh thu/công nợ.
+- [x] Checklist UAT cho admin, tư vấn, giáo viên, phụ huynh, học viên.
+- [x] Tài liệu staging/deploy.
+- [x] Backup/restore checklist.
+- [x] Release note Phase 2.

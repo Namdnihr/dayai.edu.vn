@@ -5,12 +5,16 @@ namespace App\Filament\Pages;
 use App\Models\AttendanceRecord;
 use App\Models\ClassGroup;
 use App\Models\ClassSession;
+use App\Models\ContentItem;
+use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Lead;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\ProgressReport;
 use App\Models\Receivable;
+use App\Models\VideoLesson;
+use App\Models\VideoLessonProgress;
 use BackedEnum;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
@@ -95,6 +99,23 @@ class OperationalDashboard extends Page
             ->orderByDesc('lead_count')
             ->limit(8)
             ->get();
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    public function getPhase2Readiness(): array
+    {
+        return [
+            'published_course_count' => Course::query()->where('status', 'published')->count(),
+            'published_content_count' => ContentItem::query()->where('status', 'published')->count(),
+            'published_video_count' => VideoLesson::query()->where('status', 'published')->count(),
+            'tracked_lesson_progress_count' => VideoLessonProgress::query()->count(),
+            'lead_source_count' => Lead::query()->whereNotNull('lead_source_id')->count(),
+            'affiliate_lead_count' => Lead::query()->whereNotNull('affiliate_code')->count(),
+            'active_student_count' => Enrollment::query()->where('status', 'active')->distinct('student_profile_id')->count('student_profile_id'),
+            'published_progress_report_count' => ProgressReport::query()->where('status', 'published')->count(),
+        ];
     }
 
     /**
