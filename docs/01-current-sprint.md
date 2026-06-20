@@ -592,3 +592,19 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä‘Ã¢u vÃ  bÆ°á»›c tiáº¿p th
 - [x] Trang Filament `BI Reports & Export` d? admin thao tác nhanh.
 - [x] Test service và CSV export.
 - [ ] B? l?c th?i gian/khóa/ngu?n nâng cao s? làm sâu sau n?u c?n.
+
+## Sprint 33 - Production Hardening & Go-Live
+
+### M?c Tiêu
+
+- [x] Chu?n b? h? th?ng d? checklist d? deploy staging/production có ki?m soát.
+
+### Checklist
+
+- [x] Thêm health check API `/api/health` ki?m tra app/database/cache.
+- [x] Thêm `.env.production.example` cho backend và frontend.
+- [x] Thêm go-live runbook Phase 3.
+- [x] Chu?n hóa smoke test sau deploy.
+- [x] Ghi checklist backup, restore và rollback.
+- [x] Ghi security review tru?c go-live.
+- [ ] C?u hình h? t?ng th?t, HTTPS th?t, SMTP/S3 th?t s? làm khi có server/domain production.

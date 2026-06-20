@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\PortalLookupController;
 use App\Http\Controllers\Api\CompanyPortalLookupController;
 use App\Http\Controllers\Api\AffiliatePortalLookupController;
 use App\Http\Controllers\Api\BiReportExportController;
+use App\Http\Controllers\Api\HealthCheckController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/leads', PublicLeadController::class);
@@ -23,3 +24,4 @@ Route::post('/portal/lessons/{slug}/progress', [PortalLessonController::class, '
 Route::post('/company-portal/lookup', CompanyPortalLookupController::class);
 Route::post('/affiliate-portal/lookup', AffiliatePortalLookupController::class);
 Route::get('/reports/{report}.csv', BiReportExportController::class);
+Route::get('/health', HealthCheckController::class);
