@@ -488,3 +488,16 @@ File này dùng để biết ngay dự án đang ở đâu và bước tiếp th
 - [x] Kiểm tra SEO/content launch checklist.
 - [x] Ghi nhận thanh toán.
 - [x] Xem công nợ và phiếu thu.
+
+## Phase 2 Review & Phase 3 Planning
+
+### M?c Ti�u
+
+- [x] Ch?t tr?ng th�i b�n giao Phase 2.
+- [x] T�ch ph?n c�n n? sang Phase 3 thay v� k�o d�i Phase 2.
+- [x] L?p roadmap Phase 3 g?m Sprint 28-33.
+- [x] Uu ti�n 3 sprint d?u: Portal Auth, LMS Player, Affiliate.
+
+### T�i Li?u Ch�nh
+
+- [x] `docs/18-phase2-review-phase3-roadmap.md`

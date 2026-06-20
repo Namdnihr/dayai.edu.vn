@@ -160,3 +160,10 @@ Học viên có trải nghiệm học video/tài liệu cơ bản trong hệ sin
 - [x] Tài liệu staging/deploy.
 - [x] Backup/restore checklist.
 - [x] Release note Phase 2.
+
+## Phase 2 Closure
+
+- [x] Review trạng thái bàn giao Phase 2.
+- [x] Chốt các hạng mục không kéo tiếp trong Phase 2.
+- [x] Lập roadmap Phase 3.
+- [x] Tài liệu chi tiết: `docs/18-phase2-review-phase3-roadmap.md`.
