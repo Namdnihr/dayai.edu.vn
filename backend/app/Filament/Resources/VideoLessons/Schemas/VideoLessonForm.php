@@ -79,6 +79,21 @@ class VideoLessonForm
                 Textarea::make('summary')
                     ->label('Tóm tắt')
                     ->columnSpanFull(),
+                TextInput::make('seo_title')
+                    ->label('SEO title')
+                    ->maxLength(255),
+                Textarea::make('seo_description')
+                    ->label('SEO description')
+                    ->maxLength(500)
+                    ->columnSpanFull(),
+                TextInput::make('thumbnail_url')
+                    ->label('Thumbnail URL')
+                    ->maxLength(1000)
+                    ->columnSpanFull(),
+                TextInput::make('canonical_url')
+                    ->label('Canonical URL')
+                    ->maxLength(1000)
+                    ->columnSpanFull(),
                 DateTimePicker::make('published_at')
                     ->label('Ngày xuất bản'),
             ]);

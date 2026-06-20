@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ContentItems\Schemas;
 
 use App\Models\Tenant;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TagsInput;
@@ -76,6 +77,39 @@ class ContentItemForm
                 TextInput::make('cover_image_url')
                     ->label('Ảnh đại diện URL')
                     ->maxLength(1000)
+                    ->columnSpanFull(),
+                TextInput::make('seo_title')
+                    ->label('SEO title')
+                    ->maxLength(255),
+                Textarea::make('seo_description')
+                    ->label('SEO description')
+                    ->maxLength(500)
+                    ->columnSpanFull(),
+                TextInput::make('canonical_url')
+                    ->label('Canonical URL')
+                    ->maxLength(1000)
+                    ->columnSpanFull(),
+                TextInput::make('og_image_url')
+                    ->label('Ảnh chia sẻ mạng xã hội')
+                    ->maxLength(1000)
+                    ->columnSpanFull(),
+                Select::make('expertise_level')
+                    ->label('Mức độ chuyên môn')
+                    ->options([
+                        'beginner' => 'Cơ bản',
+                        'intermediate' => 'Trung cấp',
+                        'advanced' => 'Nâng cao',
+                        'expert' => 'Chuyên gia',
+                    ])
+                    ->default('beginner')
+                    ->required(),
+                TextInput::make('reviewed_by')
+                    ->label('Người kiểm duyệt chuyên môn')
+                    ->maxLength(255),
+                DatePicker::make('reviewed_at')
+                    ->label('Ngày kiểm duyệt'),
+                TagsInput::make('references')
+                    ->label('Nguồn tham khảo / dẫn chứng')
                     ->columnSpanFull(),
                 TagsInput::make('tags')
                     ->label('Tags')

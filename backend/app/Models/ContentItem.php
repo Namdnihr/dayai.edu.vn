@@ -24,6 +24,14 @@ class ContentItem extends Model
         'excerpt',
         'body',
         'cover_image_url',
+        'seo_title',
+        'seo_description',
+        'canonical_url',
+        'og_image_url',
+        'expertise_level',
+        'reviewed_by',
+        'reviewed_at',
+        'references',
         'tags',
         'metadata',
         'published_at',
@@ -33,7 +41,9 @@ class ContentItem extends Model
     {
         return [
             'tags' => 'array',
+            'references' => 'array',
             'metadata' => 'array',
+            'reviewed_at' => 'date',
             'published_at' => 'datetime',
         ];
     }

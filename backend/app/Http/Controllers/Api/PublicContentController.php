@@ -15,7 +15,7 @@ class PublicContentController extends Controller
         $tenant = Tenant::query()->where('code', 'dayai')->firstOrFail();
 
         $knowledgeItems = ContentItem::query()
-            ->with(['category:id,name,slug,category_type', 'course:id,name,slug,course_code'])
+            ->with(['author:id,name', 'category:id,name,slug,category_type', 'course:id,name,slug,course_code'])
             ->where('tenant_id', $tenant->id)
             ->where('status', 'published')
             ->whereIn('content_type', ['article', 'checklist', 'case_study', 'prompt_library', 'news'])
@@ -32,6 +32,19 @@ class PublicContentController extends Controller
                 'course' => $item->course?->name,
                 'published_at' => $item->published_at?->toDateString(),
                 'tags' => $item->tags ?? [],
+                'seo' => [
+                    'title' => $item->seo_title,
+                    'description' => $item->seo_description,
+                    'canonical_url' => $item->canonical_url,
+                    'og_image_url' => $item->og_image_url,
+                ],
+                'eeat' => [
+                    'author' => $item->author?->name,
+                    'expertise_level' => $item->expertise_level,
+                    'reviewed_by' => $item->reviewed_by,
+                    'reviewed_at' => $item->reviewed_at?->toDateString(),
+                    'references' => $item->references ?? [],
+                ],
             ]);
 
         $videoLessons = VideoLesson::query()
@@ -52,6 +65,12 @@ class PublicContentController extends Controller
                 'access_level' => $video->access_level,
                 'course' => $video->course?->name,
                 'published_at' => $video->published_at?->toDateString(),
+                'seo' => [
+                    'title' => $video->seo_title,
+                    'description' => $video->seo_description,
+                    'thumbnail_url' => $video->thumbnail_url,
+                    'canonical_url' => $video->canonical_url,
+                ],
             ]);
 
         return response()->json([

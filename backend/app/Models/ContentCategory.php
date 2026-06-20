@@ -18,6 +18,9 @@ class ContentCategory extends Model
         'slug',
         'category_type',
         'description',
+        'seo_title',
+        'seo_description',
+        'canonical_url',
         'sort_order',
         'is_active',
     ];

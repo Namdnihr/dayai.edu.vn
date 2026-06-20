@@ -43,6 +43,17 @@ class ContentCategoryForm
                 Textarea::make('description')
                     ->label('Mô tả')
                     ->columnSpanFull(),
+                TextInput::make('seo_title')
+                    ->label('SEO title')
+                    ->maxLength(255),
+                Textarea::make('seo_description')
+                    ->label('SEO description')
+                    ->maxLength(500)
+                    ->columnSpanFull(),
+                TextInput::make('canonical_url')
+                    ->label('Canonical URL')
+                    ->maxLength(1000)
+                    ->columnSpanFull(),
                 TextInput::make('sort_order')
                     ->label('Thứ tự')
                     ->numeric()
