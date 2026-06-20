@@ -519,3 +519,15 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä‘Ã¢u vÃ  bÆ°á»›c tiáº¿p th
 - [x] Tách quy?n h?c viên/ph? huynh b?ng `access_role`; HR v?n thu?c company portal riêng.
 - [x] Ghi audit log request OTP, verify thành công và verify th?t b?i.
 - [x] Ki?m th? student token không xem du?c nh?n xét ch? dành cho ph? huynh.
+
+## Sprint 29 - LMS Player & Realtime Progress
+
+### M?c Tiêu
+
+- [x] T?o API portal lesson detail có ki?m tra token, enrollment và access level.
+- [x] T?o API c?p nh?t ti?n d? bài h?c: ph?n tram, v? trí xem g?n nh?t, tr?ng thái hoàn thành.
+- [x] T?o trang `/portal/bai-hoc/[slug]` d? h?c viên xem video và tài li?u.
+- [x] N?i nút `Vào h?c` t? LMS trong portal sang trang bài h?c.
+- [x] Luu session portal ? `sessionStorage` sau OTP d? trang bài h?c d?c du?c.
+- [x] Thêm test cho lesson detail và progress update.
+- [ ] Tracking t? d?ng theo interval/player event s? làm sâu hon n?u c?n.

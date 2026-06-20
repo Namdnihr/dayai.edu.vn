@@ -248,6 +248,13 @@ export function PortalLookup() {
       }
 
       setPortalAccessToken(result.portal_access_token);
+      window.sessionStorage.setItem(
+        "dayai_portal_session",
+        JSON.stringify({
+          ...credentials,
+          portal_access_token: result.portal_access_token,
+        }),
+      );
       setMessage("Xác thực thành công. Đang tải dữ liệu học viên...");
       await loadPortalData(result.portal_access_token);
     } catch (error) {
@@ -498,6 +505,9 @@ function LessonRow({ lesson }: { lesson: PortalData["lms"]["courses"][number]["m
       <div className="rounded-2xl bg-blue-50 px-4 py-3 text-right">
         <div className="text-sm font-black text-[#003A99]">{formatLessonStatus(lesson.progress.status)}</div>
         <div className="mt-1 text-xs text-slate-500">{lesson.duration_minutes ?? 0} phút · {lesson.progress.progress_percent}%</div>
+        <a href={`/portal/bai-hoc/${lesson.slug}`} className="mt-3 inline-flex rounded-full bg-[#003A99] px-4 py-2 text-xs font-black text-white hover:bg-[#002B73]">
+          Vào học
+        </a>
       </div>
     </div>
   );

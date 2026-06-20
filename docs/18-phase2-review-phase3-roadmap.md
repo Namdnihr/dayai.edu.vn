@@ -83,14 +83,15 @@ Học viên học video trong hệ thống, progress được ghi nhận tự đ
 
 ### Checklist
 
-- [ ] Tạo trang xem bài học/video riêng.
-- [ ] Nhúng player an toàn theo provider.
-- [ ] API cập nhật progress theo interval.
-- [ ] Ghi nhận last position, percent watched, completed_at.
-- [ ] Khóa bài học theo enrollment/access level.
-- [ ] Hiển thị tài liệu tải về theo bài học.
-- [ ] Resume video từ vị trí xem gần nhất.
-- [ ] UAT học/chưa học/đang học/hoàn thành.
+- [x] Tạo trang xem bài học/video riêng.
+- [x] Nhúng player an toàn theo provider.
+- [x] API cập nhật progress realtime-lite theo thao tác lưu.
+- [x] Ghi nhận last position, percent watched, completed_at.
+- [x] Khóa bài học theo enrollment/access level.
+- [x] Hiển thị tài liệu tải về theo bài học.
+- [x] Resume data từ vị trí xem gần nhất.
+- [x] UAT học/chưa học/đang học/hoàn thành ở API trọng yếu.
+- [ ] Tracking tự động theo interval từ HTML5/player event.
 
 ### Demo cuối sprint
 

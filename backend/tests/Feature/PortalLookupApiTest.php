@@ -333,6 +333,31 @@ class PortalLookupApiTest extends TestCase
             ->assertJsonPath('videos.0.title', 'Video Portal')
             ->assertJsonPath('videos.0.progress_percent', 100);
 
+        $lessonResponse = $this->postJson('/api/portal/lessons/video-portal', [
+            'phone' => '0901888222',
+            'student_code' => 'HV-PORTAL',
+            'portal_access_token' => $authVerify->json('portal_access_token'),
+        ]);
+
+        $lessonResponse
+            ->assertOk()
+            ->assertJsonPath('lesson.title', 'Video Portal')
+            ->assertJsonPath('lesson.progress.progress_percent', 100);
+
+        $progressResponse = $this->postJson('/api/portal/lessons/video-portal/progress', [
+            'phone' => '0901888222',
+            'student_code' => 'HV-PORTAL',
+            'portal_access_token' => $authVerify->json('portal_access_token'),
+            'progress_percent' => 45,
+            'last_position_seconds' => 320,
+        ]);
+
+        $progressResponse
+            ->assertOk()
+            ->assertJsonPath('progress.status', 'in_progress')
+            ->assertJsonPath('progress.progress_percent', 45)
+            ->assertJsonPath('progress.last_position_seconds', 320);
+
         $studentAuthRequest = $this->postJson('/api/portal/auth/request', [
             'phone' => '0901888000',
             'student_code' => 'HV-PORTAL',
