@@ -106,14 +106,14 @@ Biến tracking affiliate/referral hiện có thành module tăng trưởng có 
 
 ### Checklist
 
-- [ ] Tạo partner/affiliate profile.
-- [ ] Tạo affiliate link/code theo campaign/course.
-- [ ] Ghi nhận click và lead attribution.
-- [ ] Gắn lead -> order -> commission.
-- [ ] Trạng thái commission: pending, approved, paid, rejected.
+- [x] Tạo partner/affiliate profile.
+- [x] Tạo affiliate link/code theo campaign/course.
+- [x] Ghi nhận click và lead attribution.
+- [x] Gắn lead -> order -> commission.
+- [x] Trạng thái commission: pending, approved, paid, rejected.
 - [ ] Báo cáo hiệu quả affiliate.
 - [ ] Portal hoặc màn hình lite cho partner xem kết quả.
-- [ ] Quy tắc chống trùng/ghi đè attribution.
+- [x] Quy tắc chống trùng/ghi đè attribution ở mức một commission/order.
 
 ### Demo cuối sprint
 

@@ -183,6 +183,16 @@ class Lead extends Model
         return $this->hasMany(TrialRegistration::class);
     }
 
+    public function affiliateClicks(): HasMany
+    {
+        return $this->hasMany(AffiliateClick::class);
+    }
+
+    public function affiliateCommissions(): HasMany
+    {
+        return $this->hasMany(AffiliateCommission::class);
+    }
+
     public function writeActivityLog(string $action, string $description): void
     {
         ActivityLog::query()->create([

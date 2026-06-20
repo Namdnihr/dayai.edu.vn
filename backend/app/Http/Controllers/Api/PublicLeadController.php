@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AffiliateLink;
+use App\Models\AffiliatePartner;
 use App\Models\Branch;
 use App\Models\Lead;
 use App\Models\LeadSource;
 use App\Models\Tenant;
+use App\Services\AffiliateCommissionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -57,6 +60,9 @@ class PublicLeadController extends Controller
             ],
         );
 
+        $partner = $this->resolveAffiliatePartner($tenant->id, $validated['affiliate_code'] ?? null);
+        $affiliateLink = $this->resolveAffiliateLink($tenant->id, $validated['referral_code'] ?? null, $partner?->id);
+
         $lead = Lead::query()->create([
             'tenant_id' => $tenant->id,
             'branch_id' => $branch?->id,
@@ -96,9 +102,20 @@ class PublicLeadController extends Controller
             ],
         ]);
 
+        if (filled($lead->affiliate_code) || filled($lead->referral_code)) {
+            app(AffiliateCommissionService::class)->recordClickForLead(
+                $lead,
+                $partner,
+                $affiliateLink,
+                $request->ip(),
+                $request->userAgent(),
+            );
+        }
+
         return response()->json([
             'message' => 'Lead đã được ghi nhận.',
             'lead_id' => $lead->id,
+            'affiliate_attributed' => filled($lead->affiliate_code) || filled($lead->referral_code),
         ], 201);
     }
 
@@ -167,5 +184,35 @@ class PublicLeadController extends Controller
         }
 
         return 'cold';
+    }
+
+    private function resolveAffiliatePartner(string $tenantId, ?string $affiliateCode): ?AffiliatePartner
+    {
+        if (blank($affiliateCode)) {
+            return null;
+        }
+
+        return AffiliatePartner::query()
+            ->where('tenant_id', $tenantId)
+            ->where('code', $affiliateCode)
+            ->where('status', 'active')
+            ->first();
+    }
+
+    private function resolveAffiliateLink(string $tenantId, ?string $referralCode, ?string $partnerId): ?AffiliateLink
+    {
+        if (blank($referralCode) && blank($partnerId)) {
+            return null;
+        }
+
+        return AffiliateLink::query()
+            ->where('tenant_id', $tenantId)
+            ->where('status', 'active')
+            ->where(function ($query) use ($referralCode, $partnerId): void {
+                $query
+                    ->when(filled($referralCode), fn ($linkQuery) => $linkQuery->where('code', $referralCode))
+                    ->when(blank($referralCode) && filled($partnerId), fn ($linkQuery) => $linkQuery->where('affiliate_partner_id', $partnerId));
+            })
+            ->first();
     }
 }

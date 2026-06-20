@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Services\AffiliateCommissionService;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Order extends Model
@@ -30,6 +32,19 @@ class Order extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::created(function (Order $order): void {
+            app(AffiliateCommissionService::class)->createPendingCommissionForOrder($order);
+        });
+
+        static::updated(function (Order $order): void {
+            if ($order->wasChanged(['total_vnd', 'lead_id'])) {
+                app(AffiliateCommissionService::class)->createPendingCommissionForOrder($order);
+            }
+        });
+    }
+
     public function tenant(): BelongsTo { return $this->belongsTo(Tenant::class); }
     public function branch(): BelongsTo { return $this->belongsTo(Branch::class); }
     public function customerAccount(): BelongsTo { return $this->belongsTo(CustomerAccount::class); }
@@ -38,6 +53,7 @@ class Order extends Model
     public function items(): HasMany { return $this->hasMany(OrderItem::class); }
     public function invoices(): HasMany { return $this->hasMany(Invoice::class); }
     public function payments(): HasMany { return $this->hasMany(Payment::class); }
+    public function affiliateCommission(): HasOne { return $this->hasOne(AffiliateCommission::class); }
 
     public function recalculateTotals(): void
     {

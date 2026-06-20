@@ -531,3 +531,14 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä‘Ã¢u vÃ  bÆ°á»›c tiáº¿p th
 - [x] Luu session portal ? `sessionStorage` sau OTP d? trang bài h?c d?c du?c.
 - [x] Thêm test cho lesson detail và progress update.
 - [ ] Tracking t? d?ng theo interval/player event s? làm sâu hon n?u c?n.
+
+## Sprint 30 - Affiliate & Referral Module
+
+### M?c Tiêu
+
+- [x] T?o schema affiliate partner, affiliate link, click và commission.
+- [x] Public lead affiliate t? ghi nh?n click attribution.
+- [x] Order có lead affiliate t? t?o commission pending.
+- [x] Commission có tr?ng thái d? duy?t/tr? sau: pending, approved, paid, rejected.
+- [x] Test lead affiliate -> click -> order -> commission.
+- [ ] Dashboard hi?u qu? affiliate và portal d?i tác làm ? bu?c ti?p theo n?u c?n.
