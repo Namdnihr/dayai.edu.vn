@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Filament\Pages\OperationalDashboard;
+use App\Filament\Pages\BiReports;
 use App\Filament\Pages\RevenueReport;
 use App\Filament\Resources\Leads\LeadResource;
 use App\Filament\Resources\Orders\OrderResource;
@@ -27,6 +28,7 @@ class FilamentPermissionTest extends TestCase
         $this->assertTrue(LeadResource::canViewAny());
         $this->assertFalse(OrderResource::canViewAny());
         $this->assertTrue(OperationalDashboard::canAccess());
+        $this->assertTrue(BiReports::canAccess());
         $this->assertFalse(RevenueReport::canAccess());
     }
 
@@ -39,6 +41,7 @@ class FilamentPermissionTest extends TestCase
         $this->assertTrue(OrderResource::canViewAny());
         $this->assertFalse(LeadResource::canViewAny());
         $this->assertTrue(RevenueReport::canAccess());
+        $this->assertTrue(BiReports::canAccess());
     }
 
     public function test_teacher_can_manage_progress_but_not_finance(): void
@@ -50,6 +53,7 @@ class FilamentPermissionTest extends TestCase
         $this->assertTrue(ProgressReportResource::canViewAny());
         $this->assertFalse(OrderResource::canViewAny());
         $this->assertTrue(OperationalDashboard::canAccess());
+        $this->assertTrue(BiReports::canAccess());
     }
 
     public function test_admin_can_access_all_resource_groups(): void
@@ -62,6 +66,7 @@ class FilamentPermissionTest extends TestCase
         $this->assertTrue(OrderResource::canViewAny());
         $this->assertTrue(ProgressReportResource::canViewAny());
         $this->assertTrue(RevenueReport::canAccess());
+        $this->assertTrue(BiReports::canAccess());
     }
 
     /**

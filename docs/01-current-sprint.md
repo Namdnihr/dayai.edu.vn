@@ -575,3 +575,20 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä‘Ã¢u vÃ  bÆ°á»›c tiáº¿p th
 - [x] Thêm dashboard automation health.
 - [x] Test lead confirmation và ch?ng spam trong cooldown.
 - [ ] Tích h?p provider g?i th?t email/Zalo/SMS ? sprint sau n?u c?n.
+
+## Sprint 32 - BI Reports & Export
+
+### M?c Tiêu
+
+- [x] T?o n?n báo cáo BI có th? xu?t CSV d? sales/k? toán/admin d?i chi?u s? li?u.
+
+### Checklist
+
+- [x] Báo cáo tuy?n sinh theo ngu?n, campaign và affiliate.
+- [x] Báo cáo doanh thu theo khóa và chi nhánh.
+- [x] Báo cáo hi?u qu? l?p h?c theo si s?, di?m danh và ti?n d?.
+- [x] Báo cáo công n? aging.
+- [x] API export CSV cho t?ng báo cáo.
+- [x] Trang Filament `BI Reports & Export` d? admin thao tác nhanh.
+- [x] Test service và CSV export.
+- [ ] B? l?c th?i gian/khóa/ngu?n nâng cao s? làm sâu sau n?u c?n.
