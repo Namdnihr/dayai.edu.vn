@@ -15,16 +15,30 @@ class Course extends Model
     protected $fillable = [
         'tenant_id',
         'name',
+        'subtitle',
         'slug',
         'course_code',
         'audience_type',
         'level',
+        'learning_format',
         'short_description',
         'description',
         'outcomes',
         'duration_hours',
         'default_session_count',
         'default_price_vnd',
+        'price_label',
+        'thumbnail_url',
+        'hero_image_url',
+        'who_should_join',
+        'prerequisites',
+        'tools_covered',
+        'primary_cta',
+        'is_featured',
+        'sort_order',
+        'seo_title',
+        'seo_description',
+        'canonical_url',
         'status',
     ];
 
@@ -32,9 +46,14 @@ class Course extends Model
     {
         return [
             'outcomes' => 'array',
+            'who_should_join' => 'array',
+            'prerequisites' => 'array',
+            'tools_covered' => 'array',
             'duration_hours' => 'integer',
             'default_session_count' => 'integer',
             'default_price_vnd' => 'integer',
+            'is_featured' => 'boolean',
+            'sort_order' => 'integer',
         ];
     }
 
