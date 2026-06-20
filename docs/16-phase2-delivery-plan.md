@@ -97,12 +97,17 @@ CRM tuyển sinh có pipeline rõ trạng thái, follow-up, phân công và hi�
 
 ### Checklist
 
-- [ ] Pipeline Kanban theo trạng thái lead.
-- [ ] Follow-up date và nhắc việc.
-- [ ] Lý do mất lead/không phù hợp.
+- [x] Thêm pipeline stage tự đồng bộ theo trạng thái lead.
+- [x] Thêm độ nóng lead: lạnh, ấm, nóng.
+- [x] Thêm giá trị cơ hội dự kiến.
+- [x] Thêm nhóm lý do mất lead/không phù hợp.
+- [x] Bộ lọc lead nóng/lạnh/quá hạn follow-up.
+- [x] Dashboard độ nóng lead.
+- [x] Dashboard lead quá hạn follow-up.
+- [x] Dashboard hiệu quả tư vấn viên.
+- [x] Báo cáo conversion theo nguồn tiếp tục hiển thị trên dashboard.
+- [ ] Pipeline Kanban kéo thả theo trạng thái lead.
 - [ ] Kịch bản tư vấn theo segment.
-- [ ] Bộ lọc lead nóng/lạnh/quá hạn.
-- [ ] Báo cáo conversion theo nguồn và tư vấn viên.
 
 ## Sprint 25 - Parent/Student Portal V1
 

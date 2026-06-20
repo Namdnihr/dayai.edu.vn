@@ -46,17 +46,21 @@ class PublicLeadApiTest extends TestCase
             'phone' => '0901999888',
             'lead_type' => 'parent',
             'status' => 'trial_requested',
+            'temperature' => 'hot',
+            'pipeline_stage' => 'new',
             'course_slug' => 'ai-can-ban',
             'utm_campaign' => 'k01_ai_can_ban',
             'utm_content' => 'hero_cta',
             'utm_term' => 'hoc ai can ban',
             'click_id' => 'CLICK-001',
+            'expected_value_vnd' => 3500000,
         ]);
 
         $lead = Lead::query()->where('phone', '0901999888')->first();
 
         $this->assertSame('website', $lead?->source?->code);
         $this->assertSame('website', $lead?->first_touch_source);
+        $this->assertSame('hot', $lead?->temperature);
     }
 
     public function test_public_lead_api_creates_affiliate_lead_when_ref_code_exists(): void
@@ -86,6 +90,7 @@ class PublicLeadApiTest extends TestCase
         $this->assertSame('PARTNER-A', $lead?->affiliate_code);
         $this->assertSame('REF-A', $lead?->referral_code);
         $this->assertSame('affiliate', $lead?->last_touch_source);
+        $this->assertSame('hot', $lead?->temperature);
     }
 
     public function test_public_lead_api_validates_required_fields(): void

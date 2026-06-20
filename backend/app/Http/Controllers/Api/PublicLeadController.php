@@ -64,11 +64,13 @@ class PublicLeadController extends Controller
             'lead_type' => $validated['lead_type'],
             'status' => ($validated['request_type'] ?? 'consultation') === 'trial' ? 'trial_requested' : 'new',
             'priority' => $validated['lead_type'] === 'company' ? 'high' : 'normal',
+            'temperature' => $this->resolveTemperature($validated),
             'full_name' => $validated['full_name'],
             'phone' => $validated['phone'],
             'email' => $validated['email'] ?? null,
             'company_name' => $validated['company_name'] ?? null,
             'interested_course_id' => $validated['interested_course_id'] ?? null,
+            'expected_value_vnd' => $validated['lead_type'] === 'company' ? 20000000 : 3500000,
             'course_slug' => $validated['course_slug'] ?? null,
             'learning_goal' => $validated['learning_goal'] ?? null,
             'message' => $validated['message'] ?? null,
@@ -148,5 +150,22 @@ class PublicLeadController extends Controller
             'zalo' => 'social',
             default => 'website',
         };
+    }
+
+    private function resolveTemperature(array $payload): string
+    {
+        if (($payload['request_type'] ?? null) === 'trial') {
+            return 'hot';
+        }
+
+        if (($payload['lead_type'] ?? null) === 'company' || filled($payload['affiliate_code'] ?? null)) {
+            return 'hot';
+        }
+
+        if (filled($payload['learning_goal'] ?? null) || filled($payload['course_slug'] ?? null)) {
+            return 'warm';
+        }
+
+        return 'cold';
     }
 }

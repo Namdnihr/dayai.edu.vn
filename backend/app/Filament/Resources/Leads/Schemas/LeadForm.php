@@ -73,6 +73,28 @@ class LeadForm
                     ])
                     ->default('normal')
                     ->required(),
+                Select::make('temperature')
+                    ->label('Độ nóng lead')
+                    ->options([
+                        'cold' => 'Lạnh',
+                        'warm' => 'Ấm',
+                        'hot' => 'Nóng',
+                    ])
+                    ->default('warm')
+                    ->required(),
+                Select::make('pipeline_stage')
+                    ->label('Giai đoạn pipeline')
+                    ->options([
+                        'new' => 'Lead mới',
+                        'contacting' => 'Đang liên hệ',
+                        'consulting' => 'Đang tư vấn',
+                        'trial' => 'Học thử',
+                        'won' => 'Chốt thành công',
+                        'lost' => 'Mất lead',
+                        'closed' => 'Đóng',
+                    ])
+                    ->default('new')
+                    ->required(),
                 TextInput::make('full_name')
                     ->label('Họ tên người liên hệ')
                     ->maxLength(255)
@@ -93,6 +115,10 @@ class LeadForm
                 TextInput::make('interested_course_id')
                     ->label('Mã khóa quan tâm')
                     ->maxLength(255),
+                TextInput::make('expected_value_vnd')
+                    ->label('Giá trị cơ hội dự kiến VND')
+                    ->numeric()
+                    ->default(0),
                 TextInput::make('course_slug')
                     ->label('Slug khóa/landing')
                     ->maxLength(255),
@@ -152,6 +178,17 @@ class LeadForm
                 Textarea::make('lost_reason')
                     ->label('Lý do mất/không phù hợp')
                     ->columnSpanFull(),
+                Select::make('lost_reason_type')
+                    ->label('Nhóm lý do mất lead')
+                    ->options([
+                        'price' => 'Chưa phù hợp học phí',
+                        'schedule' => 'Không phù hợp lịch học',
+                        'no_response' => 'Không phản hồi',
+                        'not_ready' => 'Chưa sẵn sàng học',
+                        'competitor' => 'Chọn đơn vị khác',
+                        'not_fit' => 'Không đúng đối tượng',
+                        'other' => 'Khác',
+                    ]),
             ]);
     }
 }

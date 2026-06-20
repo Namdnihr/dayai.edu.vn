@@ -24,11 +24,14 @@ class Lead extends Model
         'lead_type',
         'status',
         'priority',
+        'temperature',
+        'pipeline_stage',
         'full_name',
         'phone',
         'email',
         'company_name',
         'interested_course_id',
+        'expected_value_vnd',
         'learning_goal',
         'message',
         'preferred_contact_method',
@@ -48,8 +51,10 @@ class Lead extends Model
         'last_touch_source',
         'last_contacted_at',
         'next_follow_up_at',
+        'last_activity_at',
         'converted_at',
         'lost_reason',
+        'lost_reason_type',
         'metadata',
         'created_by_id',
         'updated_by_id',
@@ -60,7 +65,9 @@ class Lead extends Model
         return [
             'last_contacted_at' => 'datetime',
             'next_follow_up_at' => 'datetime',
+            'last_activity_at' => 'datetime',
             'converted_at' => 'datetime',
+            'expected_value_vnd' => 'integer',
             'metadata' => 'array',
         ];
     }
@@ -69,6 +76,7 @@ class Lead extends Model
     {
         static::creating(function (Lead $lead): void {
             $user = Auth::user();
+            $lead->pipeline_stage ??= self::pipelineStageForStatus($lead->status);
 
             if ($user) {
                 $lead->created_by_id ??= $user->id;
@@ -80,6 +88,10 @@ class Lead extends Model
         static::updating(function (Lead $lead): void {
             if (Auth::id()) {
                 $lead->updated_by_id = Auth::id();
+            }
+
+            if ($lead->isDirty('status')) {
+                $lead->pipeline_stage = self::pipelineStageForStatus($lead->status);
             }
         });
 
@@ -183,5 +195,19 @@ class Lead extends Model
             'old_values' => $this->getOriginal(),
             'new_values' => $this->getAttributes(),
         ]);
+    }
+
+    public static function pipelineStageForStatus(?string $status): string
+    {
+        return match ($status) {
+            'new', 'trial_requested' => 'new',
+            'contacting' => 'contacting',
+            'consulting' => 'consulting',
+            'trial_scheduled' => 'trial',
+            'registered' => 'won',
+            'lost', 'not_fit' => 'lost',
+            'duplicate' => 'closed',
+            default => 'new',
+        };
     }
 }

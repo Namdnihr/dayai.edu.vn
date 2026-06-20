@@ -22,9 +22,9 @@ class OperationalDashboard extends Page
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChartBar;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
+    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
 
-    protected static ?string $navigationLabel = 'Dashboard vận hành';
+    protected static ?string $navigationLabel = 'Dashboard váº­n hÃ nh';
 
     protected static ?int $navigationSort = 5;
 
@@ -39,7 +39,7 @@ class OperationalDashboard extends Page
 
     public function getTitle(): string
     {
-        return 'Dashboard tuyển sinh & vận hành';
+        return 'Dashboard tuyá»ƒn sinh & váº­n hÃ nh';
     }
 
     /**
@@ -88,7 +88,7 @@ class OperationalDashboard extends Page
     {
         return DB::table('leads')
             ->leftJoin('lead_sources', 'lead_sources.id', '=', 'leads.lead_source_id')
-            ->selectRaw("coalesce(lead_sources.name, 'Chưa rõ') as source_name")
+            ->selectRaw("coalesce(lead_sources.name, 'ChÆ°a rÃµ') as source_name")
             ->selectRaw('count(leads.id) as lead_count')
             ->selectRaw('sum(case when leads.converted_at is not null then 1 else 0 end) as converted_count')
             ->groupBy('source_name')
@@ -100,6 +100,51 @@ class OperationalDashboard extends Page
     /**
      * @return Collection<int, object>
      */
+    /**
+     * @return Collection<int, object>
+     */
+    public function getLeadTemperatures(): Collection
+    {
+        return Lead::query()
+            ->select('temperature')
+            ->selectRaw('count(*) as total')
+            ->selectRaw('sum(expected_value_vnd) as expected_value_vnd')
+            ->groupBy('temperature')
+            ->orderByDesc('total')
+            ->get();
+    }
+
+    /**
+     * @return Collection<int, Lead>
+     */
+    public function getOverdueLeads(): Collection
+    {
+        return Lead::query()
+            ->with(['source:id,name', 'assignedUser:id,name'])
+            ->whereNotNull('next_follow_up_at')
+            ->where('next_follow_up_at', '<', now())
+            ->whereNotIn('status', ['registered', 'lost', 'not_fit', 'duplicate'])
+            ->orderBy('next_follow_up_at')
+            ->limit(8)
+            ->get();
+    }
+
+    /**
+     * @return Collection<int, object>
+     */
+    public function getSalesPerformance(): Collection
+    {
+        return DB::table('leads')
+            ->leftJoin('users', 'users.id', '=', 'leads.assigned_user_id')
+            ->selectRaw("coalesce(users.name, 'Chưa phân công') as consultant_name")
+            ->selectRaw('count(leads.id) as lead_count')
+            ->selectRaw('sum(case when leads.converted_at is not null then 1 else 0 end) as converted_count')
+            ->selectRaw('sum(leads.expected_value_vnd) as expected_value_vnd')
+            ->groupBy('consultant_name')
+            ->orderByDesc('lead_count')
+            ->limit(8)
+            ->get();
+    }
     public function getUpcomingSessions(): Collection
     {
         return ClassSession::query()
@@ -150,21 +195,29 @@ class OperationalDashboard extends Page
 
     public function formatVnd(int|string|null $amount): string
     {
-        return number_format((int) $amount, 0, ',', '.') . ' ₫';
+        return number_format((int) $amount, 0, ',', '.') . ' â‚«';
     }
 
     public function formatStatus(?string $status): string
     {
         return [
-            'new' => 'Mới',
-            'contacting' => 'Đang liên hệ',
-            'consulting' => 'Đang tư vấn',
-            'trial_scheduled' => 'Hẹn học thử',
-            'registered' => 'Đã đăng ký',
-            'lost' => 'Mất',
-            'active' => 'Đang học',
-            'enrolling' => 'Đang tuyển sinh',
-            'scheduled' => 'Đã lên lịch',
-        ][$status ?? ''] ?? ($status ?: 'Chưa rõ');
+            'new' => 'Má»›i',
+            'contacting' => 'Äang liÃªn há»‡',
+            'consulting' => 'Äang tÆ° váº¥n',
+            'trial_scheduled' => 'Háº¹n há»c thá»­',
+            'registered' => 'ÄÃ£ Ä‘Äƒng kÃ½',
+            'lost' => 'Máº¥t',
+            'active' => 'Äang há»c',
+            'enrolling' => 'Äang tuyá»ƒn sinh',
+            'scheduled' => 'ÄÃ£ lÃªn lá»‹ch',
+        ][$status ?? ''] ?? ($status ?: 'ChÆ°a rÃµ');
+    }
+    public function formatTemperature(?string $temperature): string
+    {
+        return [
+            'hot' => 'Nóng',
+            'warm' => 'Ấm',
+            'cold' => 'Lạnh',
+        ][$temperature ?? ''] ?? 'Chưa rõ';
     }
 }
