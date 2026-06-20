@@ -513,3 +513,9 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä‘Ã¢u vÃ  bÆ°á»›c tiáº¿p th
 - [x] C?p nh?t frontend `/portal` thành 2 bu?c: g?i mã và xác th?c.
 - [x] Thêm test b?o v? lu?ng lookup thi?u token.
 - [ ] Tách sâu quy?n h?c viên/ph? huynh/HR và audit log dang nh?p portal.
+
+### Sprint 28 Completion Update
+
+- [x] Tách quy?n h?c viên/ph? huynh b?ng `access_role`; HR v?n thu?c company portal riêng.
+- [x] Ghi audit log request OTP, verify thành công và verify th?t b?i.
+- [x] Ki?m th? student token không xem du?c nh?n xét ch? dành cho ph? huynh.

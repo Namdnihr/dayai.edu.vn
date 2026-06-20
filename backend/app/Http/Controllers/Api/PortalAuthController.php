@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\PortalAuthToken;
 use App\Models\StudentProfile;
 use Illuminate\Http\JsonResponse;
@@ -32,9 +33,16 @@ class PortalAuthController extends Controller
 
         RateLimiter::hit($rateKey, 300);
 
-        $student = $this->findStudent($phone, $studentCode);
+        $portalIdentity = $this->findPortalIdentity($phone, $studentCode);
+        $student = $portalIdentity['student'];
 
         if (! $student) {
+            $this->logPortalAuth(null, 'portal_auth_request_failed', $request, [
+                'phone' => $phone,
+                'student_code' => $studentCode,
+                'reason' => 'not_found',
+            ]);
+
             return response()->json([
                 'message' => 'Không tìm thấy học viên với thông tin đã nhập.',
             ], 404);
@@ -45,12 +53,19 @@ class PortalAuthController extends Controller
         $token = PortalAuthToken::query()->create([
             'tenant_id' => $student->tenant_id,
             'student_profile_id' => $student->id,
-            'person_id' => $student->person_id,
+            'person_id' => $portalIdentity['person_id'],
             'phone' => $phone,
             'student_code' => $studentCode,
+            'access_role' => $portalIdentity['access_role'],
             'code_hash' => Hash::make($code),
             'channel' => 'demo',
             'expires_at' => now()->addMinutes(10),
+        ]);
+
+        $this->logPortalAuth($token, 'portal_auth_code_requested', $request, [
+            'access_role' => $token->access_role,
+            'channel' => $token->channel,
+            'expires_at' => $token->expires_at?->toDateTimeString(),
         ]);
 
         return response()->json([
@@ -74,12 +89,21 @@ class PortalAuthController extends Controller
             ->first();
 
         if (! $token || $token->expires_at->isPast()) {
+            $this->logPortalAuth($token, 'portal_auth_verify_failed', $request, [
+                'reason' => 'expired_or_invalid',
+            ]);
+
             return response()->json([
                 'message' => 'Mã xác thực đã hết hạn hoặc không hợp lệ.',
             ], 422);
         }
 
         if ($token->attempt_count >= 5) {
+            $this->logPortalAuth($token, 'portal_auth_verify_failed', $request, [
+                'reason' => 'too_many_attempts',
+                'attempt_count' => $token->attempt_count,
+            ]);
+
             return response()->json([
                 'message' => 'Bạn đã nhập sai quá số lần cho phép. Vui lòng yêu cầu mã mới.',
             ], 429);
@@ -87,6 +111,12 @@ class PortalAuthController extends Controller
 
         if (! Hash::check($validated['code'], $token->code_hash)) {
             $token->increment('attempt_count');
+            $token->refresh();
+
+            $this->logPortalAuth($token, 'portal_auth_verify_failed', $request, [
+                'reason' => 'wrong_code',
+                'attempt_count' => $token->attempt_count,
+            ]);
 
             return response()->json([
                 'message' => 'Mã xác thực không đúng.',
@@ -100,16 +130,24 @@ class PortalAuthController extends Controller
             'verified_at' => now(),
         ])->save();
 
+        $this->logPortalAuth($token, 'portal_auth_verified', $request, [
+            'access_role' => $token->access_role,
+        ]);
+
         return response()->json([
             'message' => 'Xác thực portal thành công.',
             'portal_access_token' => $accessToken,
+            'access_role' => $token->access_role,
             'expires_at' => $token->expires_at?->toDateTimeString(),
         ]);
     }
 
-    protected function findStudent(string $phone, string $studentCode): ?StudentProfile
+    /**
+     * @return array{student: ?StudentProfile, person_id: ?string, access_role: string}
+     */
+    protected function findPortalIdentity(string $phone, string $studentCode): array
     {
-        return StudentProfile::query()
+        $student = StudentProfile::query()
             ->with(['person', 'guardians.guardianPerson'])
             ->where(function ($query) use ($studentCode, $phone): void {
                 $query->where('student_code', $studentCode)
@@ -120,5 +158,47 @@ class PortalAuthController extends Controller
                     ->whereHas('guardians.guardianPerson', fn ($guardianQuery) => $guardianQuery->where('phone', $phone));
             })
             ->first();
+
+        if (! $student) {
+            return [
+                'student' => null,
+                'person_id' => null,
+                'access_role' => 'unknown',
+            ];
+        }
+
+        if ($student->person?->phone === $phone) {
+            return [
+                'student' => $student,
+                'person_id' => $student->person_id,
+                'access_role' => 'student',
+            ];
+        }
+
+        $guardian = $student->guardians
+            ->first(fn ($guardian) => $guardian->guardianPerson?->phone === $phone);
+
+        return [
+            'student' => $student,
+            'person_id' => $guardian?->guardian_person_id,
+            'access_role' => 'guardian',
+        ];
+    }
+
+    /**
+     * @param array<string, mixed> $metadata
+     */
+    protected function logPortalAuth(?PortalAuthToken $token, string $action, Request $request, array $metadata = []): void
+    {
+        ActivityLog::query()->create([
+            'tenant_id' => $token?->tenant_id,
+            'action' => $action,
+            'subject_type' => PortalAuthToken::class,
+            'subject_id' => $token?->id,
+            'description' => 'Portal authentication event.',
+            'new_values' => $metadata,
+            'ip_address' => $request->ip(),
+            'user_agent' => substr((string) $request->userAgent(), 0, 1000),
+        ]);
     }
 }

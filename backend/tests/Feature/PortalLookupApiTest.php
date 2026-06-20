@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Assessment;
 use App\Models\AssessmentResult;
+use App\Models\ActivityLog;
 use App\Models\Branch;
 use App\Models\Certificate;
 use App\Models\ClassGroup;
@@ -12,6 +13,7 @@ use App\Models\Course;
 use App\Models\CourseModule;
 use App\Models\CustomerAccount;
 use App\Models\Enrollment;
+use App\Models\GuardianRelation;
 use App\Models\Notification;
 use App\Models\Order;
 use App\Models\Person;
@@ -58,6 +60,13 @@ class PortalLookupApiTest extends TestCase
             'phone' => '0901888111',
         ]);
 
+        $guardianPerson = Person::query()->create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branch->id,
+            'full_name' => 'Phụ huynh Portal',
+            'phone' => '0901888222',
+        ]);
+
         $teacherProfile = TeacherProfile::query()->create([
             'tenant_id' => $tenant->id,
             'branch_id' => $branch->id,
@@ -73,6 +82,14 @@ class PortalLookupApiTest extends TestCase
             'student_code' => 'HV-PORTAL',
             'student_type' => 'university_student',
             'status' => 'active',
+        ]);
+
+        GuardianRelation::query()->create([
+            'tenant_id' => $tenant->id,
+            'student_profile_id' => $student->id,
+            'guardian_person_id' => $guardianPerson->id,
+            'relation_type' => 'parent',
+            'is_primary' => true,
         ]);
 
         $course = Course::query()->create([
@@ -265,21 +282,30 @@ class PortalLookupApiTest extends TestCase
         ]);
 
         $authRequest = $this->postJson('/api/portal/auth/request', [
-            'phone' => '0901888000',
+            'phone' => '0901888222',
             'student_code' => 'HV-PORTAL',
         ]);
 
         $authRequest->assertOk();
+        $this->assertDatabaseHas('activity_logs', [
+            'action' => 'portal_auth_code_requested',
+        ]);
 
         $authVerify = $this->postJson('/api/portal/auth/verify', [
             'request_id' => $authRequest->json('request_id'),
             'code' => $authRequest->json('demo_otp'),
         ]);
 
-        $authVerify->assertOk();
+        $authVerify
+            ->assertOk()
+            ->assertJsonPath('access_role', 'guardian');
+
+        $this->assertDatabaseHas('activity_logs', [
+            'action' => 'portal_auth_verified',
+        ]);
 
         $response = $this->postJson('/api/portal/lookup', [
-            'phone' => '0901888000',
+            'phone' => '0901888222',
             'student_code' => 'HV-PORTAL',
             'portal_access_token' => $authVerify->json('portal_access_token'),
         ]);
@@ -287,6 +313,7 @@ class PortalLookupApiTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonPath('student.full_name', 'Học viên Portal')
+            ->assertJsonPath('student.portal_access_role', 'guardian')
             ->assertJsonPath('summary.active_enrollments', 1)
             ->assertJsonPath('summary.latest_progress_percent', 35)
             ->assertJsonPath('summary.finance_balance_vnd', 1500000)
@@ -305,6 +332,32 @@ class PortalLookupApiTest extends TestCase
             ->assertJsonPath('lms.courses.0.modules.0.lessons.0.progress.progress_percent', 100)
             ->assertJsonPath('videos.0.title', 'Video Portal')
             ->assertJsonPath('videos.0.progress_percent', 100);
+
+        $studentAuthRequest = $this->postJson('/api/portal/auth/request', [
+            'phone' => '0901888000',
+            'student_code' => 'HV-PORTAL',
+        ]);
+
+        $studentAuthVerify = $this->postJson('/api/portal/auth/verify', [
+            'request_id' => $studentAuthRequest->json('request_id'),
+            'code' => $studentAuthRequest->json('demo_otp'),
+        ]);
+
+        $studentResponse = $this->postJson('/api/portal/lookup', [
+            'phone' => '0901888000',
+            'student_code' => 'HV-PORTAL',
+            'portal_access_token' => $studentAuthVerify->json('portal_access_token'),
+        ]);
+
+        $studentResponse
+            ->assertOk()
+            ->assertJsonPath('student.portal_access_role', 'student')
+            ->assertJsonCount(0, 'teacher_comments');
+
+        $this->assertSame(4, ActivityLog::query()->whereIn('action', [
+            'portal_auth_code_requested',
+            'portal_auth_verified',
+        ])->count());
     }
 
     public function test_portal_lookup_returns_not_found_for_wrong_credentials(): void

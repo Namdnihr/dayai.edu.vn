@@ -10,6 +10,7 @@ type PortalData = {
     student_type: string | null;
     learning_goal: string | null;
     status: string | null;
+    portal_access_role: string;
   };
   summary: {
     active_enrollments: number;
@@ -327,7 +328,7 @@ function PortalResult({ data }: { data: PortalData }) {
       <section className="overflow-hidden rounded-[2rem] bg-slate-950 p-6 text-white">
         <div className="text-sm font-bold uppercase tracking-[0.18em] text-blue-200">Học viên</div>
         <h2 className="mt-2 text-3xl font-black">{data.student.full_name}</h2>
-        <p className="mt-2 text-slate-300">Mã: {data.student.student_code} · Trạng thái: {formatStatus(data.student.status)}</p>
+        <p className="mt-2 text-slate-300">Mã: {data.student.student_code} · Vai trò xem: {formatPortalRole(data.student.portal_access_role)} · Trạng thái: {formatStatus(data.student.status)}</p>
         {data.student.learning_goal ? <p className="mt-4 leading-7 text-slate-300">{data.student.learning_goal}</p> : null}
       </section>
 
@@ -643,4 +644,11 @@ function formatPriority(priority: string) {
     high: "Quan trọng",
     urgent: "Khẩn",
   }[priority] ?? priority;
+}
+
+function formatPortalRole(role: string) {
+  return {
+    student: "Học viên",
+    guardian: "Phụ huynh",
+  }[role] ?? role;
 }

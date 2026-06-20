@@ -63,10 +63,10 @@ Biến portal từ tra cứu bằng mã thành khu đăng nhập có kiểm soá
 - [x] Thiết kế auth flow cho portal: OTP hoặc magic link.
 - [x] Tạo bảng/token đăng nhập portal có hạn dùng.
 - [x] Gửi OTP/magic link qua kênh demo; email/SMS/Zalo nối provider sau.
-- [ ] Tách quyền portal học viên/phụ huynh/HR.
+- [x] Tách quyền portal học viên/phụ huynh; HR đang ở company portal riêng.
 - [x] Rate limit request code để chống dò mã.
 - [x] Session portal bảo mật bằng access token hết hạn.
-- [ ] Audit log đăng nhập portal.
+- [x] Audit log đăng nhập portal.
 - [x] UAT đăng nhập sai/đúng/hết hạn/quá số lần ở mức API trọng yếu.
 
 ### Demo cuối sprint

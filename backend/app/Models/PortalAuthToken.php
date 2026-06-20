@@ -16,6 +16,7 @@ class PortalAuthToken extends Model
         'person_id',
         'phone',
         'student_code',
+        'access_role',
         'code_hash',
         'access_token_hash',
         'channel',

@@ -58,13 +58,18 @@ class PortalLookupController extends Controller
             ], 404);
         }
 
-        if (! $this->hasValidPortalAccess($student, $phone, $studentCode, $validated['portal_access_token'])) {
+        $portalAccess = $this->resolveValidPortalAccess($student, $phone, $studentCode, $validated['portal_access_token']);
+
+        if (! $portalAccess) {
             return response()->json([
                 'message' => 'Phiên portal không hợp lệ hoặc đã hết hạn. Vui lòng xác thực lại.',
             ], 401);
         }
 
         $customerAccount = $this->findCustomerAccount($student, $phone);
+        $commentVisibility = $portalAccess->access_role === 'guardian'
+            ? ['guardian', 'student']
+            : ['student'];
 
         $enrollments = $student->enrollments
             ->map(fn ($enrollment): array => [
@@ -131,7 +136,7 @@ class PortalLookupController extends Controller
             ->values();
 
         $teacherComments = $student->teacherComments
-            ->whereIn('visibility', ['guardian', 'student'])
+            ->whereIn('visibility', $commentVisibility)
             ->sortByDesc('commented_at')
             ->take(10)
             ->map(fn ($comment): array => [
@@ -328,6 +333,7 @@ class PortalLookupController extends Controller
                 'student_type' => $student->student_type,
                 'learning_goal' => $student->learning_goal,
                 'status' => $student->status,
+                'portal_access_role' => $portalAccess->access_role,
             ],
             'summary' => [
                 'active_enrollments' => $student->enrollments->where('status', 'active')->count(),
@@ -373,7 +379,7 @@ class PortalLookupController extends Controller
             ->first();
     }
 
-    protected function hasValidPortalAccess(StudentProfile $student, string $phone, string $studentCode, string $accessToken): bool
+    protected function resolveValidPortalAccess(StudentProfile $student, string $phone, string $studentCode, string $accessToken): ?PortalAuthToken
     {
         return PortalAuthToken::query()
             ->where('student_profile_id', $student->id)
@@ -383,6 +389,6 @@ class PortalLookupController extends Controller
             ->whereNotNull('verified_at')
             ->whereNull('revoked_at')
             ->where('expires_at', '>', now())
-            ->exists();
+            ->first();
     }
 }
