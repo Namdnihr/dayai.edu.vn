@@ -38,6 +38,7 @@ use App\Models\Tenant;
 use App\Models\TrialRegistration;
 use App\Models\User;
 use App\Models\VideoLesson;
+use App\Services\AutomationWorkflowRunner;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -65,6 +66,8 @@ class DatabaseSeeder extends Seeder
                 ],
             ],
         );
+
+        AutomationWorkflowRunner::seedDefaultWorkflows($tenant);
 
         $branch = Branch::query()->firstOrCreate(
             [

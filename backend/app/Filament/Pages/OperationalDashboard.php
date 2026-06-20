@@ -6,6 +6,8 @@ use App\Models\AttendanceRecord;
 use App\Models\AffiliateClick;
 use App\Models\AffiliateCommission;
 use App\Models\AffiliatePartner;
+use App\Models\AutomationLog;
+use App\Models\AutomationWorkflow;
 use App\Models\ClassGroup;
 use App\Models\ClassSession;
 use App\Models\ContentItem;
@@ -138,6 +140,32 @@ class OperationalDashboard extends Page
             ->selectRaw("sum(case when affiliate_commissions.status = 'pending' then affiliate_commissions.commission_vnd else 0 end) as pending_commission_vnd")
             ->groupBy('partner_name')
             ->orderByDesc('commission_vnd')
+            ->limit(8)
+            ->get();
+    }
+
+    /**
+     * @return Collection<int, object>
+     */
+    public function getAutomationHealth(): array
+    {
+        return [
+            'active_workflow_count' => AutomationWorkflow::query()->where('status', 'active')->count(),
+            'sent_log_count' => AutomationLog::query()->where('status', 'sent')->count(),
+            'failed_log_count' => AutomationLog::query()->where('status', 'failed')->count(),
+            'skipped_log_count' => AutomationLog::query()->where('status', 'skipped')->count(),
+            'latest_sent_at' => AutomationLog::query()->where('status', 'sent')->max('sent_at'),
+        ];
+    }
+
+    /**
+     * @return Collection<int, object>
+     */
+    public function getAutomationRecentLogs(): Collection
+    {
+        return AutomationLog::query()
+            ->with('workflow:id,name')
+            ->orderByDesc('created_at')
             ->limit(8)
             ->get();
     }

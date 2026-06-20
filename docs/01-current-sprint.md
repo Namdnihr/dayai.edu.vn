@@ -558,3 +558,20 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä‘Ã¢u vÃ  bÆ°á»›c tiáº¿p th
 - [x] Thêm trang `/affiliate-portal` cho d?i tác xem click, lead, hoa h?ng và link chi?n d?ch.
 - [x] Ch?n index SEO cho affiliate portal.
 - [x] B? sung test nghi?m thu affiliate portal.
+
+## Sprint 31 - Automation & Notification Workflows
+
+### M?c Tiêu
+
+- [x] T?o lõi automation cham sóc lead, nh?c follow-up, l?ch h?c và công n?.
+- [x] Dùng notification portal làm outbox demo tru?c khi tích h?p email/Zalo/SMS th?t.
+
+### Checklist
+
+- [x] T?o schema automation workflows, messages và logs.
+- [x] T?o runner service có ch?ng g?i l?p b?ng cooldown.
+- [x] Seed workflow m?c d?nh cho DAYAI.
+- [x] Thêm command `automation:run`.
+- [x] Thêm dashboard automation health.
+- [x] Test lead confirmation và ch?ng spam trong cooldown.
+- [ ] Tích h?p provider g?i th?t email/Zalo/SMS ? sprint sau n?u c?n.

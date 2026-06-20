@@ -11,6 +11,8 @@
         $courseRevenue = $this->getCourseRevenue();
         $phase2Readiness = $this->getPhase2Readiness();
         $affiliatePerformance = $this->getAffiliatePerformance();
+        $automationHealth = $this->getAutomationHealth();
+        $automationRecentLogs = $this->getAutomationRecentLogs();
     @endphp
 
     <div class="grid gap-4 md:grid-cols-4">
@@ -129,6 +131,57 @@
                     @empty
                         <tr>
                             <td colspan="5" class="px-5 py-8 text-center text-gray-500 dark:text-gray-400">Chưa có commission affiliate.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="rounded-xl bg-white shadow-sm ring-1 ring-gray-950/5 dark:bg-gray-900 dark:ring-white/10">
+        <div class="border-b border-gray-200 px-5 py-4 dark:border-white/10">
+            <h2 class="text-base font-semibold text-gray-950 dark:text-white">Automation health</h2>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Theo dõi workflow chăm sóc lead, lịch học và công nợ.</p>
+        </div>
+        <div class="grid gap-4 p-5 md:grid-cols-4">
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Workflow active</div>
+                <div class="mt-2 text-xl font-semibold text-gray-950 dark:text-white">{{ number_format($automationHealth['active_workflow_count']) }}</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Đã gửi</div>
+                <div class="mt-2 text-xl font-semibold text-success-600">{{ number_format($automationHealth['sent_log_count']) }}</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Lỗi gửi</div>
+                <div class="mt-2 text-xl font-semibold text-danger-600">{{ number_format($automationHealth['failed_log_count']) }}</div>
+            </div>
+            <div class="rounded-lg bg-gray-50 p-4 dark:bg-white/5">
+                <div class="text-xs text-gray-500 dark:text-gray-400">Lần gửi gần nhất</div>
+                <div class="mt-2 text-sm font-semibold text-gray-950 dark:text-white">{{ $automationHealth['latest_sent_at'] ?? 'Chưa chạy' }}</div>
+            </div>
+        </div>
+        <div class="overflow-x-auto border-t border-gray-200 dark:border-white/10">
+            <table class="w-full divide-y divide-gray-200 text-left text-sm dark:divide-white/10">
+                <thead>
+                    <tr class="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        <th class="px-5 py-3">Workflow</th>
+                        <th class="px-5 py-3">Trigger</th>
+                        <th class="px-5 py-3">Kênh</th>
+                        <th class="px-5 py-3">Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-white/10">
+                    @forelse ($automationRecentLogs as $log)
+                        <tr>
+                            <td class="px-5 py-3 font-medium text-gray-950 dark:text-white">{{ $log->workflow?->name ?? 'Workflow' }}</td>
+                            <td class="px-5 py-3 text-gray-700 dark:text-gray-200">{{ $log->trigger_type }}</td>
+                            <td class="px-5 py-3 text-gray-700 dark:text-gray-200">{{ $log->channel }}</td>
+                            <td class="px-5 py-3 font-semibold text-gray-950 dark:text-white">{{ $log->status }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-5 py-8 text-center text-gray-500 dark:text-gray-400">Chưa có log automation.</td>
                         </tr>
                     @endforelse
                 </tbody>
