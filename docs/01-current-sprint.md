@@ -551,3 +551,10 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä‘Ã¢u vÃ  bÆ°á»›c tiáº¿p th
 - [x] G?n quy?n truy c?p affiliate theo nhóm CRM/finance.
 - [x] B? sung test dashboard affiliate.
 - [ ] Portal ho?c màn hình lite cho partner xem k?t qu? s? tách sang backlog sau Sprint 30.
+
+### Sprint 30 Affiliate Closure Update
+
+- [x] Thêm API `affiliate-portal/lookup` cho d?i tác xem hi?u qu? theo mã partner/link.
+- [x] Thêm trang `/affiliate-portal` cho d?i tác xem click, lead, hoa h?ng và link chi?n d?ch.
+- [x] Ch?n index SEO cho affiliate portal.
+- [x] B? sung test nghi?m thu affiliate portal.

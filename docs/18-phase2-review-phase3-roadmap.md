@@ -111,8 +111,8 @@ Biến tracking affiliate/referral hiện có thành module tăng trưởng có 
 - [x] Ghi nhận click và lead attribution.
 - [x] Gắn lead -> order -> commission.
 - [x] Trạng thái commission: pending, approved, paid, rejected.
-- [ ] Báo cáo hiệu quả affiliate.
-- [ ] Portal hoặc màn hình lite cho partner xem kết quả.
+- [x] Bao cao hieu qua affiliate trong dashboard van hanh.
+- [x] Portal lite cho partner xem click, lead, link va hoa hong.
 - [x] Quy tắc chống trùng/ghi đè attribution ở mức một commission/order.
 
 ### Demo cuối sprint
