@@ -8,6 +8,7 @@ use App\Models\GuardianRelation;
 use App\Models\Notification;
 use App\Models\StudentProfile;
 use App\Models\VideoLesson;
+use App\Models\VideoLessonProgress;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class PortalLookupController extends Controller
             ->with([
                 'person',
                 'guardians.guardianPerson',
-                'enrollments.course',
+                'enrollments.course.modules.videoLessons',
                 'enrollments.classGroup.sessions',
                 'enrollments.order',
                 'attendanceRecords.classSession.classGroup',
@@ -174,6 +175,77 @@ class PortalLookupController extends Controller
         ];
 
         $courseIds = $student->enrollments->pluck('course_id')->filter()->unique()->values();
+        $lessonProgress = VideoLessonProgress::query()
+            ->where('tenant_id', $student->tenant_id)
+            ->where('student_profile_id', $student->id)
+            ->get()
+            ->keyBy('video_lesson_id');
+
+        $lmsCourses = $student->enrollments
+            ->where('status', 'active')
+            ->filter(fn ($enrollment) => $enrollment->course !== null)
+            ->map(function ($enrollment) use ($lessonProgress): array {
+                $lessonCount = 0;
+                $progressTotal = 0;
+
+                $modules = $enrollment->course->modules
+                    ->map(function ($module) use ($lessonProgress, &$lessonCount, &$progressTotal): array {
+                        $lessons = $module->videoLessons
+                            ->where('status', 'published')
+                            ->whereIn('access_level', ['public', 'student'])
+                            ->sortBy('sort_order')
+                            ->map(function (VideoLesson $lesson) use ($lessonProgress, &$lessonCount, &$progressTotal): array {
+                                $progress = $lessonProgress->get($lesson->id);
+                                $progressPercent = (int) ($progress?->progress_percent ?? 0);
+
+                                $lessonCount++;
+                                $progressTotal += $progressPercent;
+
+                                return [
+                                    'title' => $lesson->title,
+                                    'slug' => $lesson->slug,
+                                    'summary' => $lesson->summary,
+                                    'duration_minutes' => $lesson->duration_minutes,
+                                    'access_level' => $lesson->access_level,
+                                    'video_url' => $lesson->video_url,
+                                    'thumbnail_url' => $lesson->thumbnail_url,
+                                    'resources' => $lesson->resources ?? [],
+                                    'progress' => [
+                                        'status' => $progress?->status ?? 'not_started',
+                                        'progress_percent' => $progressPercent,
+                                        'last_position_seconds' => (int) ($progress?->last_position_seconds ?? 0),
+                                        'last_watched_at' => $progress?->last_watched_at?->toDateTimeString(),
+                                        'completed_at' => $progress?->completed_at?->toDateTimeString(),
+                                    ],
+                                ];
+                            })
+                            ->values();
+
+                        return [
+                            'title' => $module->title,
+                            'description' => $module->description,
+                            'duration_minutes' => $module->duration_minutes,
+                            'learning_objectives' => $module->learning_objectives ?? [],
+                            'lessons' => $lessons,
+                        ];
+                    })
+                    ->values();
+
+                return [
+                    'enrollment_code' => $enrollment->enrollment_code,
+                    'course' => $enrollment->course->name,
+                    'course_slug' => $enrollment->course->slug,
+                    'status' => $enrollment->status,
+                    'progress_percent' => $lessonCount > 0 ? (int) round($progressTotal / $lessonCount) : 0,
+                    'modules' => $modules,
+                ];
+            })
+            ->values();
+
+        $overallLmsProgress = $lmsCourses->count() > 0
+            ? (int) round($lmsCourses->avg('progress_percent'))
+            : 0;
+
         $videos = VideoLesson::query()
             ->where('tenant_id', $student->tenant_id)
             ->where('status', 'published')
@@ -185,12 +257,20 @@ class PortalLookupController extends Controller
             ->orderByDesc('published_at')
             ->limit(6)
             ->get()
-            ->map(fn (VideoLesson $video): array => [
-                'title' => $video->title,
-                'summary' => $video->summary,
-                'duration_minutes' => $video->duration_minutes,
-                'access_level' => $video->access_level,
-            ]);
+            ->map(function (VideoLesson $video) use ($lessonProgress): array {
+                $progress = $lessonProgress->get($video->id);
+
+                return [
+                    'title' => $video->title,
+                    'slug' => $video->slug,
+                    'summary' => $video->summary,
+                    'duration_minutes' => $video->duration_minutes,
+                    'access_level' => $video->access_level,
+                    'thumbnail_url' => $video->thumbnail_url,
+                    'progress_percent' => (int) ($progress?->progress_percent ?? 0),
+                    'progress_status' => $progress?->status ?? 'not_started',
+                ];
+            });
 
         $personIds = collect([$student->person_id])
             ->merge($student->guardians->pluck('guardian_person_id'))
@@ -261,6 +341,10 @@ class PortalLookupController extends Controller
             'teacher_comments' => $teacherComments,
             'progress_reports' => $progressReports,
             'finance' => $finance,
+            'lms' => [
+                'overall_progress_percent' => $overallLmsProgress,
+                'courses' => $lmsCourses,
+            ],
             'videos' => $videos,
             'notifications' => $notifications,
             'certificates' => $certificates,

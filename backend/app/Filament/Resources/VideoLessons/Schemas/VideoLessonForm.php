@@ -32,6 +32,15 @@ class VideoLessonForm
                     ->relationship('course', 'name')
                     ->searchable()
                     ->preload(),
+                Select::make('course_module_id')
+                    ->label('Module khóa học')
+                    ->relationship('courseModule', 'title')
+                    ->searchable()
+                    ->preload(),
+                TextInput::make('sort_order')
+                    ->label('Thứ tự bài học')
+                    ->numeric()
+                    ->default(0),
                 TextInput::make('title')
                     ->label('Tiêu đề video')
                     ->required()

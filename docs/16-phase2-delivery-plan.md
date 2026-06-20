@@ -137,12 +137,13 @@ Học viên có trải nghiệm học video/tài liệu cơ bản trong hệ sin
 
 ### Checklist
 
-- [ ] Danh sách khóa đang học.
-- [ ] Module/bài học/video/tài liệu.
-- [ ] Trạng thái hoàn thành bài học.
-- [ ] Ghi nhận tiến độ học video.
-- [ ] Tài nguyên tải về theo khóa.
-- [ ] Khóa nội dung theo quyền truy cập.
+- [x] Danh sách khóa đang học.
+- [x] Module/bài học/video/tài liệu.
+- [x] Trạng thái hoàn thành bài học.
+- [x] Ghi nhận tiến độ học video.
+- [x] Tài nguyên tải về theo khóa.
+- [x] Khóa nội dung theo quyền truy cập.
+- [ ] Player thật và tracking realtime khi học viên xem video.
 
 ## Sprint 27 - Reporting, UAT & Staging
 

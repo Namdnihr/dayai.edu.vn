@@ -106,10 +106,47 @@ type PortalData = {
   };
   videos: Array<{
     title: string;
+    slug: string;
     summary: string | null;
     duration_minutes: number | null;
     access_level: string;
+    thumbnail_url: string | null;
+    progress_percent: number;
+    progress_status: string;
   }>;
+  lms: {
+    overall_progress_percent: number;
+    courses: Array<{
+      enrollment_code: string;
+      course: string;
+      course_slug: string;
+      status: string;
+      progress_percent: number;
+      modules: Array<{
+        title: string;
+        description: string | null;
+        duration_minutes: number | null;
+        learning_objectives: string[];
+        lessons: Array<{
+          title: string;
+          slug: string;
+          summary: string | null;
+          duration_minutes: number | null;
+          access_level: string;
+          video_url: string | null;
+          thumbnail_url: string | null;
+          resources: Array<{ title?: string; url?: string }>;
+          progress: {
+            status: string;
+            progress_percent: number;
+            last_position_seconds: number;
+            last_watched_at: string | null;
+            completed_at: string | null;
+          };
+        }>;
+      }>;
+    }>;
+  };
   notifications: Array<{
     title: string;
     body: string;
@@ -240,6 +277,58 @@ function PortalResult({ data }: { data: PortalData }) {
         </section>
       ) : null}
 
+      <section className="overflow-hidden rounded-[2rem] border border-blue-100 bg-white shadow-sm">
+        <div className="bg-gradient-to-r from-[#003A99] via-[#006FD6] to-[#00AEEF] p-6 text-white">
+          <div className="text-sm font-black uppercase tracking-[0.2em] text-blue-100">Không gian học LMS</div>
+          <div className="mt-3 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <h3 className="text-3xl font-black">Lộ trình video & tài liệu</h3>
+              <p className="mt-2 max-w-2xl text-blue-50">Học viên theo dõi module, bài học, tài liệu tải về và tiến độ hoàn thành ngay trong portal.</p>
+            </div>
+            <div className="rounded-3xl bg-white/15 px-5 py-4 text-center backdrop-blur">
+              <div className="text-4xl font-black">{data.lms.overall_progress_percent}%</div>
+              <div className="mt-1 text-xs font-black uppercase tracking-[0.2em] text-blue-100">Tiến độ LMS</div>
+            </div>
+          </div>
+        </div>
+        <div className="space-y-5 p-6">
+          {withEmpty(data.lms.courses, "Chưa có khóa học online được mở.", (course) => (
+            <div key={course.enrollment_code} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+              <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div>
+                  <div className="text-xs font-black uppercase tracking-[0.18em] text-[#003A99]">{formatStatus(course.status)}</div>
+                  <h4 className="mt-1 text-2xl font-black text-slate-950">{course.course}</h4>
+                </div>
+                <div className="min-w-40">
+                  <div className="text-right text-sm font-black text-slate-700">{course.progress_percent}% hoàn thành</div>
+                  <div className="mt-2 h-2 overflow-hidden rounded-full bg-blue-100">
+                    <div className="h-full rounded-full bg-[#00AEEF]" style={{ width: `${Math.min(course.progress_percent, 100)}%` }} />
+                  </div>
+                </div>
+              </div>
+              <div className="mt-5 space-y-4">
+                {course.modules.map((module) => (
+                  <div key={module.title} className="rounded-3xl bg-white p-4 shadow-sm">
+                    <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                      <div>
+                        <h5 className="font-black text-slate-950">{module.title}</h5>
+                        <p className="mt-1 text-sm leading-6 text-slate-600">{module.description ?? "Module học thực hành của DAYAI."}</p>
+                      </div>
+                      <div className="rounded-full bg-blue-50 px-3 py-1 text-xs font-black text-[#003A99]">{module.duration_minutes ?? 0} phút</div>
+                    </div>
+                    <div className="mt-4 divide-y divide-slate-100">
+                      {withEmpty(module.lessons, "Module này chưa có bài học.", (lesson) => (
+                        <LessonRow key={lesson.slug} lesson={lesson} />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <div className="grid gap-5 lg:grid-cols-2">
         <Card title="Khóa đang học">
           {withEmpty(data.enrollments, "Chưa có khóa học.", (enrollment) => (
@@ -285,7 +374,7 @@ function PortalResult({ data }: { data: PortalData }) {
 
         <Card title="Video học liên quan">
           {withEmpty(data.videos, "Chưa có video liên quan.", (video) => (
-            <Row key={video.title} title={video.title} description={video.summary ?? "Video bài học DAYAI"} meta={`${formatAccessLevel(video.access_level)}${video.duration_minutes ? ` · ${video.duration_minutes} phút` : ""}`} />
+            <Row key={video.slug} title={video.title} description={video.summary ?? "Video bài học DAYAI"} meta={`${formatLessonStatus(video.progress_status)} · ${video.progress_percent}%`} />
           ))}
         </Card>
 
@@ -294,6 +383,28 @@ function PortalResult({ data }: { data: PortalData }) {
             <Row key={certificate.certificate_code} title={certificate.title} description={`${certificate.course ?? "Khóa học"} · Mã xác thực: ${certificate.verification_token}`} meta={`${certificate.grade ?? "Đạt"}${certificate.final_score ? ` · ${certificate.final_score}/10` : ""}`} />
           ))}
         </Card>
+      </div>
+    </div>
+  );
+}
+
+function LessonRow({ lesson }: { lesson: PortalData["lms"]["courses"][number]["modules"][number]["lessons"][number] }) {
+  return (
+    <div className="grid gap-4 py-4 md:grid-cols-[1fr_auto] md:items-center">
+      <div>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="font-bold text-slate-950">{lesson.title}</div>
+          <span className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-black uppercase tracking-[0.12em] text-slate-500">{formatAccessLevel(lesson.access_level)}</span>
+          {lesson.resources.length ? <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-black text-amber-700">{lesson.resources.length} tài liệu</span> : null}
+        </div>
+        <div className="mt-1 text-sm leading-6 text-slate-600">{lesson.summary ?? "Bài học video thực hành có theo dõi tiến độ."}</div>
+        <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100">
+          <div className="h-full rounded-full bg-[#003A99]" style={{ width: `${Math.min(lesson.progress.progress_percent, 100)}%` }} />
+        </div>
+      </div>
+      <div className="rounded-2xl bg-blue-50 px-4 py-3 text-right">
+        <div className="text-sm font-black text-[#003A99]">{formatLessonStatus(lesson.progress.status)}</div>
+        <div className="mt-1 text-xs text-slate-500">{lesson.duration_minutes ?? 0} phút · {lesson.progress.progress_percent}%</div>
       </div>
     </div>
   );
@@ -395,6 +506,14 @@ function formatAccessLevel(accessLevel: string) {
     lead_magnet: "Đổi lead",
     internal: "Nội bộ",
   }[accessLevel] ?? accessLevel;
+}
+
+function formatLessonStatus(status: string) {
+  return {
+    not_started: "Chưa học",
+    in_progress: "Đang học",
+    completed: "Hoàn thành",
+  }[status] ?? status;
 }
 
 function formatLevel(level: string | null) {

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CourseModule extends Model
@@ -31,4 +32,5 @@ class CourseModule extends Model
 
     public function tenant(): BelongsTo { return $this->belongsTo(Tenant::class); }
     public function course(): BelongsTo { return $this->belongsTo(Course::class); }
+    public function videoLessons(): HasMany { return $this->hasMany(VideoLesson::class)->orderBy('sort_order'); }
 }

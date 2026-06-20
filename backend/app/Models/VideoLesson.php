@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class VideoLesson extends Model
@@ -15,6 +16,8 @@ class VideoLesson extends Model
         'tenant_id',
         'content_item_id',
         'course_id',
+        'course_module_id',
+        'sort_order',
         'title',
         'slug',
         'status',
@@ -36,6 +39,7 @@ class VideoLesson extends Model
     {
         return [
             'duration_minutes' => 'integer',
+            'sort_order' => 'integer',
             'resources' => 'array',
             'metadata' => 'array',
             'published_at' => 'datetime',
@@ -45,4 +49,6 @@ class VideoLesson extends Model
     public function tenant(): BelongsTo { return $this->belongsTo(Tenant::class); }
     public function contentItem(): BelongsTo { return $this->belongsTo(ContentItem::class); }
     public function course(): BelongsTo { return $this->belongsTo(Course::class); }
+    public function courseModule(): BelongsTo { return $this->belongsTo(CourseModule::class); }
+    public function progressRecords(): HasMany { return $this->hasMany(VideoLessonProgress::class); }
 }

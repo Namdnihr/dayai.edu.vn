@@ -45,4 +45,5 @@ class Enrollment extends Model
     public function teacherComments(): HasMany { return $this->hasMany(TeacherComment::class); }
     public function progressReports(): HasMany { return $this->hasMany(ProgressReport::class); }
     public function certificates(): HasMany { return $this->hasMany(Certificate::class); }
+    public function videoLessonProgress(): HasMany { return $this->hasMany(VideoLessonProgress::class); }
 }

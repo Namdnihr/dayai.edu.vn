@@ -9,6 +9,7 @@ use App\Models\Certificate;
 use App\Models\ClassGroup;
 use App\Models\ClassSession;
 use App\Models\Course;
+use App\Models\CourseModule;
 use App\Models\CustomerAccount;
 use App\Models\Enrollment;
 use App\Models\Notification;
@@ -20,6 +21,7 @@ use App\Models\TeacherComment;
 use App\Models\TeacherProfile;
 use App\Models\Tenant;
 use App\Models\VideoLesson;
+use App\Models\VideoLessonProgress;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -80,6 +82,16 @@ class PortalLookupApiTest extends TestCase
             'course_code' => 'AI-FUNDAMENTALS',
             'default_price_vnd' => 3500000,
             'status' => 'published',
+        ]);
+
+        $module = CourseModule::query()->create([
+            'tenant_id' => $tenant->id,
+            'course_id' => $course->id,
+            'sort_order' => 1,
+            'title' => 'Nền tảng AI',
+            'description' => 'Hiểu AI và ứng dụng đúng cách.',
+            'duration_minutes' => 90,
+            'learning_objectives' => ['Hiểu cách dùng AI an toàn'],
         ]);
 
         $classGroup = ClassGroup::query()->create([
@@ -221,15 +233,35 @@ class PortalLookupApiTest extends TestCase
             'issued_at' => now(),
         ]);
 
-        VideoLesson::query()->create([
+        $videoLesson = VideoLesson::query()->create([
             'tenant_id' => $tenant->id,
             'course_id' => $course->id,
+            'course_module_id' => $module->id,
+            'sort_order' => 1,
             'title' => 'Video Portal',
             'slug' => 'video-portal',
             'status' => 'published',
             'video_provider' => 'youtube',
+            'video_url' => 'https://example.com/video-portal',
             'access_level' => 'student',
+            'duration_minutes' => 12,
+            'resources' => [
+                ['title' => 'Worksheet AI', 'url' => 'https://example.com/worksheet.pdf'],
+            ],
             'published_at' => now(),
+        ]);
+
+        VideoLessonProgress::query()->create([
+            'tenant_id' => $tenant->id,
+            'student_profile_id' => $student->id,
+            'enrollment_id' => $enrollment->id,
+            'video_lesson_id' => $videoLesson->id,
+            'status' => 'completed',
+            'progress_percent' => 100,
+            'last_position_seconds' => 720,
+            'started_at' => now()->subHour(),
+            'completed_at' => now(),
+            'last_watched_at' => now(),
         ]);
 
         $response = $this->postJson('/api/portal/lookup', [
@@ -250,7 +282,14 @@ class PortalLookupApiTest extends TestCase
             ->assertJsonPath('notifications.0.title', 'Nhắc lịch học')
             ->assertJsonPath('certificates.0.certificate_code', 'CERT-PORTAL')
             ->assertJsonPath('finance.balance_vnd', 1500000)
-            ->assertJsonPath('videos.0.title', 'Video Portal');
+            ->assertJsonPath('lms.overall_progress_percent', 100)
+            ->assertJsonPath('lms.courses.0.course', 'AI Căn Bản')
+            ->assertJsonPath('lms.courses.0.modules.0.title', 'Nền tảng AI')
+            ->assertJsonPath('lms.courses.0.modules.0.lessons.0.title', 'Video Portal')
+            ->assertJsonPath('lms.courses.0.modules.0.lessons.0.progress.status', 'completed')
+            ->assertJsonPath('lms.courses.0.modules.0.lessons.0.progress.progress_percent', 100)
+            ->assertJsonPath('videos.0.title', 'Video Portal')
+            ->assertJsonPath('videos.0.progress_percent', 100);
     }
 
     public function test_portal_lookup_returns_not_found_for_wrong_credentials(): void
