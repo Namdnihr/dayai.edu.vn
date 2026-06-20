@@ -171,8 +171,56 @@ export function PortalLookup() {
   const [data, setData] = useState<PortalData | null>(null);
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [authRequestId, setAuthRequestId] = useState("");
+  const [demoOtp, setDemoOtp] = useState("");
+  const [portalAccessToken, setPortalAccessToken] = useState("");
+  const [credentials, setCredentials] = useState({
+    phone: "0901888000",
+    student_code: "HV-000001",
+  });
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleRequestCode(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setMessage("");
+    setData(null);
+    setAuthRequestId("");
+    setPortalAccessToken("");
+    setDemoOtp("");
+
+    const formData = new FormData(event.currentTarget);
+    const nextCredentials = {
+      phone: String(formData.get("phone") ?? ""),
+      student_code: String(formData.get("student_code") ?? ""),
+    };
+
+    try {
+      const response = await fetch("/api/portal/auth/request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nextCredentials),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message ?? "Không gửi được mã xác thực.");
+      }
+
+      setCredentials(nextCredentials);
+      setAuthRequestId(result.request_id);
+      setDemoOtp(result.demo_otp ?? "");
+      setMessage("Đã tạo mã xác thực portal. Vui lòng nhập mã để tiếp tục.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Có lỗi xảy ra.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleVerifyCode(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsSubmitting(true);
     setMessage("");
@@ -181,21 +229,26 @@ export function PortalLookup() {
     const formData = new FormData(event.currentTarget);
 
     try {
-      const response = await fetch("/api/portal/lookup", {
+      const response = await fetch("/api/portal/auth/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(Object.fromEntries(formData.entries())),
+        body: JSON.stringify({
+          request_id: authRequestId,
+          code: String(formData.get("code") ?? ""),
+        }),
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message ?? "Không tra cứu được thông tin.");
+        throw new Error(result.message ?? "Không xác thực được mã portal.");
       }
 
-      setData(result as PortalData);
+      setPortalAccessToken(result.portal_access_token);
+      setMessage("Xác thực thành công. Đang tải dữ liệu học viên...");
+      await loadPortalData(result.portal_access_token);
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Có lỗi xảy ra.");
     } finally {
@@ -203,24 +256,63 @@ export function PortalLookup() {
     }
   }
 
+  async function loadPortalData(accessToken = portalAccessToken) {
+    const response = await fetch("/api/portal/lookup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...credentials,
+        portal_access_token: accessToken,
+      }),
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message ?? "Không tra cứu được thông tin.");
+    }
+
+    setData(result as PortalData);
+  }
+
   return (
     <div className="space-y-6">
-      <form onSubmit={handleSubmit} className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-blue-950/5">
+      <form onSubmit={handleRequestCode} className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-blue-950/5">
+        <div className="mb-5 rounded-3xl bg-blue-50 p-4 text-sm leading-6 text-slate-700">
+          <strong className="text-[#003A99]">Bảo mật Sprint 28:</strong> Portal dùng mã xác thực một lần trước khi hiển thị lịch học, học phí và tiến độ.
+        </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="grid gap-2">
             <span className="text-sm font-bold text-slate-700">Số điện thoại</span>
-            <input name="phone" required defaultValue="0901888000" className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-[#003A99] focus:ring-4 focus:ring-blue-100" />
+            <input name="phone" required defaultValue={credentials.phone} className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-[#003A99] focus:ring-4 focus:ring-blue-100" />
           </label>
           <label className="grid gap-2">
             <span className="text-sm font-bold text-slate-700">Mã học viên</span>
-            <input name="student_code" required defaultValue="HV-000001" className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-[#003A99] focus:ring-4 focus:ring-blue-100" />
+            <input name="student_code" required defaultValue={credentials.student_code} className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-[#003A99] focus:ring-4 focus:ring-blue-100" />
           </label>
         </div>
         <button disabled={isSubmitting} className="mt-5 rounded-full bg-[#003A99] px-7 py-3 font-black text-white shadow-lg shadow-blue-600/20 hover:bg-[#002B73] disabled:opacity-60">
-          {isSubmitting ? "Đang tra cứu..." : "Tra cứu"}
+          {isSubmitting ? "Đang gửi mã..." : "Gửi mã xác thực"}
         </button>
         {message ? <p className="mt-4 text-sm font-semibold text-red-600">{message}</p> : null}
       </form>
+
+      {authRequestId ? (
+        <form onSubmit={handleVerifyCode} className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
+          <div className="text-sm font-black uppercase tracking-[0.18em] text-[#003A99]">Xác thực portal</div>
+          <h3 className="mt-2 text-2xl font-black text-slate-950">Nhập mã 6 số</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">Mã có hiệu lực trong 10 phút. Khi cấu hình nhà cung cấp email/SMS/Zalo, mã sẽ được gửi qua kênh tương ứng.</p>
+          {demoOtp ? <div className="mt-4 rounded-2xl bg-amber-50 px-4 py-3 text-sm font-bold text-amber-700">Mã demo local: {demoOtp}</div> : null}
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+            <input name="code" required inputMode="numeric" minLength={6} maxLength={6} placeholder="Nhập mã OTP" className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-[#003A99] focus:ring-4 focus:ring-blue-100" />
+            <button disabled={isSubmitting} className="rounded-full bg-slate-950 px-7 py-3 font-black text-white hover:bg-slate-800 disabled:opacity-60">
+              {isSubmitting ? "Đang xác thực..." : "Xác thực & xem portal"}
+            </button>
+          </div>
+        </form>
+      ) : null}
 
       {data ? <PortalResult data={data} /> : null}
     </div>

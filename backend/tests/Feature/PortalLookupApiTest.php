@@ -264,9 +264,24 @@ class PortalLookupApiTest extends TestCase
             'last_watched_at' => now(),
         ]);
 
+        $authRequest = $this->postJson('/api/portal/auth/request', [
+            'phone' => '0901888000',
+            'student_code' => 'HV-PORTAL',
+        ]);
+
+        $authRequest->assertOk();
+
+        $authVerify = $this->postJson('/api/portal/auth/verify', [
+            'request_id' => $authRequest->json('request_id'),
+            'code' => $authRequest->json('demo_otp'),
+        ]);
+
+        $authVerify->assertOk();
+
         $response = $this->postJson('/api/portal/lookup', [
             'phone' => '0901888000',
             'student_code' => 'HV-PORTAL',
+            'portal_access_token' => $authVerify->json('portal_access_token'),
         ]);
 
         $response
@@ -294,11 +309,21 @@ class PortalLookupApiTest extends TestCase
 
     public function test_portal_lookup_returns_not_found_for_wrong_credentials(): void
     {
-        $response = $this->postJson('/api/portal/lookup', [
+        $response = $this->postJson('/api/portal/auth/request', [
             'phone' => '000',
             'student_code' => 'NOPE',
         ]);
 
         $response->assertNotFound();
+    }
+
+    public function test_portal_lookup_requires_verified_access_token(): void
+    {
+        $response = $this->postJson('/api/portal/lookup', [
+            'phone' => '0901888000',
+            'student_code' => 'HV-PORTAL',
+        ]);
+
+        $response->assertUnprocessable();
     }
 }

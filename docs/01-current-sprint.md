@@ -501,3 +501,15 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä‘Ã¢u vÃ  bÆ°á»›c tiáº¿p th
 ### Tài Li?u Chính
 
 - [x] `docs/18-phase2-review-phase3-roadmap.md`
+
+## Sprint 28 - Portal Auth & Security
+
+### M?c Tiêu
+
+- [x] Chuy?n portal ph? huynh/h?c viên sang flow xác th?c OTP demo tru?c khi tr? d? li?u.
+- [x] T?o token portal có h?n dùng và access token dã verify.
+- [x] B?t `/api/portal/lookup` yêu c?u `portal_access_token` h?p l?.
+- [x] Thêm rate limit request OTP.
+- [x] C?p nh?t frontend `/portal` thành 2 bu?c: g?i mã và xác th?c.
+- [x] Thêm test b?o v? lu?ng lookup thi?u token.
+- [ ] Tách sâu quy?n h?c viên/ph? huynh/HR và audit log dang nh?p portal.

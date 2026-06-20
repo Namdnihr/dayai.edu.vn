@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CustomerAccount;
 use App\Models\GuardianRelation;
 use App\Models\Notification;
+use App\Models\PortalAuthToken;
 use App\Models\StudentProfile;
 use App\Models\VideoLesson;
 use App\Models\VideoLessonProgress;
@@ -19,6 +20,7 @@ class PortalLookupController extends Controller
         $validated = $request->validate([
             'phone' => ['required', 'string', 'max:30'],
             'student_code' => ['required', 'string', 'max:50'],
+            'portal_access_token' => ['required', 'string', 'size:64'],
         ]);
 
         $phone = preg_replace('/\s+/', '', $validated['phone']);
@@ -54,6 +56,12 @@ class PortalLookupController extends Controller
             return response()->json([
                 'message' => 'Không tìm thấy học viên với thông tin đã nhập.',
             ], 404);
+        }
+
+        if (! $this->hasValidPortalAccess($student, $phone, $studentCode, $validated['portal_access_token'])) {
+            return response()->json([
+                'message' => 'Phiên portal không hợp lệ hoặc đã hết hạn. Vui lòng xác thực lại.',
+            ], 401);
         }
 
         $customerAccount = $this->findCustomerAccount($student, $phone);
@@ -363,5 +371,18 @@ class PortalLookupController extends Controller
                     ->orWhereIn('person_id', $guardianPersonIds);
             })
             ->first();
+    }
+
+    protected function hasValidPortalAccess(StudentProfile $student, string $phone, string $studentCode, string $accessToken): bool
+    {
+        return PortalAuthToken::query()
+            ->where('student_profile_id', $student->id)
+            ->where('phone', $phone)
+            ->where('student_code', $studentCode)
+            ->where('access_token_hash', hash('sha256', $accessToken))
+            ->whereNotNull('verified_at')
+            ->whereNull('revoked_at')
+            ->where('expires_at', '>', now())
+            ->exists();
     }
 }
