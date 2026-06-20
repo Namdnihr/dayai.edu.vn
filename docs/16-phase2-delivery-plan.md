@@ -60,10 +60,15 @@ Landing page từng khóa/campaign không còn hardcode, đọc từ dữ liệu
 
 - [ ] Thiết kế schema landing page sections.
 - [ ] Admin quản trị hero, benefits, curriculum, instructor, FAQ, testimonials, CTA.
-- [ ] Route landing động theo slug.
-- [ ] Form đăng ký gắn course/campaign/source.
-- [ ] SEO metadata/schema cho landing.
-- [ ] Fallback khi course chưa đủ dữ liệu.
+- [x] Route landing khóa AI căn bản đọc dữ liệu khóa học động.
+- [x] Form đăng ký gắn course/campaign/source theo slug khóa học.
+- [x] SEO metadata cho landing đọc từ course CMS.
+- [x] Fallback khi course/API chưa đủ dữ liệu.
+- [x] Next.js proxy course detail API.
+- [ ] Thiết kế schema landing page sections nâng cao.
+- [ ] Admin quản trị hero, benefits, curriculum, instructor, FAQ, testimonials, CTA.
+- [ ] Mở rộng route landing động cho nhiều khóa/campaign.
+- [ ] Schema structured data cho landing.
 
 ## Sprint 23 - Lead Capture & UTM Tracking
 
