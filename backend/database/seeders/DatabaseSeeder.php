@@ -215,7 +215,7 @@ class DatabaseSeeder extends Seeder
             'description' => 'Initial DAYAI tenant, branch, admin user, and roles seeded.',
         ]);
 
-        $sources$sources = collect([
+        $sources = collect([
             ['name' => 'Website', 'code' => 'website', 'source_type' => 'website'],
             ['name' => 'Facebook', 'code' => 'facebook', 'source_type' => 'social'],
             ['name' => 'Zalo', 'code' => 'zalo', 'source_type' => 'social'],
