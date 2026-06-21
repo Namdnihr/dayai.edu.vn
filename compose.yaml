@@ -8,6 +8,8 @@ services:
       - ./backend:/var/www/html
     environment:
       APP_ENV: local
+      APP_DEBUG: "false"
+      LOG_LEVEL: warning
       DB_CONNECTION: pgsql
       DB_HOST: postgres
       DB_PORT: 5432
@@ -37,6 +39,8 @@ services:
       - ./backend:/var/www/html
     environment:
       APP_ENV: local
+      APP_DEBUG: "false"
+      LOG_LEVEL: warning
       DB_CONNECTION: pgsql
       DB_HOST: postgres
       DB_PORT: 5432
@@ -105,4 +109,3 @@ networks:
 volumes:
   dayai-postgres:
   dayai-redis:
-
