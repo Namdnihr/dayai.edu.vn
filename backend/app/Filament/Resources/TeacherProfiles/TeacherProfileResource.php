@@ -28,13 +28,13 @@ class TeacherProfileResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::User;
 
-    protected static ?string $navigationLabel = 'Giáº£ng viÃªn';
+    protected static ?string $navigationLabel = 'Giảng viên';
 
-    protected static ?string $modelLabel = 'giáº£ng viÃªn';
+    protected static ?string $modelLabel = 'giảng viên';
 
-    protected static ?string $pluralModelLabel = 'giáº£ng viÃªn';
+    protected static ?string $pluralModelLabel = 'giảng viên';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dá»¯ liá»‡u ná»n';
+    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
 
     protected static ?int $navigationSort = 70;
 

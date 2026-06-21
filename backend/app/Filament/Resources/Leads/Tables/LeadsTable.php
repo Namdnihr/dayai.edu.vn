@@ -31,30 +31,30 @@ class LeadsTable
         return $table
             ->columns([
                 TextColumn::make('full_name')
-                    ->label('KhÃ¡ch hÃ ng')
+                    ->label('Khách hàng')
                     ->searchable(),
                 TextColumn::make('phone')
-                    ->label('SÄT')
+                    ->label('SĐT')
                     ->searchable(),
                 TextColumn::make('email')
                     ->label('Email')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('company_name')
-                    ->label('CÃ´ng ty')
+                    ->label('Công ty')
                     ->searchable(),
                 TextColumn::make('lead_type')
-                    ->label('Loáº¡i khÃ¡ch')
+                    ->label('Loại khách')
                     ->badge()
                     ->formatStateUsing(fn (?string $state): string => match ($state) {
-                        'parent' => 'Phá»¥ huynh',
-                        'student' => 'Sinh viÃªn',
-                        'business_owner' => 'Chá»§ DN',
-                        'company' => 'CÃ´ng ty',
-                        default => 'ChÆ°a rÃµ',
+                        'parent' => 'Phụ huynh',
+                        'student' => 'Sinh viên',
+                        'business_owner' => 'Chủ DN',
+                        'company' => 'Công ty',
+                        default => 'Chưa rõ',
                     }),
                 TextColumn::make('status')
-                    ->label('Tráº¡ng thÃ¡i')
+                    ->label('Trạng thái')
                     ->badge()
                     ->color(fn (?string $state): string => match ($state) {
                         'registered' => 'success',
@@ -64,18 +64,18 @@ class LeadsTable
                         default => 'warning',
                     })
                     ->formatStateUsing(fn (?string $state): string => match ($state) {
-                        'new' => 'Má»›i',
-                        'contacting' => 'Äang liÃªn há»‡',
-                        'consulting' => 'Äang tÆ° váº¥n',
-                        'trial_scheduled' => 'Há»c thá»­',
-                        'registered' => 'ÄÃ£ Ä‘Äƒng kÃ½',
-                        'not_fit' => 'KhÃ´ng phÃ¹ há»£p',
-                        'lost' => 'Máº¥t liÃªn há»‡',
-                        'duplicate' => 'TrÃ¹ng',
+                        'new' => 'Mới',
+                        'contacting' => 'Đang liên hệ',
+                        'consulting' => 'Đang tư vấn',
+                        'trial_scheduled' => 'Học thử',
+                        'registered' => 'Đã đăng ký',
+                        'not_fit' => 'Không phù hợp',
+                        'lost' => 'Mất liên hệ',
+                        'duplicate' => 'Trùng',
                         default => '-',
                     }),
                 TextColumn::make('priority')
-                    ->label('Æ¯u tiÃªn')
+                    ->label('Ưu tiên')
                     ->badge()
                     ->color(fn (?string $state): string => match ($state) {
                         'urgent' => 'danger',
@@ -101,7 +101,7 @@ class LeadsTable
                     ->money('VND')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),                TextColumn::make('source.name')
-                    ->label('Nguá»“n')
+                    ->label('Nguồn')
                     ->searchable(),
                 TextColumn::make('utm_campaign')
                     ->label('Campaign')
@@ -116,7 +116,7 @@ class LeadsTable
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('assignedUser.name')
-                    ->label('TÆ° váº¥n viÃªn')
+                    ->label('Tư vấn viên')
                     ->searchable(),
                 TextColumn::make('next_follow_up_at')
                     ->label('Follow-up')
@@ -124,32 +124,32 @@ class LeadsTable
                     ->sortable()
                     ->color(fn ($state): string => $state && $state->isPast() ? 'danger' : 'gray'),
                 TextColumn::make('created_at')
-                    ->label('NgÃ y táº¡o')
+                    ->label('Ngày tạo')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('status')
-                    ->label('Tráº¡ng thÃ¡i')
+                    ->label('Trạng thái')
                     ->options([
-                        'new' => 'Má»›i',
-                        'contacting' => 'Äang liÃªn há»‡',
-                        'consulting' => 'Äang tÆ° váº¥n',
-                        'trial_scheduled' => 'ÄÃ£ háº¹n há»c thá»­',
-                        'registered' => 'ÄÃ£ Ä‘Äƒng kÃ½',
-                        'not_fit' => 'KhÃ´ng phÃ¹ há»£p',
-                        'lost' => 'Máº¥t liÃªn há»‡',
-                        'duplicate' => 'TrÃ¹ng',
+                        'new' => 'Mới',
+                        'contacting' => 'Đang liên hệ',
+                        'consulting' => 'Đang tư vấn',
+                        'trial_scheduled' => 'Đã hẹn học thử',
+                        'registered' => 'Đã đăng ký',
+                        'not_fit' => 'Không phù hợp',
+                        'lost' => 'Mất liên hệ',
+                        'duplicate' => 'Trùng',
                     ]),
                 SelectFilter::make('lead_type')
-                    ->label('Loáº¡i khÃ¡ch')
+                    ->label('Loại khách')
                     ->options([
-                        'parent' => 'Phá»¥ huynh',
-                        'student' => 'Sinh viÃªn',
-                        'business_owner' => 'Chá»§ doanh nghiá»‡p',
-                        'company' => 'CÃ´ng ty',
-                        'unknown' => 'ChÆ°a rÃµ',
+                        'parent' => 'Phụ huynh',
+                        'student' => 'Sinh viên',
+                        'business_owner' => 'Chủ doanh nghiệp',
+                        'company' => 'Công ty',
+                        'unknown' => 'Chưa rõ',
                     ]),
                 SelectFilter::make('temperature')
                     ->label('Độ nóng lead')
@@ -175,12 +175,12 @@ class LeadsTable
                         ->whereNotNull('next_follow_up_at')
                         ->where('next_follow_up_at', '<', now())
                         ->whereNotIn('status', ['registered', 'lost', 'not_fit', 'duplicate'])),                SelectFilter::make('lead_source_id')
-                    ->label('Nguá»“n')
+                    ->label('Nguồn')
                     ->relationship('source', 'name')
                     ->searchable()
                     ->preload(),
                 SelectFilter::make('assigned_user_id')
-                    ->label('TÆ° váº¥n viÃªn')
+                    ->label('Tư vấn viên')
                     ->relationship('assignedUser', 'name')
                     ->searchable()
                     ->preload(),
@@ -188,26 +188,26 @@ class LeadsTable
             ])
             ->recordActions([
                 Action::make('convertLead')
-                    ->label('Chuyá»ƒn há»“ sÆ¡')
+                    ->label('Chuyển hồ sơ')
                     ->icon('heroicon-o-arrow-path-rounded-square')
                     ->color('success')
                     ->visible(fn (Lead $record): bool => $record->status !== 'registered')
                     ->form([
                         TextInput::make('student_full_name')
-                            ->label('TÃªn ngÆ°á»i há»c')
-                            ->helperText('Vá»›i phá»¥ huynh/cÃ´ng ty, nháº­p tÃªn con hoáº·c nhÃ¢n sá»± há»c. Náº¿u Ä‘á»ƒ trá»‘ng sáº½ dÃ¹ng tÃªn lead.')
+                            ->label('Tên người học')
+                            ->helperText('Với phụ huynh/công ty, nhập tên con hoặc nhân sự học. Nếu để trống sẽ dùng tên lead.')
                             ->maxLength(255),
                         TextInput::make('organization_name')
-                            ->label('TÃªn doanh nghiá»‡p')
-                            ->helperText('DÃ¹ng cho lead cÃ´ng ty hoáº·c chá»§ doanh nghiá»‡p.')
+                            ->label('Tên doanh nghiệp')
+                            ->helperText('Dùng cho lead công ty hoặc chủ doanh nghiệp.')
                             ->maxLength(255),
                         TextInput::make('job_title')
-                            ->label('Chá»©c danh')
+                            ->label('Chức danh')
                             ->maxLength(255),
                     ])
-                    ->modalHeading('Chuyá»ƒn lead thÃ nh há»“ sÆ¡ tháº­t')
-                    ->modalSubmitActionLabel('Chuyá»ƒn há»“ sÆ¡')
-                    ->successNotificationTitle('ÄÃ£ chuyá»ƒn lead thÃ nh há»“ sÆ¡')
+                    ->modalHeading('Chuyển lead thành hồ sơ thật')
+                    ->modalSubmitActionLabel('Chuyển hồ sơ')
+                    ->successNotificationTitle('Đã chuyển lead thành hồ sơ')
                     ->action(fn (Lead $record, array $data) => self::convertLead($record, $data)),
                 ViewAction::make(),
                 EditAction::make(),
@@ -240,7 +240,7 @@ class LeadsTable
                     [
                         'branch_id' => $lead->branch_id,
                         'display_name' => $studentFullName,
-                        'notes' => "Táº¡o tá»« lead phá»¥ huynh {$lead->full_name}",
+                        'notes' => "Tạo từ lead phụ huynh {$lead->full_name}",
                         'metadata' => ['source_lead_id' => $lead->id],
                     ],
                 );
@@ -262,7 +262,7 @@ class LeadsTable
                         'phone' => $lead->phone,
                         'email' => $lead->email,
                         'status' => 'active',
-                        'notes' => 'Táº¡o khi chuyá»ƒn lead.',
+                        'notes' => 'Tạo khi chuyển lead.',
                         'metadata' => ['source_lead_id' => $lead->id],
                     ],
                 );
@@ -278,7 +278,7 @@ class LeadsTable
                         'job_title' => $data['job_title'] ?? null,
                         'is_primary' => true,
                         'status' => 'active',
-                        'notes' => 'LiÃªn há»‡ táº¡o tá»« lead.',
+                        'notes' => 'Liên hệ tạo từ lead.',
                     ],
                 );
 
@@ -292,7 +292,7 @@ class LeadsTable
                         [
                             'branch_id' => $lead->branch_id,
                             'display_name' => $studentFullName,
-                            'notes' => "NhÃ¢n sá»± há»c tá»« lead cÃ´ng ty {$lead->company_name}",
+                            'notes' => "Nhân sự học từ lead công ty {$lead->company_name}",
                             'metadata' => ['source_lead_id' => $lead->id],
                         ],
                     );
@@ -382,7 +382,7 @@ class LeadsTable
                 'full_name' => $lead->full_name,
                 'display_name' => $lead->full_name,
                 'email' => $lead->email,
-                'notes' => 'Táº¡o khi chuyá»ƒn lead.',
+                'notes' => 'Tạo khi chuyển lead.',
                 'metadata' => ['source_lead_id' => $lead->id],
             ],
         );

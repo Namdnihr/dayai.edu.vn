@@ -30,11 +30,11 @@ class VideoLessonResource extends Resource
 
     protected static ?string $navigationLabel = 'Video Academy';
 
-    protected static ?string $modelLabel = 'video bÃ i há»c';
+    protected static ?string $modelLabel = 'video bài học';
 
     protected static ?string $pluralModelLabel = 'video academy';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Ná»™i dung';
+    protected static string|UnitEnum|null $navigationGroup = 'Nội dung';
 
     protected static ?int $navigationSort = 30;
 

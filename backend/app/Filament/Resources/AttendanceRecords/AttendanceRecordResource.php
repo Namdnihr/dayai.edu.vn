@@ -28,13 +28,13 @@ class AttendanceRecordResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ClipboardDocumentCheck;
 
-    protected static ?string $navigationLabel = 'Äiá»ƒm danh';
+    protected static ?string $navigationLabel = 'Điểm danh';
 
-    protected static ?string $modelLabel = 'Ä‘iá»ƒm danh';
+    protected static ?string $modelLabel = 'điểm danh';
 
-    protected static ?string $pluralModelLabel = 'Ä‘iá»ƒm danh';
+    protected static ?string $pluralModelLabel = 'điểm danh';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
+    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
 
     protected static ?int $navigationSort = 110;
 

@@ -28,13 +28,13 @@ class ClassGroupResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::AcademicCap;
 
-    protected static ?string $navigationLabel = 'Lá»›p há»c';
+    protected static ?string $navigationLabel = 'Lớp học';
 
-    protected static ?string $modelLabel = 'lá»›p há»c';
+    protected static ?string $modelLabel = 'lớp học';
 
-    protected static ?string $pluralModelLabel = 'lá»›p há»c';
+    protected static ?string $pluralModelLabel = 'lớp học';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
+    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
 
     protected static ?int $navigationSort = 80;
 

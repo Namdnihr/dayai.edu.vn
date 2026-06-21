@@ -31,9 +31,9 @@ class OperationalDashboard extends Page
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChartBar;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
+    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
 
-    protected static ?string $navigationLabel = 'Dashboard váº­n hÃ nh';
+    protected static ?string $navigationLabel = 'Dashboard vận hành';
 
     protected static ?int $navigationSort = 5;
 
@@ -48,7 +48,7 @@ class OperationalDashboard extends Page
 
     public function getTitle(): string
     {
-        return 'Dashboard tuyá»ƒn sinh & váº­n hÃ nh';
+        return 'Dashboard tuyển sinh & vận hành';
     }
 
     /**
@@ -97,7 +97,7 @@ class OperationalDashboard extends Page
     {
         return DB::table('leads')
             ->leftJoin('lead_sources', 'lead_sources.id', '=', 'leads.lead_source_id')
-            ->selectRaw("coalesce(lead_sources.name, 'ChÆ°a rÃµ') as source_name")
+            ->selectRaw("coalesce(lead_sources.name, 'Chưa rõ') as source_name")
             ->selectRaw('count(leads.id) as lead_count')
             ->selectRaw('sum(case when leads.converted_at is not null then 1 else 0 end) as converted_count')
             ->groupBy('source_name')
@@ -268,22 +268,22 @@ class OperationalDashboard extends Page
 
     public function formatVnd(int|string|null $amount): string
     {
-        return number_format((int) $amount, 0, ',', '.') . ' â‚«';
+        return number_format((int) $amount, 0, ',', '.') . ' ₫';
     }
 
     public function formatStatus(?string $status): string
     {
         return [
-            'new' => 'Má»›i',
-            'contacting' => 'Äang liÃªn há»‡',
-            'consulting' => 'Äang tÆ° váº¥n',
-            'trial_scheduled' => 'Háº¹n há»c thá»­',
-            'registered' => 'ÄÃ£ Ä‘Äƒng kÃ½',
-            'lost' => 'Máº¥t',
-            'active' => 'Äang há»c',
-            'enrolling' => 'Äang tuyá»ƒn sinh',
-            'scheduled' => 'ÄÃ£ lÃªn lá»‹ch',
-        ][$status ?? ''] ?? ($status ?: 'ChÆ°a rÃµ');
+            'new' => 'Mới',
+            'contacting' => 'Đang liên hệ',
+            'consulting' => 'Đang tư vấn',
+            'trial_scheduled' => 'Hẹn học thử',
+            'registered' => 'Đã đăng ký',
+            'lost' => 'Mất',
+            'active' => 'Đang học',
+            'enrolling' => 'Đang tuyển sinh',
+            'scheduled' => 'Đã lên lịch',
+        ][$status ?? ''] ?? ($status ?: 'Chưa rõ');
     }
     public function formatTemperature(?string $temperature): string
     {

@@ -28,13 +28,13 @@ class ContentCategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Folder;
 
-    protected static ?string $navigationLabel = 'Danh má»¥c ná»™i dung';
+    protected static ?string $navigationLabel = 'Danh mục nội dung';
 
-    protected static ?string $modelLabel = 'danh má»¥c ná»™i dung';
+    protected static ?string $modelLabel = 'danh mục nội dung';
 
-    protected static ?string $pluralModelLabel = 'danh má»¥c ná»™i dung';
+    protected static ?string $pluralModelLabel = 'danh mục nội dung';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Ná»™i dung';
+    protected static string|UnitEnum|null $navigationGroup = 'Nội dung';
 
     protected static ?int $navigationSort = 10;
 

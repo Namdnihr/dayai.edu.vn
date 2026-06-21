@@ -582,7 +582,7 @@ class DatabaseSeeder extends Seeder
                 [
                     'course_module_id' => $modules->get($sessionNo - 1)?->id,
                     'teacher_profile_id' => $teacherProfile->id,
-                    'title' => $modules->get($sessionNo - 1)?->title ?? "Buá»•i {$sessionNo}",
+                    'title' => $modules->get($sessionNo - 1)?->title ?? "Buổi {$sessionNo}",
                     'starts_at' => now()->addWeek()->addDays(($sessionNo - 1) * 2)->setTime(19, 30),
                     'ends_at' => now()->addWeek()->addDays(($sessionNo - 1) * 2)->setTime(21, 30),
                     'status' => 'scheduled',

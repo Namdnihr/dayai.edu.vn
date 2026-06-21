@@ -26,13 +26,13 @@ class LeadAssignmentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
 
-    protected static ?string $navigationLabel = 'PhÃ¢n cÃ´ng lead';
+    protected static ?string $navigationLabel = 'Phân công lead';
 
-    protected static ?string $modelLabel = 'phÃ¢n cÃ´ng lead';
+    protected static ?string $modelLabel = 'phân công lead';
 
-    protected static ?string $pluralModelLabel = 'phÃ¢n cÃ´ng lead';
+    protected static ?string $pluralModelLabel = 'phân công lead';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
+    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
 
     protected static ?int $navigationSort = 30;
 

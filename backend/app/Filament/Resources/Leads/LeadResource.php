@@ -28,13 +28,13 @@ class LeadResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChatBubbleLeftRight;
 
-    protected static ?string $navigationLabel = 'Lead tuyá»ƒn sinh';
+    protected static ?string $navigationLabel = 'Lead tuyển sinh';
 
     protected static ?string $modelLabel = 'lead';
 
-    protected static ?string $pluralModelLabel = 'lead tuyá»ƒn sinh';
+    protected static ?string $pluralModelLabel = 'lead tuyển sinh';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
+    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
 
     protected static ?int $navigationSort = 10;
 

@@ -25,13 +25,13 @@ class ActivityLogResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ClipboardDocumentList;
 
-    protected static ?string $navigationLabel = 'Nháº­t kÃ½ há»‡ thá»‘ng';
+    protected static ?string $navigationLabel = 'Nhật ký hệ thống';
 
-    protected static ?string $modelLabel = 'nháº­t kÃ½';
+    protected static ?string $modelLabel = 'nhật ký';
 
-    protected static ?string $pluralModelLabel = 'nháº­t kÃ½ há»‡ thá»‘ng';
+    protected static ?string $pluralModelLabel = 'nhật ký hệ thống';
 
-    protected static string|UnitEnum|null $navigationGroup = 'PhÃ¢n quyá»n & báº£o máº­t';
+    protected static string|UnitEnum|null $navigationGroup = 'Phân quyền & bảo mật';
 
     protected static ?int $navigationSort = 30;
 

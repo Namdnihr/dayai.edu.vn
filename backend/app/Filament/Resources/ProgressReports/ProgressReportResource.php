@@ -28,13 +28,13 @@ class ProgressReportResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::DocumentChartBar;
 
-    protected static ?string $navigationLabel = 'BÃ¡o cÃ¡o tiáº¿n bá»™';
+    protected static ?string $navigationLabel = 'Báo cáo tiến bộ';
 
-    protected static ?string $modelLabel = 'bÃ¡o cÃ¡o tiáº¿n bá»™';
+    protected static ?string $modelLabel = 'báo cáo tiến bộ';
 
-    protected static ?string $pluralModelLabel = 'bÃ¡o cÃ¡o tiáº¿n bá»™';
+    protected static ?string $pluralModelLabel = 'báo cáo tiến bộ';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Tiáº¿n bá»™ há»c viÃªn';
+    protected static string|UnitEnum|null $navigationGroup = 'Tiến bộ học viên';
 
     protected static ?int $navigationSort = 40;
 

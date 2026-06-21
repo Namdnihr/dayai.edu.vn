@@ -28,13 +28,13 @@ class OrganizationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingOffice2;
 
-    protected static ?string $navigationLabel = 'Doanh nghiá»‡p';
+    protected static ?string $navigationLabel = 'Doanh nghiệp';
 
-    protected static ?string $modelLabel = 'doanh nghiá»‡p';
+    protected static ?string $modelLabel = 'doanh nghiệp';
 
-    protected static ?string $pluralModelLabel = 'doanh nghiá»‡p';
+    protected static ?string $pluralModelLabel = 'doanh nghiệp';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dá»¯ liá»‡u ná»n';
+    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
 
     protected static ?int $navigationSort = 20;
 

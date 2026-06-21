@@ -28,13 +28,13 @@ class PersonResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Identification;
 
-    protected static ?string $navigationLabel = 'CÃ¡ nhÃ¢n';
+    protected static ?string $navigationLabel = 'Cá nhân';
 
-    protected static ?string $modelLabel = 'cÃ¡ nhÃ¢n';
+    protected static ?string $modelLabel = 'cá nhân';
 
-    protected static ?string $pluralModelLabel = 'cÃ¡ nhÃ¢n';
+    protected static ?string $pluralModelLabel = 'cá nhân';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dá»¯ liá»‡u ná»n';
+    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
 
     protected static ?int $navigationSort = 10;
 

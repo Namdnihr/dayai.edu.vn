@@ -28,13 +28,13 @@ class PaymentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Banknotes;
 
-    protected static ?string $navigationLabel = 'Thanh toÃ¡n';
+    protected static ?string $navigationLabel = 'Thanh toán';
 
-    protected static ?string $modelLabel = 'thanh toÃ¡n';
+    protected static ?string $modelLabel = 'thanh toán';
 
-    protected static ?string $pluralModelLabel = 'thanh toÃ¡n';
+    protected static ?string $pluralModelLabel = 'thanh toán';
 
-    protected static string|UnitEnum|null $navigationGroup = 'TÃ i chÃ­nh';
+    protected static string|UnitEnum|null $navigationGroup = 'Tài chính';
 
     protected static ?int $navigationSort = 40;
 

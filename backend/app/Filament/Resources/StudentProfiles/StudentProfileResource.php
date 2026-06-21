@@ -28,13 +28,13 @@ class StudentProfileResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::AcademicCap;
 
-    protected static ?string $navigationLabel = 'Há»c viÃªn';
+    protected static ?string $navigationLabel = 'Học viên';
 
-    protected static ?string $modelLabel = 'há»c viÃªn';
+    protected static ?string $modelLabel = 'học viên';
 
-    protected static ?string $pluralModelLabel = 'há»c viÃªn';
+    protected static ?string $pluralModelLabel = 'học viên';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dá»¯ liá»‡u ná»n';
+    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
 
     protected static ?int $navigationSort = 40;
 

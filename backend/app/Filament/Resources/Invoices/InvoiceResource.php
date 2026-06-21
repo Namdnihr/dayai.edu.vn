@@ -28,13 +28,13 @@ class InvoiceResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::DocumentText;
 
-    protected static ?string $navigationLabel = 'HÃ³a Ä‘Æ¡n';
+    protected static ?string $navigationLabel = 'Hóa đơn';
 
-    protected static ?string $modelLabel = 'hÃ³a Ä‘Æ¡n';
+    protected static ?string $modelLabel = 'hóa đơn';
 
-    protected static ?string $pluralModelLabel = 'hÃ³a Ä‘Æ¡n';
+    protected static ?string $pluralModelLabel = 'hóa đơn';
 
-    protected static string|UnitEnum|null $navigationGroup = 'TÃ i chÃ­nh';
+    protected static string|UnitEnum|null $navigationGroup = 'Tài chính';
 
     protected static ?int $navigationSort = 30;
 

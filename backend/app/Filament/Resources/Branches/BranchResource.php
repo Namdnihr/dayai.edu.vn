@@ -28,13 +28,13 @@ class BranchResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::BuildingStorefront;
 
-    protected static ?string $navigationLabel = 'CÆ¡ sá»Ÿ';
+    protected static ?string $navigationLabel = 'Cơ sở';
 
-    protected static ?string $modelLabel = 'cÆ¡ sá»Ÿ';
+    protected static ?string $modelLabel = 'cơ sở';
 
-    protected static ?string $pluralModelLabel = 'cÆ¡ sá»Ÿ';
+    protected static ?string $pluralModelLabel = 'cơ sở';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dá»¯ liá»‡u ná»n';
+    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
 
     protected static ?int $navigationSort = 30;
 

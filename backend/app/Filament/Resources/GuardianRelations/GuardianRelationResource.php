@@ -26,13 +26,13 @@ class GuardianRelationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
 
-    protected static ?string $navigationLabel = 'Quan há»‡ phá»¥ huynh';
+    protected static ?string $navigationLabel = 'Quan hệ phụ huynh';
 
-    protected static ?string $modelLabel = 'quan há»‡ phá»¥ huynh';
+    protected static ?string $modelLabel = 'quan hệ phụ huynh';
 
-    protected static ?string $pluralModelLabel = 'quan há»‡ phá»¥ huynh';
+    protected static ?string $pluralModelLabel = 'quan hệ phụ huynh';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dá»¯ liá»‡u ná»n';
+    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
 
     protected static ?int $navigationSort = 60;
 

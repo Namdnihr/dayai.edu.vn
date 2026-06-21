@@ -28,13 +28,13 @@ class CourseResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::BookOpen;
 
-    protected static ?string $navigationLabel = 'KhÃ³a há»c';
+    protected static ?string $navigationLabel = 'Khóa học';
 
-    protected static ?string $modelLabel = 'khÃ³a há»c';
+    protected static ?string $modelLabel = 'khóa học';
 
-    protected static ?string $pluralModelLabel = 'khÃ³a há»c';
+    protected static ?string $pluralModelLabel = 'khóa học';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
+    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
 
     protected static ?int $navigationSort = 60;
 

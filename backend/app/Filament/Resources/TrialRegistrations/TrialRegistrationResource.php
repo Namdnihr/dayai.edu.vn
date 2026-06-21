@@ -28,13 +28,13 @@ class TrialRegistrationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CalendarDays;
 
-    protected static ?string $navigationLabel = 'ÄÄƒng kÃ½ há»c thá»­';
+    protected static ?string $navigationLabel = 'Đăng ký học thử';
 
-    protected static ?string $modelLabel = 'Ä‘Äƒng kÃ½ há»c thá»­';
+    protected static ?string $modelLabel = 'đăng ký học thử';
 
-    protected static ?string $pluralModelLabel = 'Ä‘Äƒng kÃ½ há»c thá»­';
+    protected static ?string $pluralModelLabel = 'đăng ký học thử';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
+    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
 
     protected static ?int $navigationSort = 50;
 

@@ -28,13 +28,13 @@ class EnrollmentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CheckBadge;
 
-    protected static ?string $navigationLabel = 'Xáº¿p lá»›p';
+    protected static ?string $navigationLabel = 'Xếp lớp';
 
-    protected static ?string $modelLabel = 'xáº¿p lá»›p';
+    protected static ?string $modelLabel = 'xếp lớp';
 
-    protected static ?string $pluralModelLabel = 'xáº¿p lá»›p';
+    protected static ?string $pluralModelLabel = 'xếp lớp';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
+    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
 
     protected static ?int $navigationSort = 100;
 

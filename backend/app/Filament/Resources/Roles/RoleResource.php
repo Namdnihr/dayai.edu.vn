@@ -26,13 +26,13 @@ class RoleResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ShieldCheck;
 
-    protected static ?string $navigationLabel = 'Vai trÃ²';
+    protected static ?string $navigationLabel = 'Vai trò';
 
-    protected static ?string $modelLabel = 'vai trÃ²';
+    protected static ?string $modelLabel = 'vai trò';
 
-    protected static ?string $pluralModelLabel = 'vai trÃ²';
+    protected static ?string $pluralModelLabel = 'vai trò';
 
-    protected static string|UnitEnum|null $navigationGroup = 'PhÃ¢n quyá»n & báº£o máº­t';
+    protected static string|UnitEnum|null $navigationGroup = 'Phân quyền & bảo mật';
 
     protected static ?int $navigationSort = 20;
 

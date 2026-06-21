@@ -28,13 +28,13 @@ class CustomerAccountResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::CreditCard;
 
-    protected static ?string $navigationLabel = 'KhÃ¡ch hÃ ng thanh toÃ¡n';
+    protected static ?string $navigationLabel = 'Khách hàng thanh toán';
 
-    protected static ?string $modelLabel = 'khÃ¡ch hÃ ng thanh toÃ¡n';
+    protected static ?string $modelLabel = 'khách hàng thanh toán';
 
-    protected static ?string $pluralModelLabel = 'khÃ¡ch hÃ ng thanh toÃ¡n';
+    protected static ?string $pluralModelLabel = 'khách hàng thanh toán';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dá»¯ liá»‡u ná»n';
+    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
 
     protected static ?int $navigationSort = 50;
 

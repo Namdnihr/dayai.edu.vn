@@ -28,13 +28,13 @@ class OrderItemResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ListBullet;
 
-    protected static ?string $navigationLabel = 'DÃ²ng Ä‘Æ¡n hÃ ng';
+    protected static ?string $navigationLabel = 'Dòng đơn hàng';
 
-    protected static ?string $modelLabel = 'dÃ²ng Ä‘Æ¡n hÃ ng';
+    protected static ?string $modelLabel = 'dòng đơn hàng';
 
-    protected static ?string $pluralModelLabel = 'dÃ²ng Ä‘Æ¡n hÃ ng';
+    protected static ?string $pluralModelLabel = 'dòng đơn hàng';
 
-    protected static string|UnitEnum|null $navigationGroup = 'TÃ i chÃ­nh';
+    protected static string|UnitEnum|null $navigationGroup = 'Tài chính';
 
     protected static ?int $navigationSort = 20;
 

@@ -28,13 +28,13 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Users;
 
-    protected static ?string $navigationLabel = 'TÃ i khoáº£n';
+    protected static ?string $navigationLabel = 'Tài khoản';
 
-    protected static ?string $modelLabel = 'tÃ i khoáº£n';
+    protected static ?string $modelLabel = 'tài khoản';
 
-    protected static ?string $pluralModelLabel = 'tÃ i khoáº£n';
+    protected static ?string $pluralModelLabel = 'tài khoản';
 
-    protected static string|UnitEnum|null $navigationGroup = 'PhÃ¢n quyá»n & báº£o máº­t';
+    protected static string|UnitEnum|null $navigationGroup = 'Phân quyền & bảo mật';
 
     protected static ?int $navigationSort = 10;
 

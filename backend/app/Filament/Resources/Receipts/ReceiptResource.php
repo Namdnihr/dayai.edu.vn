@@ -28,13 +28,13 @@ class ReceiptResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ClipboardDocumentCheck;
 
-    protected static ?string $navigationLabel = 'Phiáº¿u thu';
+    protected static ?string $navigationLabel = 'Phiếu thu';
 
-    protected static ?string $modelLabel = 'phiáº¿u thu';
+    protected static ?string $modelLabel = 'phiếu thu';
 
-    protected static ?string $pluralModelLabel = 'phiáº¿u thu';
+    protected static ?string $pluralModelLabel = 'phiếu thu';
 
-    protected static string|UnitEnum|null $navigationGroup = 'TÃ i chÃ­nh';
+    protected static string|UnitEnum|null $navigationGroup = 'Tài chính';
 
     protected static ?int $navigationSort = 60;
 

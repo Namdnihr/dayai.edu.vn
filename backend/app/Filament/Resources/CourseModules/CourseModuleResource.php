@@ -28,13 +28,13 @@ class CourseModuleResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ClipboardDocumentList;
 
-    protected static ?string $navigationLabel = 'Module khÃ³a há»c';
+    protected static ?string $navigationLabel = 'Module khóa học';
 
-    protected static ?string $modelLabel = 'module khÃ³a há»c';
+    protected static ?string $modelLabel = 'module khóa học';
 
-    protected static ?string $pluralModelLabel = 'module khÃ³a há»c';
+    protected static ?string $pluralModelLabel = 'module khóa học';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
+    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
 
     protected static ?int $navigationSort = 70;
 

@@ -28,13 +28,13 @@ class ConsultationActivityResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Phone;
 
-    protected static ?string $navigationLabel = 'Lá»‹ch sá»­ tÆ° váº¥n';
+    protected static ?string $navigationLabel = 'Lịch sử tư vấn';
 
-    protected static ?string $modelLabel = 'lá»‹ch sá»­ tÆ° váº¥n';
+    protected static ?string $modelLabel = 'lịch sử tư vấn';
 
-    protected static ?string $pluralModelLabel = 'lá»‹ch sá»­ tÆ° váº¥n';
+    protected static ?string $pluralModelLabel = 'lịch sử tư vấn';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Váº­n hÃ nh trung tÃ¢m';
+    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
 
     protected static ?int $navigationSort = 40;
 

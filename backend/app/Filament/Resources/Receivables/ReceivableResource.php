@@ -28,13 +28,13 @@ class ReceivableResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Calculator;
 
-    protected static ?string $navigationLabel = 'CÃ´ng ná»£';
+    protected static ?string $navigationLabel = 'Công nợ';
 
-    protected static ?string $modelLabel = 'cÃ´ng ná»£';
+    protected static ?string $modelLabel = 'công nợ';
 
-    protected static ?string $pluralModelLabel = 'cÃ´ng ná»£';
+    protected static ?string $pluralModelLabel = 'công nợ';
 
-    protected static string|UnitEnum|null $navigationGroup = 'TÃ i chÃ­nh';
+    protected static string|UnitEnum|null $navigationGroup = 'Tài chính';
 
     protected static ?int $navigationSort = 50;
 

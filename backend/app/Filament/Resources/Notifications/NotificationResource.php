@@ -28,13 +28,13 @@ class NotificationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::BellAlert;
 
-    protected static ?string $navigationLabel = 'ThÃ´ng bÃ¡o';
+    protected static ?string $navigationLabel = 'Thông báo';
 
-    protected static ?string $modelLabel = 'thÃ´ng bÃ¡o';
+    protected static ?string $modelLabel = 'thông báo';
 
-    protected static ?string $pluralModelLabel = 'thÃ´ng bÃ¡o';
+    protected static ?string $pluralModelLabel = 'thông báo';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Ná»™i dung';
+    protected static string|UnitEnum|null $navigationGroup = 'Nội dung';
 
     protected static ?int $navigationSort = 40;
 

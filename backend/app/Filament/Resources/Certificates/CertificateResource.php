@@ -28,13 +28,13 @@ class CertificateResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::AcademicCap;
 
-    protected static ?string $navigationLabel = 'Chá»©ng chá»‰';
+    protected static ?string $navigationLabel = 'Chứng chỉ';
 
-    protected static ?string $modelLabel = 'chá»©ng chá»‰';
+    protected static ?string $modelLabel = 'chứng chỉ';
 
-    protected static ?string $pluralModelLabel = 'chá»©ng chá»‰';
+    protected static ?string $pluralModelLabel = 'chứng chỉ';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Tiáº¿n bá»™ há»c viÃªn';
+    protected static string|UnitEnum|null $navigationGroup = 'Tiến bộ học viên';
 
     protected static ?int $navigationSort = 50;
 

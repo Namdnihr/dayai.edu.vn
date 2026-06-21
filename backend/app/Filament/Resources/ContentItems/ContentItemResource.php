@@ -28,13 +28,13 @@ class ContentItemResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::Newspaper;
 
-    protected static ?string $navigationLabel = 'BÃ i viáº¿t & tÃ i nguyÃªn';
+    protected static ?string $navigationLabel = 'Bài viết & tài nguyên';
 
-    protected static ?string $modelLabel = 'bÃ i viáº¿t';
+    protected static ?string $modelLabel = 'bài viết';
 
-    protected static ?string $pluralModelLabel = 'bÃ i viáº¿t & tÃ i nguyÃªn';
+    protected static ?string $pluralModelLabel = 'bài viết & tài nguyên';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Ná»™i dung';
+    protected static string|UnitEnum|null $navigationGroup = 'Nội dung';
 
     protected static ?int $navigationSort = 20;
 

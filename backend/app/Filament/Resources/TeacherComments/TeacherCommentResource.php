@@ -28,13 +28,13 @@ class TeacherCommentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChatBubbleLeftRight;
 
-    protected static ?string $navigationLabel = 'Nháº­n xÃ©t giÃ¡o viÃªn';
+    protected static ?string $navigationLabel = 'Nhận xét giáo viên';
 
-    protected static ?string $modelLabel = 'nháº­n xÃ©t giÃ¡o viÃªn';
+    protected static ?string $modelLabel = 'nhận xét giáo viên';
 
-    protected static ?string $pluralModelLabel = 'nháº­n xÃ©t giÃ¡o viÃªn';
+    protected static ?string $pluralModelLabel = 'nhận xét giáo viên';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Tiáº¿n bá»™ há»c viÃªn';
+    protected static string|UnitEnum|null $navigationGroup = 'Tiến bộ học viên';
 
     protected static ?int $navigationSort = 30;
 
