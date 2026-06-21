@@ -1,11 +1,15 @@
 services:
   backend:
     build:
-      context: ./docker/php
+      context: .
+      dockerfile: docker/php/Dockerfile.runtime
     container_name: dayai-backend
     working_dir: /var/www/html
+    env_file:
+      - ./backend/.env
     volumes:
-      - ./backend:/var/www/html
+      - dayai-storage:/var/www/html/storage
+      - dayai-bootstrap-cache:/var/www/html/bootstrap/cache
     environment:
       APP_ENV: local
       APP_DEBUG: "false"
@@ -31,12 +35,16 @@ services:
 
   queue:
     build:
-      context: ./docker/php
+      context: .
+      dockerfile: docker/php/Dockerfile.runtime
     container_name: dayai-queue
     working_dir: /var/www/html
     command: php artisan queue:work --sleep=3 --tries=3 --timeout=90
+    env_file:
+      - ./backend/.env
     volumes:
-      - ./backend:/var/www/html
+      - dayai-storage:/var/www/html/storage
+      - dayai-bootstrap-cache:/var/www/html/bootstrap/cache
     environment:
       APP_ENV: local
       APP_DEBUG: "false"
@@ -66,7 +74,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./backend:/var/www/html:ro
+      - ./backend/public:/var/www/html/public:ro
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - backend
@@ -109,3 +117,5 @@ networks:
 volumes:
   dayai-postgres:
   dayai-redis:
+  dayai-storage:
+  dayai-bootstrap-cache:
