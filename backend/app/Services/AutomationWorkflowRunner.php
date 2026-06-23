@@ -6,6 +6,7 @@ use App\Mail\TransactionalAutomationMail;
 use App\Models\AutomationLog;
 use App\Models\AutomationMessage;
 use App\Models\AutomationWorkflow;
+use App\Models\AttendanceRecord;
 use App\Models\ClassSession;
 use App\Models\Enrollment;
 use App\Models\Invoice;
@@ -134,6 +135,46 @@ class AutomationWorkflowRunner
                 ->orderBy('due_date')
                 ->limit($workflow->conditions['limit'] ?? 50)
                 ->get(),
+            'invoice.overdue' => Invoice::query()
+                ->with(['customerAccount.person', 'customerAccount.organization'])
+                ->where('tenant_id', $workflow->tenant_id)
+                ->where('balance_vnd', '>', 0)
+                ->whereDate('due_date', '<', now()->subDays($workflow->conditions['overdue_days'] ?? 1)->toDateString())
+                ->whereIn('status', ['issued', 'partially_paid'])
+                ->orderBy('due_date')
+                ->limit($workflow->conditions['limit'] ?? 50)
+                ->get(),
+            'attendance.absent' => AttendanceRecord::query()
+                ->with(['studentProfile.person', 'studentProfile.guardians.guardianPerson', 'classSession.classGroup.course', 'enrollment.course'])
+                ->where('tenant_id', $workflow->tenant_id)
+                ->whereIn('status', $workflow->conditions['statuses'] ?? ['absent', 'excused'])
+                ->where('created_at', '>=', now()->subDays($workflow->conditions['within_days'] ?? 3))
+                ->latest()
+                ->limit($workflow->conditions['limit'] ?? 50)
+                ->get(),
+            'video.inactive' => Enrollment::query()
+                ->with(['studentProfile.person', 'studentProfile.guardians.guardianPerson', 'course', 'classGroup', 'videoLessonProgress'])
+                ->where('tenant_id', $workflow->tenant_id)
+                ->where('status', 'active')
+                ->where(function ($query) use ($workflow): void {
+                    $query->whereDoesntHave('videoLessonProgress')
+                        ->orWhereDoesntHave('videoLessonProgress', fn ($progressQuery) => $progressQuery->where('last_watched_at', '>=', now()->subDays($workflow->conditions['inactive_days'] ?? 5)));
+                })
+                ->latest()
+                ->limit($workflow->conditions['limit'] ?? 50)
+                ->get(),
+            'class_session.attendance_missing' => ClassSession::query()
+                ->with(['teacherProfile.person', 'classGroup.teacherProfile.person', 'classGroup.course', 'classGroup.enrollments', 'attendanceRecords'])
+                ->where('tenant_id', $workflow->tenant_id)
+                ->where('ends_at', '<=', now()->subHours($workflow->conditions['after_hours'] ?? 2))
+                ->where('starts_at', '>=', now()->subDays($workflow->conditions['within_days'] ?? 7))
+                ->whereIn('status', $workflow->conditions['statuses'] ?? ['scheduled', 'completed'])
+                ->whereHas('classGroup.enrollments')
+                ->orderBy('ends_at')
+                ->limit($workflow->conditions['limit'] ?? 50)
+                ->get()
+                ->filter(fn (ClassSession $session): bool => $session->attendanceRecords->count() < ($session->classGroup?->enrollments?->count() ?? 0))
+                ->values(),
             'progress_report.published' => ProgressReport::query()
                 ->with(['studentProfile.person', 'studentProfile.guardians.guardianPerson', 'course', 'classGroup', 'teacherProfile.person'])
                 ->where('tenant_id', $workflow->tenant_id)
@@ -299,8 +340,22 @@ class AutomationWorkflowRunner
         }
 
         if ($subject instanceof ClassSession) {
-            foreach ($subject->classGroup?->enrollments ?? collect() as $enrollment) {
-                $recipients = $recipients->merge($this->studentRecipients($enrollment->studentProfile, $workflow->audience_type));
+            if (in_array($workflow->audience_type, ['teacher', 'staff'], true)) {
+                $teacher = $subject->teacherProfile ?? $subject->classGroup?->teacherProfile;
+
+                $recipients->push($this->recipient(
+                    'teacher_profile',
+                    $teacher?->id,
+                    $teacher?->person_id,
+                    null,
+                    $subject->classGroup?->organization_id,
+                    $teacher?->person?->email,
+                    $teacher?->person?->display_name ?? $teacher?->person?->full_name,
+                ));
+            } else {
+                foreach ($subject->classGroup?->enrollments ?? collect() as $enrollment) {
+                    $recipients = $recipients->merge($this->studentRecipients($enrollment->studentProfile, $workflow->audience_type));
+                }
             }
         }
 
@@ -315,6 +370,10 @@ class AutomationWorkflowRunner
                 $account?->email ?? $account?->person?->email ?? $account?->organization?->email,
                 $account?->display_name ?? $account?->person?->display_name ?? $account?->organization?->name,
             ));
+        }
+
+        if ($subject instanceof AttendanceRecord) {
+            $recipients = $recipients->merge($this->studentRecipients($subject->studentProfile, $workflow->audience_type));
         }
 
         if ($subject instanceof ProgressReport) {
@@ -499,6 +558,9 @@ class AutomationWorkflowRunner
                 'class' => $subject->classGroup?->name,
                 'enrollment_code' => $subject->enrollment_code,
                 'enrolled_at' => $subject->enrolled_at?->format('d/m/Y'),
+                'inactive_days' => $subject->videoLessonProgress->max('last_watched_at')
+                    ? (int) $subject->videoLessonProgress->max('last_watched_at')->diffInDays(now())
+                    : 'chưa bắt đầu',
             ],
             $subject instanceof ClassSession => [
                 'name' => $subject->classGroup?->name,
@@ -506,13 +568,27 @@ class AutomationWorkflowRunner
                 'class' => $subject->classGroup?->name,
                 'session' => $subject->title,
                 'starts_at' => $subject->starts_at?->format('d/m/Y H:i'),
+                'ends_at' => $subject->ends_at?->format('d/m/Y H:i'),
                 'location' => $subject->location ?? $subject->classGroup?->location,
+                'attendance_count' => $subject->attendanceRecords?->count() ?? 0,
+                'student_count' => $subject->classGroup?->enrollments?->count() ?? 0,
             ],
             $subject instanceof Invoice => [
                 'name' => $subject->customerAccount?->display_name,
                 'invoice_code' => $subject->invoice_code,
                 'amount' => $this->formatMoney($subject->balance_vnd),
                 'due_date' => $subject->due_date?->format('d/m/Y'),
+                'overdue_days' => $subject->due_date?->isPast() ? (int) $subject->due_date->diffInDays(now()) : 0,
+            ],
+            $subject instanceof AttendanceRecord => [
+                'name' => $subject->studentProfile?->person?->display_name ?? $subject->studentProfile?->person?->full_name,
+                'course' => $subject->classSession?->classGroup?->course?->name ?? $subject->enrollment?->course?->name,
+                'class' => $subject->classSession?->classGroup?->name,
+                'session' => $subject->classSession?->title,
+                'starts_at' => $subject->classSession?->starts_at?->format('d/m/Y H:i'),
+                'attendance_status' => $subject->status,
+                'absence_reason' => $subject->absence_reason,
+                'teacher_note' => $subject->teacher_note,
             ],
             $subject instanceof ProgressReport => [
                 'name' => $subject->studentProfile?->person?->display_name ?? $subject->studentProfile?->person?->full_name,
@@ -533,10 +609,10 @@ class AutomationWorkflowRunner
     private function notificationTypeFor(string $triggerType): string
     {
         return match ($triggerType) {
-            'class_session.upcoming' => 'schedule',
-            'invoice.due_soon', 'payment.completed', 'order.created' => 'finance',
+            'class_session.upcoming', 'class_session.attendance_missing' => 'schedule',
+            'invoice.due_soon', 'invoice.overdue', 'payment.completed', 'order.created' => 'finance',
             'progress_report.published' => 'progress',
-            'trial_registration.created', 'enrollment.created' => 'learning',
+            'trial_registration.created', 'enrollment.created', 'attendance.absent', 'video.inactive' => 'learning',
             default => 'general',
         };
     }
@@ -644,6 +720,62 @@ class AutomationWorkflowRunner
                 'message' => [
                     'title_template' => 'Nhắc thanh toán {{invoice_code}}',
                     'body_template' => "Hóa đơn {{invoice_code}} còn số dư {{amount}} và đến hạn vào {{due_date}}.\n\nVui lòng hoàn tất thanh toán để DAYAI duy trì quyền học và hỗ trợ lớp học liên tục.",
+                    'priority' => 'high',
+                ],
+            ],
+            [
+                'code' => 'invoice-overdue-email',
+                'name' => 'Nhắc công nợ quá hạn',
+                'trigger_type' => 'invoice.overdue',
+                'audience_type' => 'payer',
+                'channel' => 'email',
+                'cooldown_hours' => 24,
+                'conditions' => ['overdue_days' => 1, 'limit' => 50],
+                'message' => [
+                    'title_template' => 'Hóa đơn {{invoice_code}} đã quá hạn {{overdue_days}} ngày',
+                    'body_template' => "Hóa đơn {{invoice_code}} còn số dư {{amount}} và đã quá hạn {{overdue_days}} ngày.\n\nVui lòng hoàn tất thanh toán hoặc phản hồi email này để DAYAI hỗ trợ phương án phù hợp.",
+                    'priority' => 'urgent',
+                ],
+            ],
+            [
+                'code' => 'attendance-absent-guardian-email',
+                'name' => 'Thông báo học viên vắng học',
+                'trigger_type' => 'attendance.absent',
+                'audience_type' => 'guardian',
+                'channel' => 'email',
+                'cooldown_hours' => 24,
+                'conditions' => ['within_days' => 3, 'statuses' => ['absent', 'excused'], 'limit' => 50],
+                'message' => [
+                    'title_template' => 'Thông báo vắng học của {{name}}',
+                    'body_template' => "{{name}} được ghi nhận trạng thái {{attendance_status}} trong buổi {{session}} của lớp {{class}} lúc {{starts_at}}.\n\nLý do: {{absence_reason}}.\nNhận xét giáo viên: {{teacher_note}}.\n\nNếu cần sắp xếp học bù, phụ huynh vui lòng phản hồi email này.",
+                    'priority' => 'high',
+                ],
+            ],
+            [
+                'code' => 'video-inactive-reminder-email',
+                'name' => 'Nhắc học viên chưa học video',
+                'trigger_type' => 'video.inactive',
+                'audience_type' => 'student',
+                'channel' => 'email',
+                'cooldown_hours' => 72,
+                'conditions' => ['inactive_days' => 5, 'limit' => 50],
+                'message' => [
+                    'title_template' => 'DAYAI nhắc bạn quay lại học video khóa {{course}}',
+                    'body_template' => "{{name}} đang có trạng thái học video: {{inactive_days}} ngày chưa có hoạt động mới.\n\nKhóa học: {{course}}.\nLớp: {{class}}.\n\nHãy dành 20-30 phút hôm nay để tiếp tục bài học và giữ nhịp tiến bộ nhé.",
+                    'priority' => 'normal',
+                ],
+            ],
+            [
+                'code' => 'attendance-missing-teacher-email',
+                'name' => 'Nhắc giáo viên nhập điểm danh',
+                'trigger_type' => 'class_session.attendance_missing',
+                'audience_type' => 'teacher',
+                'channel' => 'email',
+                'cooldown_hours' => 12,
+                'conditions' => ['after_hours' => 2, 'within_days' => 7, 'limit' => 50],
+                'message' => [
+                    'title_template' => 'Nhắc nhập điểm danh lớp {{class}}',
+                    'body_template' => "Buổi học {{session}} của lớp {{class}} đã kết thúc lúc {{ends_at}} nhưng hệ thống mới ghi nhận {{attendance_count}}/{{student_count}} điểm danh.\n\nGiáo viên vui lòng cập nhật điểm danh để phụ huynh và trung tâm theo dõi chính xác.",
                     'priority' => 'high',
                 ],
             ],

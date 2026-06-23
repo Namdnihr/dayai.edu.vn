@@ -152,6 +152,10 @@ class AutomationWorkflowResource extends Resource
             'enrollment.created' => 'Ghi danh học viên',
             'class_session.upcoming' => 'Nhắc lịch học sắp tới',
             'invoice.due_soon' => 'Nhắc học phí/công nợ',
+            'invoice.overdue' => 'Nhắc công nợ quá hạn',
+            'attendance.absent' => 'Thông báo học viên vắng học',
+            'video.inactive' => 'Nhắc học viên chưa học video',
+            'class_session.attendance_missing' => 'Nhắc giáo viên nhập điểm danh',
             'progress_report.published' => 'Báo cáo tiến độ định kỳ',
             'lead.follow_up_overdue' => 'Lead quá hạn follow-up',
         ];
