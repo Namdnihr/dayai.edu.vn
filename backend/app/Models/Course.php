@@ -59,6 +59,9 @@ class Course extends Model
 
     public function tenant(): BelongsTo { return $this->belongsTo(Tenant::class); }
     public function modules(): HasMany { return $this->hasMany(CourseModule::class)->orderBy('sort_order'); }
+    public function videoLessons(): HasMany { return $this->hasMany(VideoLesson::class)->orderBy('sort_order'); }
+    public function questionBanks(): HasMany { return $this->hasMany(QuestionBank::class); }
+    public function questions(): HasMany { return $this->hasMany(Question::class); }
     public function classGroups(): HasMany { return $this->hasMany(ClassGroup::class); }
     public function enrollments(): HasMany { return $this->hasMany(Enrollment::class); }
     public function certificates(): HasMany { return $this->hasMany(Certificate::class); }

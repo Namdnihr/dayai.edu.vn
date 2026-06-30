@@ -18,19 +18,22 @@ class CourseModulesTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
                 TextColumn::make('tenant.name')
+                    ->label('Đơn vị')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 TextColumn::make('course.name')
+                    ->label('Khóa học')
                     ->searchable(),
                 TextColumn::make('sort_order')
+                    ->label('Thứ tự')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('title')
+                    ->label('Tên module')
                     ->searchable(),
                 TextColumn::make('duration_minutes')
+                    ->label('Thời lượng phút')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('created_at')

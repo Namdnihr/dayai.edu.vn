@@ -18,31 +18,41 @@ class CoursesTable
     {
         return $table
             ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
                 TextColumn::make('tenant.name')
-                    ->searchable(),
-                TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('slug')
+                    ->label('Đơn vị')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 TextColumn::make('course_code')
+                    ->label('Mã khóa')
+                    ->searchable(),
+                TextColumn::make('name')
+                    ->label('Tên khóa học')
+                    ->searchable(),
+                TextColumn::make('slug')
+                    ->label('Slug')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 TextColumn::make('audience_type')
+                    ->label('Đối tượng')
                     ->searchable(),
                 TextColumn::make('level')
+                    ->label('Trình độ')
                     ->searchable(),
                 TextColumn::make('duration_hours')
+                    ->label('Giờ học')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('default_session_count')
+                    ->label('Số buổi')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('default_price_vnd')
+                    ->label('Học phí')
+                    ->money('VND')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('status')
+                    ->label('Trạng thái')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

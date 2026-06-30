@@ -1,134 +1,342 @@
 import Link from "next/link";
+import { CSSProperties } from "react";
+import { LeadForm } from "@/components/lead-form";
 import { PublicSiteFooter } from "@/components/public-site-footer";
 import { PublicSiteHeader } from "@/components/public-site-header";
 import { getPagesByGroup, menuGroups, SitePage } from "@/lib/site-map";
 
+type HeroVisualConfig = {
+  accent: string;
+  label: string;
+  title: string;
+  mode: "course" | "kids" | "student" | "work" | "business" | "enterprise" | "resource" | "conversion";
+  items: string[];
+  mobilePills: string[];
+  stats: Array<{
+    label: string;
+    value: string;
+  }>;
+};
+
+const benefits = [
+  {
+    title: "Lộ trình rõ theo nhu cầu",
+    description: "Mỗi nhóm học viên có mục tiêu, bài thực hành và tiêu chí tiến bộ riêng.",
+  },
+  {
+    title: "Học xong dùng được",
+    description: "Nội dung tập trung vào prompt, workflow, bài tập và tình huống thật.",
+  },
+  {
+    title: "Có portal theo dõi",
+    description: "Lịch học, LMS, quiz, học phí và thông báo được nối vào cùng một hệ thống.",
+  },
+];
+
 export function SeoLandingPage({ page }: { page: SitePage }) {
-  const relatedPages = getPagesByGroup(page.group).filter(
-    (relatedPage) => relatedPage.path !== page.path,
-  );
+  const relatedPages = getRelatedPages(page);
+  const visualConfig = getHeroVisualConfig(page);
+  const isConversionPage = page.path === "/dang-ky-tu-van/" || page.path === "/lien-he/";
 
   return (
-    <main className="min-h-screen bg-white text-slate-950">
+    <main className="min-h-screen bg-[var(--dayai-bg-subtle)] text-[var(--dayai-text)]">
       <PublicSiteHeader />
-      <section className="relative overflow-hidden pt-24">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-x-0 top-0 h-[640px] bg-[linear-gradient(90deg,rgba(0,58,153,0.045)_1px,transparent_1px),linear-gradient(rgba(0,58,153,0.045)_1px,transparent_1px)] bg-[size:76px_76px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_72%)]" />
-          <div className="absolute right-[14%] top-28 size-48 rounded-full bg-[#00AEEF]/15 blur-3xl" />
-          <div className="absolute left-[12%] top-44 size-40 rounded-full bg-[#F5B400]/15 blur-3xl" />
-        </div>
 
-        <div className="relative z-10 mx-auto grid max-w-7xl gap-10 px-5 py-20 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:py-28">
-          <div>
-            <div className="mb-6 inline-flex rounded-full border border-[#003A99]/10 bg-white/80 px-5 py-2 text-sm font-bold text-[#003A99] shadow-sm backdrop-blur">
-              {page.group}
-            </div>
-            <h1 className="max-w-5xl text-5xl font-semibold leading-[1.05] tracking-[-0.025em] text-black sm:text-7xl">
+      <section className="relative isolate overflow-hidden border-b border-[var(--dayai-border)] bg-white">
+        <div className="absolute inset-0 dayai-muted-grid opacity-60" />
+        <div className="absolute inset-x-0 top-0 h-40 bg-white" />
+
+        <div className="dayai-container relative grid gap-12 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:py-24">
+          <div className="animate-fade-rise">
+            <div className="dayai-chip">{page.group}</div>
+            <h1 className="mt-6 max-w-5xl text-4xl font-black leading-[1.06] text-[var(--dayai-text)] sm:text-6xl">
               {page.title}
             </h1>
-            <p className="mt-7 max-w-3xl text-lg leading-8 text-slate-600">
+            <p className="mt-6 max-w-3xl text-base leading-8 text-[var(--dayai-text-muted)] sm:text-lg">
               {page.description}
             </p>
-            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/dang-ky-tu-van/"
-                className="rounded-full bg-[#003A99] px-8 py-4 text-center font-bold text-white shadow-xl shadow-[#003A99]/20 transition hover:scale-[1.03]"
-              >
-                Đăng ký tư vấn
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href={isConversionPage ? "#lead-form" : "/dang-ky-tu-van/"} className="dayai-btn dayai-btn-primary">
+                Nhận tư vấn lộ trình
               </Link>
-              <Link
-                href="/khoa-hoc/"
-                className="rounded-full border border-black/10 bg-white/80 px-8 py-4 text-center font-bold text-black shadow-sm backdrop-blur transition hover:border-[#00AEEF]/50"
-              >
+              <Link href="/khoa-hoc/" className="dayai-btn dayai-btn-secondary">
                 Xem khóa học AI
               </Link>
             </div>
-          </div>
-          <SeoHeroVisual page={page} />
-        </div>
-      </section>
 
-      <section className="mx-auto grid max-w-7xl gap-5 px-5 py-10 sm:px-8 lg:grid-cols-3">
-        {[
-          "Lộ trình rõ ràng theo nhu cầu",
-          "Học qua thực hành và dự án",
-          "Có hệ thống theo dõi tiến độ",
-        ].map((benefit) => (
-          <div key={benefit} className="rounded-[2rem] border border-black/10 bg-white p-7 shadow-sm">
-            <div className="dayai-float grid size-14 place-items-center rounded-2xl bg-blue-50 text-[#003A99]">
-              <SeoBenefitIcon />
-            </div>
-            <h2 className="mt-4 text-xl font-black">{benefit}</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
-              DAYAI tập trung vào năng lực ứng dụng AI thật, không dùng nội dung
-              chung chung hoặc minh họa sáo rỗng.
-            </p>
-          </div>
-        ))}
-      </section>
-
-      <section className="bg-blue-50 py-20">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <div className="max-w-3xl">
-            <h2 className="text-4xl font-black tracking-[-0.03em]">
-              Nội dung liên quan trong nhóm {page.group}
-            </h2>
-            <p className="mt-4 text-lg leading-8 text-slate-600">
-              Các trang này giúp người học đi từ tìm hiểu ban đầu đến lựa chọn
-              khóa học hoặc giải pháp phù hợp.
-            </p>
-          </div>
-          <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {(relatedPages.length ? relatedPages : menuGroups.flatMap((menu) => menu.children))
-              .slice(0, 6)
-              .map((relatedPage) => (
-                <Link
-                  key={relatedPage.path}
-                  href={relatedPage.path}
-                  className="rounded-[1.5rem] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-                >
-                  <div className="text-sm font-bold text-[#003A99]">
-                    {relatedPage.group}
+            {!isConversionPage ? (
+              <div className="mt-8 grid grid-cols-3 gap-2 rounded-[var(--dayai-radius-xl)] border border-[var(--dayai-border)] bg-white p-3 shadow-[var(--dayai-shadow-xs)] lg:hidden">
+                {visualConfig.mobilePills.map((item) => (
+                  <div key={item} className="rounded-[var(--dayai-radius-lg)] bg-[var(--dayai-bg-subtle)] px-3 py-4 text-center text-xs font-black text-[var(--dayai-text-muted)]">
+                    {item}
                   </div>
-                  <h3 className="mt-3 text-xl font-black">{relatedPage.title}</h3>
-                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">
-                    {relatedPage.description}
-                  </p>
-                </Link>
-              ))}
+                ))}
+              </div>
+            ) : null}
+          </div>
+
+          {isConversionPage ? (
+            <div className="animate-fade-rise-delay">
+              <LeadForm campaign={page.path.includes("lien-he") ? "contact_page" : "consultation_page"} />
+            </div>
+          ) : (
+            <div className="hidden lg:block">
+              <SeoHeroVisual config={visualConfig} />
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="dayai-section bg-white">
+        <div className="dayai-container">
+          <SectionIntro
+            eyebrow="Giá trị chính"
+            title="Trang này nằm trong hệ sinh thái học và vận hành DAYAI."
+            description="Người học không chỉ đọc thông tin. Họ có thể đi tiếp sang khóa học, portal, bài học LMS, quiz và lộ trình tư vấn phù hợp."
+          />
+          <div className="mt-12 grid gap-4 md:grid-cols-3">
+            {benefits.map((benefit, index) => (
+              <article key={benefit.title} className="dayai-card p-6">
+                <div className="grid size-10 place-items-center rounded-[var(--dayai-radius-full)] bg-[var(--dayai-surface-tint)] text-sm font-black text-[var(--dayai-primary)]">
+                  {index + 1}
+                </div>
+                <h2 className="mt-6 text-xl font-black">{benefit.title}</h2>
+                <p className="mt-3 text-sm leading-7 text-[var(--dayai-text-muted)]">{benefit.description}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
-        <div className="rounded-[2.5rem] bg-slate-950 p-8 text-white sm:p-12">
-          <div className="grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-center">
-            <div>
-              <h2 className="text-4xl font-black tracking-[-0.03em]">
-                Muốn chọn đúng lộ trình học AI?
-              </h2>
-              <p className="mt-5 text-lg leading-8 text-white/65">
-                Để lại thông tin, DAYAI sẽ tư vấn theo độ tuổi, mục tiêu học tập,
-                công việc hoặc nhu cầu đào tạo doanh nghiệp.
-              </p>
-            </div>
-            <Link
-              href="/dang-ky-tu-van/"
-              className="rounded-full bg-white px-8 py-4 text-center font-bold text-[#003A99] transition hover:scale-[1.03]"
-            >
-              Nhận tư vấn miễn phí
-            </Link>
+      <section className="dayai-section">
+        <div className="dayai-container grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+          <SectionIntro
+            eyebrow="Nội dung liên quan"
+            title={`Đi tiếp trong nhóm ${page.group}.`}
+            description="Các trang liên quan giúp người học chuyển từ tìm hiểu ban đầu sang chọn lộ trình, khóa học hoặc giải pháp phù hợp."
+          />
+          <div className="grid gap-4 md:grid-cols-2">
+            {relatedPages.slice(0, 6).map((relatedPage) => (
+              <Link
+                key={relatedPage.path}
+                href={relatedPage.path}
+                className="dayai-card group p-6 transition hover:-translate-y-0.5 hover:border-[var(--dayai-primary)] hover:shadow-[var(--dayai-shadow-sm)]"
+              >
+                <div className="text-sm font-black text-[var(--dayai-primary)]">{relatedPage.group}</div>
+                <h3 className="mt-3 text-xl font-black leading-tight group-hover:text-[var(--dayai-primary)]">
+                  {relatedPage.title}
+                </h3>
+                <p className="mt-3 line-clamp-3 text-sm leading-6 text-[var(--dayai-text-muted)]">
+                  {relatedPage.description}
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
+
+      <section className="bg-white pb-24">
+        <div className="dayai-container grid gap-8 rounded-[var(--dayai-radius-2xl)] bg-[var(--dayai-primary)] p-6 text-white shadow-[var(--dayai-shadow-md)] sm:p-8 lg:grid-cols-[0.85fr_1.15fr] lg:p-12">
+          <div>
+            <div className="text-xs font-black uppercase">Tư vấn DAYAI</div>
+            <h2 className="mt-4 text-3xl font-black leading-tight sm:text-4xl">
+              Muốn chọn đúng lộ trình học AI?
+            </h2>
+            <p className="mt-5 text-sm leading-7 text-blue-50">
+              Để lại thông tin, DAYAI sẽ tư vấn theo độ tuổi, mục tiêu học tập, công việc hoặc nhu cầu đào tạo doanh nghiệp.
+            </p>
+            {!isConversionPage ? (
+              <Link href="/dang-ky-tu-van/" className="dayai-btn mt-8 bg-white text-[var(--dayai-primary)]">
+                Nhận tư vấn miễn phí
+              </Link>
+            ) : null}
+          </div>
+
+          <div className="grid gap-3 self-end">
+            {(isConversionPage ? ["Tiếp nhận nhu cầu", "Gợi ý lộ trình", "Hẹn lịch học thử", "Theo dõi qua portal"] : ["Học viên cá nhân", "Phụ huynh", "Doanh nghiệp", "Đội ngũ HR/L&D"]).map((item) => (
+              <div key={item} className="rounded-[var(--dayai-radius-lg)] border border-white/15 bg-white/10 p-4 text-sm font-bold text-white">
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <PublicSiteFooter />
     </main>
   );
 }
 
-function SeoBenefitIcon() {
+function SeoHeroVisual({ config }: { config: HeroVisualConfig }) {
+  const visualStyle = { "--hero-accent": config.accent } as CSSProperties;
+
   return (
-    <svg aria-hidden="true" className="size-7" viewBox="0 0 24 24" fill="none">
+    <div
+      style={visualStyle}
+      className="animate-fade-rise-delay rounded-[var(--dayai-radius-2xl)] border border-[var(--dayai-border)] bg-white p-6 shadow-[var(--dayai-shadow-md)]"
+    >
+      <div className="dayai-dark overflow-hidden rounded-[var(--dayai-radius-xl)] border border-[var(--dayai-border)] bg-[var(--dayai-bg)] text-[var(--dayai-text)]">
+        <div className="grid gap-6 p-6">
+          <div className="flex items-start justify-between gap-6">
+            <div>
+              <div className="text-xs font-black text-[var(--hero-accent)]">{config.label}</div>
+              <div className="mt-3 text-2xl font-black leading-tight">{config.title}</div>
+            </div>
+            <div className="grid size-12 shrink-0 place-items-center rounded-[var(--dayai-radius-lg)] bg-white text-[var(--hero-accent)]">
+              <VisualIcon mode={config.mode} />
+            </div>
+          </div>
+
+          <VisualBody config={config} />
+        </div>
+      </div>
+
+      <div className="mt-4 grid grid-cols-3 gap-3">
+        {config.stats.map((stat) => (
+          <div key={stat.label} className="rounded-[var(--dayai-radius-lg)] border border-[var(--dayai-border)] bg-[var(--dayai-bg-subtle)] p-4 text-center">
+            <div className="mx-auto grid size-10 place-items-center rounded-[var(--dayai-radius-full)] bg-[var(--hero-accent)] text-xs font-black text-white">
+              {stat.value}
+            </div>
+            <div className="mt-3 text-xs font-black leading-5 text-[var(--dayai-text-muted)]">{stat.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function VisualBody({ config }: { config: HeroVisualConfig }) {
+  if (config.mode === "resource") {
+    return (
+      <div className="grid gap-4">
+        <div className="rounded-[var(--dayai-radius-lg)] bg-white/[0.06] p-4">
+          <div className="flex items-center gap-2">
+            <span className="h-2 flex-1 rounded-full bg-[var(--hero-accent)]" />
+            <span className="h-2 w-16 rounded-full bg-white/20" />
+            <span className="h-2 w-10 rounded-full bg-white/12" />
+          </div>
+          <div className="mt-5 grid gap-3">
+            {config.items.map((item) => (
+              <div key={item} className="flex items-center justify-between gap-4 rounded-[var(--dayai-radius-md)] bg-white/[0.06] px-4 py-3">
+                <span className="text-sm font-semibold text-[var(--dayai-text-muted)]">{item}</span>
+                <span className="rounded-[var(--dayai-radius-full)] bg-white px-3 py-1 text-xs font-black text-[var(--hero-accent)]">
+                  đọc
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          {["Checklist", "Prompt", "Ebook"].map((item) => (
+            <div key={item} className="rounded-[var(--dayai-radius-md)] border border-white/10 bg-white/[0.04] p-3 text-center text-xs font-black text-[var(--dayai-text-muted)]">
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (config.mode === "business" || config.mode === "enterprise") {
+    return (
+      <div className="grid gap-4">
+        <div className="grid gap-3">
+          {config.items.map((item, index) => (
+            <div key={item} className="rounded-[var(--dayai-radius-lg)] bg-white/[0.06] p-4">
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-sm font-black text-[var(--dayai-text-muted)]">{item}</span>
+                <span className="text-xs font-black text-[var(--hero-accent)]">{72 + index * 8}%</span>
+              </div>
+              <div className="mt-3 h-2 rounded-full bg-white/10">
+                <div
+                  className="h-2 rounded-full bg-[var(--hero-accent)]"
+                  style={{ width: `${68 + index * 10}%` }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          {["HR portal", "Báo cáo"].map((item) => (
+            <div key={item} className="rounded-[var(--dayai-radius-md)] border border-white/10 bg-white/[0.04] p-3 text-center text-xs font-black text-[var(--dayai-text-muted)]">
+              {item}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (config.mode === "conversion") {
+    return (
+      <div className="grid gap-3">
+        {config.items.map((item, index) => (
+          <div key={item} className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[var(--dayai-radius-lg)] bg-white/[0.06] p-4">
+            <span className="grid size-8 place-items-center rounded-full bg-white text-xs font-black text-[var(--hero-accent)]">
+              {index + 1}
+            </span>
+            <span className="text-sm font-semibold text-[var(--dayai-text-muted)]">{item}</span>
+            <span className="rounded-full bg-[var(--hero-accent)] px-3 py-1 text-xs font-black text-white">
+              mới
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid gap-3">
+      {config.items.map((item, index) => (
+        <div key={item} className="grid grid-cols-[auto_1fr] items-center gap-4 rounded-[var(--dayai-radius-lg)] bg-white/[0.06] p-4">
+          <div className="grid size-9 place-items-center rounded-full bg-white text-xs font-black text-[var(--hero-accent)]">
+            {index + 1}
+          </div>
+          <div>
+            <div className="text-sm font-black text-[var(--dayai-text-muted)]">{item}</div>
+            <div className="mt-2 flex gap-2">
+              <span className="h-1.5 flex-1 rounded-full bg-[var(--hero-accent)]" />
+              <span className="h-1.5 w-12 rounded-full bg-white/15" />
+              <span className="h-1.5 w-8 rounded-full bg-white/10" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function VisualIcon({ mode }: { mode: HeroVisualConfig["mode"] }) {
+  if (mode === "kids") {
+    return (
+      <svg aria-hidden="true" className="size-6" viewBox="0 0 24 24" fill="none">
+        <path d="M6 13c3-5 7-7 12-7" stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
+        <path d="M7 15h5v5H7zM14 11h4v9h-4z" fill="currentColor" opacity="0.18" />
+        <circle cx="6" cy="13" r="2" fill="currentColor" />
+      </svg>
+    );
+  }
+
+  if (mode === "resource") {
+    return (
+      <svg aria-hidden="true" className="size-6" viewBox="0 0 24 24" fill="none">
+        <path d="M6 5h12v14H6z" stroke="currentColor" strokeLinejoin="round" strokeWidth="2" />
+        <path d="M9 9h6M9 12h6M9 15h3" stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
+      </svg>
+    );
+  }
+
+  if (mode === "business" || mode === "enterprise") {
+    return (
+      <svg aria-hidden="true" className="size-6" viewBox="0 0 24 24" fill="none">
+        <path d="M5 18V8M12 18V5M19 18v-7" stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
+        <path d="M4 18h16" stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg aria-hidden="true" className="size-6" viewBox="0 0 24 24" fill="none">
       <path
         d="M4 16c4.4-.7 7.5-3.2 9.5-7.5M10 17c3.8-.5 6.8-2.4 9-5.7"
         stroke="currentColor"
@@ -142,64 +350,170 @@ function SeoBenefitIcon() {
         strokeLinejoin="round"
         strokeWidth="1.8"
       />
-      <circle cx="5" cy="16" r="1.5" fill="currentColor" opacity="0.22" />
     </svg>
   );
 }
 
-function SeoHeroVisual({ page }: { page: SitePage }) {
-  const visualItems = getVisualItems(page.group);
-
+function SectionIntro({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+}) {
   return (
-    <div className="relative min-h-[420px] overflow-hidden rounded-[2.25rem] border border-black/10 bg-white/78 p-5 shadow-[0_35px_120px_rgba(0,58,153,0.13)] backdrop-blur-xl">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_25%,rgba(0,174,239,0.24),transparent_28%),radial-gradient(circle_at_78%_20%,rgba(245,180,0,0.18),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.92),rgba(239,246,255,0.84))]" />
-      <div className="relative rounded-[1.75rem] bg-slate-950 p-5 text-white">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="text-xs font-bold uppercase tracking-[0.18em] text-[#00AEEF]">
-              {page.group}
-            </div>
-            <div className="mt-2 text-xl font-black">Hành trình học tập</div>
-          </div>
-          <div className="grid size-11 place-items-center rounded-2xl bg-white/10">
-            <SeoBenefitIcon />
-          </div>
-        </div>
-        <div className="mt-7 grid gap-3">
-          {visualItems.map((item, index) => (
-            <div key={item} className="flex items-center gap-3 rounded-2xl bg-white/[0.07] p-3">
-              <div className="grid size-9 place-items-center rounded-full bg-white text-sm font-black text-[#003A99]">
-                {index + 1}
-              </div>
-              <span className="text-sm font-semibold text-white/82">{item}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="relative mt-4 grid grid-cols-3 gap-3">
-        {["Mentor", "Bài tập", "Tiến bộ"].map((item, index) => (
-          <div key={item} className="dayai-float rounded-3xl border border-black/10 bg-white/82 p-4 text-center shadow-sm" style={{ animationDelay: `${index * 0.3}s` }}>
-            <div className="mx-auto size-12 rounded-full bg-gradient-to-br from-[#003A99] to-[#00AEEF]" />
-            <div className="mt-3 text-xs font-bold text-slate-700">{item}</div>
-          </div>
-        ))}
-      </div>
+    <div className="max-w-3xl">
+      <div className="dayai-kicker">{eyebrow}</div>
+      <h2 className="mt-4 text-3xl font-black leading-tight sm:text-4xl">{title}</h2>
+      <p className="mt-5 text-sm leading-7 text-[var(--dayai-text-muted)]">{description}</p>
     </div>
   );
 }
 
-function getVisualItems(group: string) {
-  if (group.includes("Kids")) {
-    return ["Học an toàn", "Dự án sáng tạo", "Phụ huynh đồng hành"];
+function getRelatedPages(page: SitePage) {
+  const sameGroup = getPagesByGroup(page.group).filter((relatedPage) => relatedPage.path !== page.path);
+
+  if (sameGroup.length) {
+    return sameGroup;
   }
 
-  if (group.includes("Enterprise") || group.includes("doanh nghiệp")) {
-    return ["Khảo sát nhu cầu", "Workshop theo phòng ban", "Báo cáo tiến độ"];
+  return menuGroups.flatMap((menu) => menu.children).filter((relatedPage) => relatedPage.path !== page.path);
+}
+
+function getHeroVisualConfig(page: SitePage): HeroVisualConfig {
+  const text = `${page.group} ${page.title}`.toLowerCase();
+
+  if (text.includes("kids") || text.includes("trẻ")) {
+    return {
+      accent: "var(--dayai-secondary)",
+      label: "Creative AI studio",
+      title: "Học AI an toàn, có phụ huynh đồng hành",
+      mode: "kids",
+      items: ["Kể chuyện bằng AI", "Dự án hình ảnh nhỏ", "Phụ huynh xem tiến độ"],
+      mobilePills: ["Dự án", "An toàn", "Portal"],
+      stats: [
+        { value: "01", label: "ý tưởng" },
+        { value: "02", label: "thực hành" },
+        { value: "03", label: "chia sẻ" },
+      ],
+    };
   }
 
-  if (group.includes("Tài nguyên") || group.includes("Cập nhật")) {
-    return ["Đọc hiểu nhanh", "Áp dụng bằng checklist", "Chọn khóa liên quan"];
+  if (text.includes("student") || text.includes("sinh viên") || text.includes("học sinh")) {
+    return {
+      accent: "var(--dayai-warning)",
+      label: "Study cockpit",
+      title: "Từ bài tập đến định hướng nghề nghiệp",
+      mode: "student",
+      items: ["Ghi chú và ôn tập", "Slide thuyết trình", "Portfolio cá nhân"],
+      mobilePills: ["Ôn tập", "Slide", "Nghề"],
+      stats: [
+        { value: "AI", label: "trợ lý học" },
+        { value: "3", label: "bài tập" },
+        { value: "1", label: "lộ trình" },
+      ],
+    };
   }
 
-  return ["Đánh giá mục tiêu", "Học qua thực hành", "Ứng dụng vào thực tế"];
+  if (text.includes("work") || text.includes("người đi làm") || text.includes("công việc")) {
+    return {
+      accent: "var(--dayai-success)",
+      label: "Productivity OS",
+      title: "Workflow cá nhân cho công việc hằng ngày",
+      mode: "work",
+      items: ["Viết và tóm tắt", "Phân tích dữ liệu", "Tự động hóa tác vụ"],
+      mobilePills: ["Prompt", "Report", "Flow"],
+      stats: [
+        { value: "4h", label: "tiết kiệm" },
+        { value: "8", label: "workflow" },
+        { value: "24", label: "prompt" },
+      ],
+    };
+  }
+
+  if (text.includes("enterprise")) {
+    return {
+      accent: "var(--dayai-primary)",
+      label: "HR learning dashboard",
+      title: "Đào tạo theo phòng ban, đo được tiến độ",
+      mode: "enterprise",
+      items: ["Khảo sát năng lực", "Workshop theo vai trò", "Báo cáo HR/L&D"],
+      mobilePills: ["HR", "LMS", "Report"],
+      stats: [
+        { value: "5", label: "phòng ban" },
+        { value: "82", label: "tiến độ" },
+        { value: "KPI", label: "đo lường" },
+      ],
+    };
+  }
+
+  if (text.includes("business") || text.includes("doanh nghiệp") || text.includes("giải pháp")) {
+    return {
+      accent: "var(--dayai-accent)",
+      label: "Business AI dashboard",
+      title: "Ứng dụng AI vào tăng trưởng và vận hành",
+      mode: "business",
+      items: ["Bán hàng và marketing", "CSKH và tri thức", "Automation vận hành"],
+      mobilePills: ["Sales", "CSKH", "Ops"],
+      stats: [
+        { value: "CRM", label: "lead" },
+        { value: "AI", label: "workflow" },
+        { value: "BI", label: "báo cáo" },
+      ],
+    };
+  }
+
+  if (
+    text.includes("tài nguyên") ||
+    text.includes("tin") ||
+    text.includes("prompt") ||
+    text.includes("công cụ") ||
+    text.includes("case")
+  ) {
+    return {
+      accent: "var(--dayai-accent)",
+      label: "AI knowledge lab",
+      title: "Đọc nhanh, áp dụng ngay, đi tiếp vào khóa học",
+      mode: "resource",
+      items: ["Cẩm nang nền tảng", "Checklist ứng dụng", "Prompt theo tình huống"],
+      mobilePills: ["Guide", "Prompt", "Tool"],
+      stats: [
+        { value: "10", label: "phút đọc" },
+        { value: "3", label: "bước làm" },
+        { value: "1", label: "CTA" },
+      ],
+    };
+  }
+
+  if (text.includes("liên hệ") || text.includes("tư vấn")) {
+    return {
+      accent: "var(--dayai-primary)",
+      label: "Advisor desk",
+      title: "Tư vấn đúng người, đúng mục tiêu, đúng lộ trình",
+      mode: "conversion",
+      items: ["Tiếp nhận nhu cầu", "Gợi ý lộ trình", "Hẹn lịch học thử"],
+      mobilePills: ["Tư vấn", "Lộ trình", "Lịch học"],
+      stats: [
+        { value: "1:1", label: "tư vấn" },
+        { value: "24h", label: "phản hồi" },
+        { value: "AI", label: "lộ trình" },
+      ],
+    };
+  }
+
+  return {
+    accent: "var(--dayai-primary)",
+    label: "Learning path",
+    title: "Từ mục tiêu đến bài học, quiz và tiến độ",
+    mode: "course",
+    items: ["Đánh giá mục tiêu", "Học qua thực hành", "Quiz và LMS theo dõi"],
+    mobilePills: ["LMS", "Quiz", "Portal"],
+    stats: [
+      { value: "01", label: "mentor" },
+      { value: "02", label: "bài học" },
+      { value: "03", label: "quiz" },
+    ],
+  };
 }

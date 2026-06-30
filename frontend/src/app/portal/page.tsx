@@ -24,27 +24,27 @@ export default function PortalPage() {
         </div>
       </header>
 
-      <section className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-[0.85fr_1.15fr]">
-        <div>
-          <p className="w-fit rounded-full border border-blue-100 bg-white px-4 py-2 text-sm font-bold text-[#003A99] shadow-sm">
-            Khu tra cứu riêng tư
+      <section className="mx-auto max-w-7xl px-6 py-10">
+        <div className="mb-8 rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm md:p-8">
+          <p className="w-fit rounded-full border border-blue-100 bg-blue-50 px-4 py-2 text-sm font-bold text-[#003A99]">
+            Khu học tập riêng tư
           </p>
-          <h1 className="mt-6 text-5xl font-black tracking-[-0.04em] sm:text-6xl">
-            Cổng phụ huynh & học viên
-          </h1>
-          <p className="mt-5 text-lg leading-8 text-slate-600">
-            Tra cứu lịch học, điểm danh, học phí, video học liên quan và báo cáo tiến bộ của học viên DAYAI.
-          </p>
-          <div className="mt-8 rounded-3xl border border-blue-100 bg-white p-6 shadow-sm">
-            <div className="text-sm font-bold uppercase tracking-wide text-[#003A99]">Dữ liệu demo</div>
-            <p className="mt-2 text-slate-700">SĐT: <b>0901888000</b></p>
-            <p className="text-slate-700">Mã học viên: <b>HV-000001</b></p>
-            <p className="mt-3 text-sm leading-6 text-slate-500">
-              Portal không hiển thị trên menu chính. Người dùng cần có SĐT và mã học viên để tra cứu.
-            </p>
+          <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div>
+              <h1 className="text-4xl font-black tracking-[-0.04em] sm:text-5xl">
+                Dashboard học viên DAYAI
+              </h1>
+              <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-600">
+                Đăng nhập để xem nhanh khóa học, lịch học, video, điểm danh, học phí và báo cáo tiến bộ.
+              </p>
+            </div>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-5 text-sm text-slate-700">
+              <div className="font-black uppercase tracking-wide text-[#003A99]">Demo local</div>
+              <p className="mt-2">SĐT: <b>0901888000</b></p>
+              <p>Mã học viên: <b>HV-000001</b></p>
+            </div>
           </div>
         </div>
-
         <PortalLookup />
       </section>
     </main>

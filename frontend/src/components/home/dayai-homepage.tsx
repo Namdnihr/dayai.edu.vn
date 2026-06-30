@@ -1,172 +1,162 @@
-﻿"use client";
+"use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { CSSProperties, useMemo, useState } from "react";
 import { PublicSiteFooter } from "@/components/public-site-footer";
-import { menuGroups } from "@/lib/site-map";
+import { PublicSiteHeader } from "@/components/public-site-header";
 
-const audiences = [
+type Audience = {
+  key: string;
+  label: string;
+  title: string;
+  href: string;
+  summary: string;
+  token: string;
+};
+
+const audiences: Audience[] = [
   {
     key: "kids",
     label: "AI Kids",
-    title: "Cho trẻ em",
-    description:
-      "Làm quen AI qua tư duy sáng tạo, kể chuyện, hình ảnh và dự án nhỏ an toàn.",
+    title: "Trẻ em",
+    href: "/ai-kids/",
+    summary: "Học AI an toàn qua kể chuyện, hình ảnh và dự án sáng tạo có phụ huynh theo dõi.",
+    token: "var(--dayai-secondary)",
   },
   {
     key: "student",
     label: "AI Student",
-    title: "Cho học sinh, sinh viên",
-    description:
-      "Dùng AI để học nhanh hơn, nghiên cứu tốt hơn và chuẩn bị năng lực nghề nghiệp.",
+    title: "Học sinh, sinh viên",
+    href: "/ai-student/",
+    summary: "Dùng AI để học nhanh hơn, làm slide, nghiên cứu và định hướng nghề nghiệp.",
+    token: "var(--dayai-warning)",
   },
   {
     key: "work",
     label: "AI Work",
-    title: "Cho người đi làm",
-    description:
-      "Tăng năng suất cá nhân với prompt, workflow, tài liệu, báo cáo và tự động hóa.",
+    title: "Người đi làm",
+    href: "/ai-work/",
+    summary: "Tăng năng suất với prompt, workflow, báo cáo và tự động hóa cá nhân.",
+    token: "var(--dayai-success)",
   },
   {
     key: "business",
     label: "AI Business",
-    title: "Cho chủ doanh nghiệp",
-    description:
-      "Ứng dụng AI vào vận hành, marketing, bán hàng, chăm sóc khách hàng và quản trị.",
+    title: "Chủ doanh nghiệp",
+    href: "/ai-business/",
+    summary: "Ứng dụng AI vào bán hàng, marketing, chăm sóc khách hàng và vận hành.",
+    token: "var(--dayai-accent)",
   },
   {
     key: "enterprise",
     label: "AI Enterprise",
-    title: "Cho doanh nghiệp",
-    description:
-      "Đào tạo đội ngũ theo phòng ban, theo dõi tiến độ và chuẩn hóa năng lực AI nội bộ.",
+    title: "Đội ngũ công ty",
+    href: "/ai-enterprise/",
+    summary: "Đào tạo theo phòng ban, theo dõi tiến độ và chuẩn hóa năng lực AI nội bộ.",
+    token: "var(--dayai-primary)",
   },
-];
-
-const journey = [
-  "Khởi động tư duy AI",
-  "Làm chủ prompt",
-  "Xây workflow cá nhân",
-  "Ứng dụng theo vai trò",
-  "Dẫn dắt đội nhóm bằng AI",
 ];
 
 const courses = [
   {
     title: "AI Căn Bản",
-    audience: "Người mới bắt đầu",
-    duration: "6 buổi",
-    color: "from-[#003A99] to-[#00AEEF]",
+    meta: "6 buổi | Người mới bắt đầu",
+    href: "/khoa-hoc/ai-can-ban/",
+    summary: "Nắm nền tảng AI, tư duy prompt và nguyên tắc dùng AI có trách nhiệm.",
   },
   {
     title: "Prompt Engineering",
-    audience: "Sinh viên, nhân sự văn phòng",
-    duration: "4 buổi",
-    color: "from-[#0F172A] to-[#003A99]",
+    meta: "4 buổi | Học tập và công việc",
+    href: "/khoa-hoc/khoa-hoc-chatgpt/",
+    summary: "Biến yêu cầu mơ hồ thành prompt rõ mục tiêu, có ngữ cảnh và kiểm soát đầu ra.",
   },
   {
     title: "AI Cho Công Việc",
-    audience: "Người đi làm",
-    duration: "8 buổi",
-    color: "from-[#00AEEF] to-[#003A99]",
-  },
-  {
-    title: "AI Cho Chủ Doanh Nghiệp",
-    audience: "Founder, quản lý",
-    duration: "2 ngày",
-    color: "from-[#003A99] to-[#F5B400]",
+    meta: "8 buổi | Nhân sự văn phòng",
+    href: "/ai-work/khoa-hoc-ai-cho-nguoi-di-lam/",
+    summary: "Xây workflow cá nhân cho viết, tóm tắt, phân tích dữ liệu và báo cáo.",
   },
   {
     title: "AI Enterprise Training",
-    audience: "HR, L&D, đội nhóm",
-    duration: "Theo nhu cầu",
-    color: "from-[#111827] to-[#00AEEF]",
+    meta: "Theo nhu cầu | HR và L&D",
+    href: "/ai-enterprise/dao-tao-ai-cho-doanh-nghiep/",
+    summary: "Thiết kế chương trình đào tạo AI theo phòng ban, KPI và quy trình vận hành.",
   },
 ];
 
-const stories = [
-  {
-    name: "Minh Anh",
-    role: "Sinh viên năm 2",
-    result: "Tạo trợ lý học tập cá nhân và rút ngắn thời gian làm báo cáo.",
-  },
-  {
-    name: "Gia đình chị Hương",
-    role: "Phụ huynh học viên Kids",
-    result: "Con biết dùng AI để học tiếng Anh, kể chuyện và trình bày ý tưởng.",
-  },
-  {
-    name: "Công ty thương mại B2B",
-    role: "Đào tạo nội bộ",
-    result: "Chuẩn hóa prompt bán hàng và quy trình chăm sóc khách hàng.",
-  },
+const productPillars = [
+  ["Public website", "Tư vấn, nội dung SEO, khóa học, giảng viên, tài nguyên AI"],
+  ["Student portal", "Lịch học, LMS, quiz, học phí, thông báo, chứng chỉ"],
+  ["Admin OS", "CRM, lớp học, tài chính, nội dung, affiliate, báo cáo"],
+  ["Company portal", "Tiến độ nhân sự, điểm danh, đánh giá, công nợ B2B"],
 ];
 
-const instructors = [
+const portalHighlights = [
+  "Đăng nhập OTP cho học viên, phụ huynh và doanh nghiệp",
+  "Dashboard tiếp tục học với bài học, buổi học và quiz đang chờ",
+  "LMS video, tài liệu, tiến độ và trạng thái hoàn thành",
+  "Quiz online có chấm tự động, lịch sử làm bài và kết quả",
+  "Báo cáo tiến bộ, học phí, thông báo và chứng chỉ",
+];
+
+const resources = [
+  { title: "Cẩm nang AI", href: "/cam-nang-ai/", desc: "Kiến thức nền tảng cho người mới bắt đầu." },
+  { title: "Prompt AI", href: "/prompt-ai/", desc: "Thư viện prompt theo học tập, công việc và kinh doanh." },
+  { title: "Công cụ AI", href: "/cong-cu-ai/", desc: "Hướng dẫn chọn và dùng công cụ AI đúng nhu cầu." },
+  { title: "Tin tức AI", href: "/tin-tuc-ai/", desc: "Cập nhật xu hướng AI và thay đổi công cụ mới." },
+];
+
+const instructorCards = [
   {
     name: "Nguyễn Minh",
-    focus: "AI ứng dụng & Prompt Engineering",
+    role: "Prompt Engineering và AI ứng dụng",
+    image: "/images/instructor_minh.png",
   },
   {
     name: "Lê Hoàng",
-    focus: "AI cho doanh nghiệp & vận hành",
+    role: "AI cho doanh nghiệp và vận hành",
+    image: "/images/instructor_hoang.png",
   },
   {
     name: "Trần An",
-    focus: "AI Kids & tư duy sáng tạo",
+    role: "AI Kids và tư duy sáng tạo",
+    image: "/images/instructor_an.png",
   },
 ];
 
-const metrics = [
-  { value: "5", label: "nhóm người học" },
-  { value: "12+", label: "lộ trình đào tạo" },
-  { value: "80%", label: "thời lượng thực hành" },
-  { value: "1", label: "hệ sinh thái theo dõi" },
-];
-
 export function DayaiHomepage() {
-  const [selectedAudience, setSelectedAudience] = useState(audiences[0]);
-  const [advisorGoal, setAdvisorGoal] = useState("Tôi mới bắt đầu và muốn học AI bài bản");
+  const [selectedAudience, setSelectedAudience] = useState<Audience>(audiences[0]);
 
-  const advisorResult = useMemo(() => {
+  const advisorText = useMemo(() => {
     if (selectedAudience.key === "kids") {
-      return "Gợi ý: bắt đầu với AI Kids, học qua dự án sáng tạo ngắn, có phụ huynh theo dõi tiến độ.";
+      return "Bắt đầu bằng AI Kids, học qua dự án nhỏ và để phụ huynh theo dõi tiến độ trong portal.";
     }
 
     if (selectedAudience.key === "enterprise") {
-      return "Gợi ý: đặt lịch khảo sát nhu cầu, chia nhóm theo phòng ban và triển khai workshop theo use case.";
+      return "Khởi động bằng khảo sát năng lực, chia nhóm theo phòng ban rồi theo dõi tiến độ qua HR portal.";
     }
 
     if (selectedAudience.key === "business") {
-      return "Gợi ý: chọn AI Business để xây workflow marketing, bán hàng, vận hành và CSKH.";
+      return "Ưu tiên các use case tạo doanh thu: marketing, bán hàng, chăm sóc khách hàng và dashboard vận hành.";
     }
 
-    if (advisorGoal.toLowerCase().includes("công việc")) {
-      return "Gợi ý: học AI Work, tập trung prompt, tài liệu, báo cáo và tự động hóa tác vụ hằng ngày.";
+    if (selectedAudience.key === "work") {
+      return "Tập trung prompt, workflow cá nhân, báo cáo và tự động hóa các tác vụ lặp lại.";
     }
 
-    return "Gợi ý: bắt đầu với AI Căn Bản, sau đó chuyển sang Prompt Engineering hoặc AI Work.";
-  }, [advisorGoal, selectedAudience.key]);
+    return "Bắt đầu từ AI Căn Bản, sau đó học Prompt Engineering và thực hành qua bài tập LMS.";
+  }, [selectedAudience.key]);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-white text-slate-950">
-      <Header />
+    <main className="min-h-screen bg-[var(--dayai-bg-subtle)] text-[var(--dayai-text)]">
+      <PublicSiteHeader />
       <Hero />
-      <AudienceSelection
-        selectedKey={selectedAudience.key}
-        onSelect={setSelectedAudience}
-      />
-      <LearningJourney />
-      <FeaturedCourses />
-      <AiPlayground
-        selectedAudience={selectedAudience}
-        advisorGoal={advisorGoal}
-        advisorResult={advisorResult}
-        onGoalChange={setAdvisorGoal}
-      />
-      <EcosystemVisualization />
-      <SuccessMetrics />
-      <StudentStories />
+      <ProductSystem />
+      <AudiencePath selectedKey={selectedAudience.key} onSelect={setSelectedAudience} advisorText={advisorText} />
+      <CourseSection />
+      <PortalSection />
+      <ResourceSection />
       <InstructorSection />
       <FinalCta />
       <PublicSiteFooter />
@@ -174,284 +164,256 @@ export function DayaiHomepage() {
   );
 }
 
-function Header() {
-  return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/40 bg-white/78 backdrop-blur-2xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
-        <Link href="/" className="font-display text-3xl tracking-tight text-black">
-          DAYAI
-        </Link>
-        <nav className="hidden items-center gap-7 text-sm font-semibold text-slate-500 lg:flex">
-          {menuGroups.map((menu) => (
-            <Link key={menu.href} href={menu.href} className="transition hover:text-[#003A99]">
-              {menu.label}
-            </Link>
-          ))}
-        </nav>
-        <a
-          href="#final-cta"
-          className="rounded-full bg-[#003A99] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-[#003A99]/20 transition hover:scale-[1.03] hover:bg-[#002B73]"
-        >
-          Nhận tư vấn
-        </a>
-      </div>
-    </header>
-  );
-}
-
 function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center pt-24">
-      <AnimatedEcosystemBackground />
-      <div className="relative z-10 mx-auto max-w-7xl px-5 py-24 text-center sm:px-8">
-        <p className="mx-auto mb-6 w-fit rounded-full border border-[#003A99]/10 bg-white/70 px-5 py-2 text-sm font-bold text-[#003A99] shadow-sm backdrop-blur">
-          Hệ sinh thái học AI cho Việt Nam
-        </p>
-        <h1 className="mx-auto max-w-6xl text-5xl font-semibold leading-[1.02] tracking-[-0.035em] text-black sm:text-7xl lg:text-8xl">
-          <span className="block">Học AI Hôm Nay</span>
-          <span className="block bg-gradient-to-r from-[#003A99] via-[#00AEEF] to-[#003A99] bg-clip-text text-transparent">
-            Dẫn Đầu Tương Lai
-          </span>
-        </h1>
-        <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-slate-600 sm:text-lg">
-          DAYAI.EDU.VN kết nối khóa học, video academy, cố vấn AI, cổng phụ
-          huynh và chương trình doanh nghiệp để mỗi người có một hành trình học
-          AI rõ ràng.
-        </p>
-        <div className="mx-auto mt-8 grid max-w-3xl gap-3 sm:grid-cols-3">
-          {[
-            ["Lộ trình", "Theo từng nhóm học"],
-            ["Thực hành", "80% thời lượng"],
-            ["Theo dõi", "Portal tiến độ"],
-          ].map(([label, value]) => (
-            <div
-              key={label}
-              className="dayai-float rounded-3xl border border-black/10 bg-white/72 px-5 py-4 text-left shadow-sm backdrop-blur"
-            >
-              <div className="text-xs font-bold uppercase tracking-[0.16em] text-[#003A99]">
-                {label}
+    <section className="relative isolate overflow-hidden border-b border-[var(--dayai-border)] bg-white">
+      <div className="absolute inset-0 dayai-muted-grid opacity-60" />
+      <div className="absolute inset-x-0 top-0 h-40 bg-white" />
+
+      <div className="dayai-container relative grid items-center gap-8 py-10 sm:gap-12 sm:py-16 lg:min-h-[720px] lg:grid-cols-[1fr_0.9fr] lg:py-24">
+        <div className="animate-fade-rise max-w-3xl">
+          <div className="dayai-chip">DAYAI Education Operating System</div>
+          <h1 className="mt-4 text-3xl font-black leading-[1.06] text-[var(--dayai-text)] sm:mt-8 sm:text-6xl lg:text-7xl">
+            DAYAI
+            <span className="mt-4 block text-[var(--dayai-primary)]">Học AI hôm nay, dẫn đầu tương lai.</span>
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-[var(--dayai-text-muted)] sm:mt-8 sm:text-lg sm:leading-8">
+            DAYAI kết nối khóa học AI, LMS, quiz online, portal học viên, portal phụ huynh, HR portal và admin vận hành trong một hệ sinh thái đào tạo AI cho người Việt.
+          </p>
+          <div className="mt-6 flex flex-col gap-3 sm:mt-10 sm:flex-row">
+            <Link href="/dang-ky-tu-van/" className="dayai-btn dayai-btn-primary">
+              Nhận tư vấn lộ trình
+            </Link>
+            <Link href="/portal/" className="dayai-btn dayai-btn-secondary">
+              Xem portal học viên
+            </Link>
+          </div>
+
+          <div className="mt-6 flex items-center gap-4 rounded-[var(--dayai-radius-xl)] border border-[var(--dayai-border)] bg-white p-3 shadow-[var(--dayai-shadow-xs)] sm:hidden">
+            <div className="relative size-20 shrink-0 overflow-hidden rounded-[var(--dayai-radius-lg)] bg-[var(--dayai-surface-muted)]">
+              <Image
+                src="/images/instructor_minh.png"
+                alt="Giảng viên DAYAI"
+                fill
+                sizes="96px"
+                className="object-cover"
+              />
+            </div>
+            <div>
+              <div className="text-sm font-black">LMS + Quiz + Portal</div>
+              <div className="mt-2 text-sm leading-6 text-[var(--dayai-text-muted)]">
+                Một dashboard cho việc học tiếp theo.
               </div>
-              <div className="mt-1 font-bold text-slate-950">{value}</div>
+            </div>
+          </div>
+
+          <div className="mt-12 hidden gap-4 sm:grid sm:grid-cols-3">
+            {[
+              ["5", "nhóm người học"],
+              ["360°", "học tập và vận hành"],
+              ["AI", "cho cá nhân và doanh nghiệp"],
+            ].map(([value, label]) => (
+              <div key={label} className="border-l-2 border-[var(--dayai-primary)] pl-4">
+                <div className="text-3xl font-black text-[var(--dayai-text)]">{value}</div>
+                <div className="mt-1 text-sm font-semibold text-[var(--dayai-text-muted)]">{label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="animate-fade-rise-delay relative hidden lg:block">
+          <div className="relative overflow-hidden rounded-[var(--dayai-radius-2xl)] border border-[var(--dayai-border)] bg-white shadow-[var(--dayai-shadow-md)]">
+            <div className="relative aspect-[4/3] bg-[var(--dayai-surface-muted)]">
+              <Image
+                src="/images/instructor_minh.png"
+                alt="Giảng viên DAYAI hướng dẫn học AI"
+                fill
+                priority
+                sizes="(min-width: 1024px) 44vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+            <div className="grid gap-4 p-6">
+              <div className="flex items-center justify-between gap-4 border-b border-[var(--dayai-border)] pb-4">
+                <div>
+                  <div className="text-sm font-black text-[var(--dayai-text)]">Học tiếp hôm nay</div>
+                  <div className="mt-1 text-sm text-[var(--dayai-text-muted)]">Prompt Engineering | Buổi 3</div>
+                </div>
+                <span className="rounded-[var(--dayai-radius-full)] bg-[var(--dayai-surface-tint)] px-3 py-1 text-xs font-black text-[var(--dayai-primary)]">
+                  68%
+                </span>
+              </div>
+              <div className="grid gap-3 text-sm">
+                {[
+                  ["LMS", "Video và tài liệu đã mở"],
+                  ["Quiz", "1 bài kiểm tra đang chờ"],
+                  ["Portal", "Lịch học và thông báo mới"],
+                ].map(([title, desc]) => (
+                  <div key={title} className="flex items-center justify-between gap-4">
+                    <span className="font-black text-[var(--dayai-text)]">{title}</span>
+                    <span className="text-right text-[var(--dayai-text-muted)]">{desc}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProductSystem() {
+  return (
+    <section className="dayai-section bg-white">
+      <div className="dayai-container">
+        <SectionIntro
+          eyebrow="DAYAI gồm những gì"
+          title="Không chỉ là website khóa học. Đây là hệ điều hành đào tạo AI."
+          description="Các phần public, portal và admin được thiết kế để dùng cùng dữ liệu: tuyển sinh, lớp học, bài học, quiz, học phí, báo cáo và chăm sóc học viên."
+        />
+        <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {productPillars.map(([title, desc]) => (
+            <div key={title} className="dayai-card min-h-52 p-6">
+              <div className="text-sm font-black text-[var(--dayai-primary)]">{title}</div>
+              <p className="mt-6 text-base font-black leading-7 text-[var(--dayai-text)]">{desc}</p>
             </div>
           ))}
         </div>
-
-        <div className="mt-11 flex flex-col justify-center gap-3 sm:flex-row">
-          <a
-            href="#audience"
-            className="rounded-full bg-[#003A99] px-10 py-4 font-bold text-white shadow-2xl shadow-[#003A99]/20 transition hover:scale-[1.03]"
-          >
-            Chọn lộ trình phù hợp
-          </a>
-          <a
-            href="#playground"
-            className="rounded-full border border-black/10 bg-white/75 px-10 py-4 font-bold text-black shadow-sm backdrop-blur transition hover:border-[#00AEEF]/50"
-          >
-            Thử AI tư vấn
-          </a>
-        </div>
       </div>
     </section>
   );
 }
 
-function AnimatedEcosystemBackground() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,58,153,0.045)_1px,transparent_1px),linear-gradient(rgba(0,58,153,0.045)_1px,transparent_1px)] bg-[size:82px_82px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_72%)]" />
-      <div className="dayai-orbit absolute left-1/2 top-1/2 size-[760px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#003A99]/10" />
-      <div className="dayai-orbit dayai-orbit-slow absolute left-1/2 top-1/2 size-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#00AEEF]/14" />
-      <div className="absolute left-[18%] top-[24%] size-32 rounded-full bg-[#00AEEF]/16 blur-3xl" />
-      <div className="absolute right-[16%] top-[22%] size-36 rounded-full bg-[#F5B400]/18 blur-3xl" />
-      <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-blue-50 via-white/70 to-transparent" />
-    </div>
-  );
-}
-
-function AudienceSelection({
+function AudiencePath({
   selectedKey,
   onSelect,
+  advisorText,
 }: {
   selectedKey: string;
-  onSelect: (audience: (typeof audiences)[number]) => void;
+  onSelect: (audience: Audience) => void;
+  advisorText: string;
 }) {
-  return (
-    <section id="audience" className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
-      <SectionIntro
-        title="Một hệ sinh thái, năm hành trình học"
-        description="DAYAI không dạy AI đại trà. Mỗi nhóm người học có mục tiêu, tốc độ và cách thực hành khác nhau."
-      />
-      <div className="mt-10 grid gap-4 lg:grid-cols-5">
-        {audiences.map((audience) => {
-          const isSelected = selectedKey === audience.key;
+  const selected = audiences.find((audience) => audience.key === selectedKey) ?? audiences[0];
 
-          return (
-            <button
-              key={audience.key}
-              type="button"
-              onClick={() => onSelect(audience)}
-              className={`rounded-[1.75rem] border p-5 text-left transition ${
-                isSelected
-                  ? "border-[#003A99] bg-[#003A99] text-white shadow-2xl shadow-[#003A99]/20"
-                  : "border-black/10 bg-white text-black hover:-translate-y-1 hover:border-[#00AEEF]/50"
-              }`}
+  return (
+    <section className="dayai-section">
+      <div className="dayai-container">
+        <SectionIntro
+          eyebrow="Lộ trình theo vai trò"
+          title="Mỗi người học cần một cách tiếp cận AI khác nhau."
+          description="DAYAI không gom mọi người vào một lớp chung. Mỗi nhóm có mục tiêu, bài tập, portal theo dõi và tiêu chí tiến bộ riêng."
+        />
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_0.72fr]">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {audiences.map((audience) => {
+              const active = selectedKey === audience.key;
+              const accentStyle = {
+                "--audience-color": audience.token,
+              } as CSSProperties;
+
+              return (
+                <button
+                  key={audience.key}
+                  type="button"
+                  onClick={() => onSelect(audience)}
+                  style={accentStyle}
+                  className={`min-h-52 rounded-[var(--dayai-radius-xl)] border bg-white p-6 text-left shadow-[var(--dayai-shadow-xs)] transition hover:-translate-y-0.5 hover:shadow-[var(--dayai-shadow-sm)] ${
+                    active ? "border-[var(--dayai-primary)] ring-4 ring-blue-100" : "border-[var(--dayai-border)]"
+                  }`}
+                >
+                  <span className="inline-flex rounded-[var(--dayai-radius-full)] border border-[color-mix(in_srgb,var(--audience-color)_24%,white)] bg-[color-mix(in_srgb,var(--audience-color)_10%,white)] px-3 py-1 text-xs font-black text-[var(--audience-color)]">
+                    {audience.label}
+                  </span>
+                  <h3 className="mt-6 text-xl font-black text-[var(--dayai-text)]">{audience.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-[var(--dayai-text-muted)]">{audience.summary}</p>
+                </button>
+              );
+            })}
+          </div>
+
+          <aside className="dayai-dark rounded-[var(--dayai-radius-2xl)] border border-[var(--dayai-border)] bg-[var(--dayai-bg)] p-8 text-[var(--dayai-text)] shadow-[var(--dayai-shadow-md)]">
+            <div className="dayai-kicker text-[var(--dayai-accent)]">AI advisor</div>
+            <h3 className="mt-4 text-3xl font-black">{selected.label}</h3>
+            <p className="mt-4 text-sm leading-7 text-[var(--dayai-text-muted)]">{advisorText}</p>
+            <Link href={selected.href} className="dayai-btn mt-8 bg-white text-[var(--dayai-primary)]">
+              Xem lộ trình này
+            </Link>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CourseSection() {
+  return (
+    <section className="dayai-section border-y border-[var(--dayai-border)] bg-white">
+      <div className="dayai-container">
+        <SectionIntro
+          eyebrow="Khóa học"
+          title="Tập trung thực hành, đo được tiến độ."
+          description="Khóa học được nối với LMS, bài kiểm tra và báo cáo tiến bộ để học viên không chỉ xem nội dung mà còn biết mình đang tiến tới đâu."
+        />
+        <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {courses.map((course) => (
+            <Link
+              key={course.title}
+              href={course.href}
+              className="dayai-card group min-h-72 p-6 transition hover:-translate-y-0.5 hover:border-[var(--dayai-primary)] hover:shadow-[var(--dayai-shadow-sm)]"
             >
-              <div className={isSelected ? "text-sm font-bold text-white/72" : "text-sm font-bold text-[#003A99]"}>
-                {audience.label}
-              </div>
-              <div className={`mt-5 grid size-12 place-items-center rounded-2xl ${isSelected ? "bg-white/14 text-white" : "bg-blue-50 text-[#003A99]"}`}>
-                <HumanGrowthIcon />
-              </div>
-              <h3 className="mt-4 text-xl font-black">{audience.title}</h3>
-              <p className={isSelected ? "mt-3 text-sm leading-6 text-white/75" : "mt-3 text-sm leading-6 text-slate-600"}>
-                {audience.description}
-              </p>
-            </button>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function LearningJourney() {
-  return (
-    <section id="journey" className="bg-slate-950 py-24 text-white">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionIntro
-          dark
-          title="Từ người mới đến người dẫn dắt AI"
-          description="Lộ trình học được thiết kế như một hành trình tăng trưởng: hiểu, làm, áp dụng, tối ưu và dẫn dắt."
-        />
-        <div className="relative mt-12 overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-6">
-          <div className="absolute left-8 right-8 top-1/2 hidden h-px bg-gradient-to-r from-[#003A99] via-[#00AEEF] to-[#F5B400] lg:block" />
-          <div className="grid gap-4 lg:grid-cols-5">
-            {journey.map((step, index) => (
-              <div key={step} className="relative rounded-3xl border border-white/10 bg-slate-950/80 p-5">
-                <div className="grid size-12 place-items-center rounded-full bg-white text-lg font-black text-[#003A99]">
-                  <JourneyIcon />
-                </div>
-                <div className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-[#F5B400]">
-                  Chặng {index + 1}
-                </div>
-                <h3 className="mt-3 text-lg font-bold">{step}</h3>
-                <p className="mt-3 text-sm leading-6 text-white/55">
-                  Hoàn thành chặng {index + 1} để mở năng lực AI tiếp theo.
-                </p>
-              </div>
-            ))}
-          </div>
+              <div className="text-xs font-black text-[var(--dayai-primary)]">{course.meta}</div>
+              <h3 className="mt-6 text-2xl font-black leading-tight text-[var(--dayai-text)] group-hover:text-[var(--dayai-primary)]">
+                {course.title}
+              </h3>
+              <p className="mt-4 text-sm leading-7 text-[var(--dayai-text-muted)]">{course.summary}</p>
+              <span className="mt-8 inline-flex text-sm font-black text-[var(--dayai-primary)]">Xem chi tiết</span>
+            </Link>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-function FeaturedCourses() {
+function PortalSection() {
   return (
-    <section id="courses" className="py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionIntro
-          title="Khóa học nổi bật"
-          description="Trải nghiệm duyệt khóa theo kiểu thư viện nội dung cao cấp: rõ đối tượng, rõ kết quả, dễ chọn bước tiếp theo."
-        />
-      </div>
-      <div className="mt-10 flex snap-x gap-5 overflow-x-auto px-5 pb-6 sm:px-8 lg:px-[max(2rem,calc((100vw-80rem)/2+2rem))]">
-        {courses.map((course) => (
-          <article
-            key={course.title}
-            className="min-h-[360px] w-[310px] shrink-0 snap-start overflow-hidden rounded-[2rem] bg-slate-950 text-white shadow-2xl shadow-slate-950/10 sm:w-[380px]"
-          >
-            <div className={`h-36 bg-gradient-to-br ${course.color}`} />
-            <div className="p-6">
-              <div className="text-sm font-bold text-[#F5B400]">{course.duration}</div>
-              <div className="mb-5 mt-4 grid size-12 place-items-center rounded-2xl bg-white/10 text-[#F5B400]">
-                <CourseIcon />
-              </div>
-              <h3 className="mt-3 font-display text-4xl leading-none">{course.title}</h3>
-              <p className="mt-3 text-sm font-semibold text-white/60">{course.audience}</p>
-              <Link
-                href="/khoa-hoc/ai-can-ban"
-                className="mt-8 inline-flex rounded-full bg-white px-5 py-3 text-sm font-bold text-black"
-              >
-                Xem landing khóa học
-              </Link>
-            </div>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function AiPlayground({
-  selectedAudience,
-  advisorGoal,
-  advisorResult,
-  onGoalChange,
-}: {
-  selectedAudience: (typeof audiences)[number];
-  advisorGoal: string;
-  advisorResult: string;
-  onGoalChange: (value: string) => void;
-}) {
-  return (
-    <section id="playground" className="mx-auto max-w-7xl px-5 py-24 sm:px-8">
-      <div className="grid gap-10 rounded-[2.5rem] border border-black/10 bg-blue-50 p-6 sm:p-10 lg:grid-cols-[0.85fr_1.15fr]">
+    <section className="dayai-section">
+      <div className="dayai-container grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <div>
-          <h2 className="font-display text-5xl leading-none tracking-[-0.03em] sm:text-6xl">
-            AI Playground
-          </h2>
-          <p className="mt-6 text-lg leading-8 text-slate-600">
-            Một cố vấn AI mô phỏng giúp người học chọn hướng đi trước khi gặp
-            tư vấn viên DAYAI.
-          </p>
-        </div>
-        <div className="rounded-[2rem] bg-white p-5 shadow-2xl shadow-[#003A99]/10">
-          <div className="text-sm font-bold text-[#003A99]">
-            Đang tư vấn cho: {selectedAudience.label}
-          </div>
-          <textarea
-            value={advisorGoal}
-            onChange={(event) => onGoalChange(event.target.value)}
-            className="mt-4 min-h-32 w-full resize-none rounded-3xl border border-black/10 px-5 py-4 outline-none focus:border-[#00AEEF] focus:ring-4 focus:ring-[#00AEEF]/10"
-            placeholder="Nhập mục tiêu học AI của bạn..."
+          <SectionIntro
+            eyebrow="Portal học viên"
+            title="Không chỉ học video. Học viên có dashboard riêng."
+            description="Sprint 34 đã đưa quiz online vào portal. Sprint 35 bắt đầu chuẩn hóa giao diện để học viên nhìn ngay được việc cần làm tiếp."
           />
-          <div className="mt-4 rounded-3xl bg-slate-950 p-5 text-white">
-            <div className="text-xs font-bold uppercase tracking-[0.18em] text-[#F5B400]">
-              Gợi ý lộ trình
-            </div>
-            <p className="mt-3 leading-7 text-white/80">{advisorResult}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/portal/" className="dayai-btn dayai-btn-primary">
+              Mở portal học viên
+            </Link>
+            <Link href="/company-portal/" className="dayai-btn dayai-btn-secondary">
+              Xem HR portal
+            </Link>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
 
-function EcosystemVisualization() {
-  return (
-    <section className="bg-white py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionIntro
-          title="Ecosystem Visualization"
-          description="DAYAI kết nối học viên, phụ huynh, giảng viên, doanh nghiệp và dữ liệu tiến bộ thành một hệ thống học tập liên tục."
-        />
-        <div className="relative mt-12 min-h-[520px] overflow-hidden rounded-[2.5rem] border border-black/10 bg-slate-950 p-8 text-white">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,174,239,0.22),transparent_38%)]" />
-          <div className="relative mx-auto grid min-h-[460px] max-w-4xl place-items-center">
-            <div className="dayai-pulse grid size-40 place-items-center rounded-full bg-white text-center text-xl font-black text-[#003A99]">
-              DAYAI
+        <div className="dayai-card p-6 shadow-[var(--dayai-shadow-md)]">
+          <div className="flex items-center justify-between gap-4 border-b border-[var(--dayai-border)] pb-6">
+            <div>
+              <div className="dayai-kicker">Student portal</div>
+              <div className="mt-2 text-2xl font-black">Học tiếp hôm nay</div>
             </div>
-            {["Kids", "Student", "Work", "Business", "Enterprise"].map((node, index) => (
-              <div
-                key={node}
-                className="absolute rounded-full border border-white/15 bg-white/10 px-5 py-3 text-sm font-bold backdrop-blur"
-                style={{
-                  transform: `rotate(${index * 72}deg) translate(210px) rotate(-${index * 72}deg)`,
-                }}
-              >
-                AI {node}
+            <span className="rounded-[var(--dayai-radius-full)] bg-green-50 px-3 py-1 text-xs font-black text-green-700">
+              Đang học
+            </span>
+          </div>
+          <div className="mt-6 grid gap-4">
+            {portalHighlights.map((item, index) => (
+              <div key={item} className="flex items-start gap-4 border-b border-[var(--dayai-border)] pb-4 last:border-0 last:pb-0">
+                <span className="grid size-8 shrink-0 place-items-center rounded-[var(--dayai-radius-full)] bg-[var(--dayai-primary)] text-xs font-black text-white">
+                  {index + 1}
+                </span>
+                <span className="text-sm font-bold leading-6 text-[var(--dayai-text-muted)]">{item}</span>
               </div>
             ))}
           </div>
@@ -461,40 +423,26 @@ function EcosystemVisualization() {
   );
 }
 
-function SuccessMetrics() {
+function ResourceSection() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {metrics.map((metric) => (
-          <div key={metric.label} className="rounded-[2rem] border border-black/10 p-7">
-            <div className="font-display text-6xl leading-none text-[#003A99]">
-              {metric.value}
-            </div>
-            <div className="mt-4 text-sm font-bold uppercase tracking-[0.16em] text-slate-500">
-              {metric.label}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function StudentStories() {
-  return (
-    <section id="stories" className="bg-blue-50 py-24">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section className="dayai-dark dayai-section bg-[var(--dayai-bg)] text-[var(--dayai-text)]">
+      <div className="dayai-container">
         <SectionIntro
-          title="Câu chuyện thành công"
-          description="Không kể chuyện viển tưởng về AI. DAYAI tập trung vào thay đổi cụ thể trong học tập, công việc và vận hành."
+          eyebrow="Tài nguyên"
+          title="Kho kiến thức AI để nuôi dưỡng lead và hỗ trợ học viên."
+          description="Các cụm nội dung giúp người học hiểu AI trước khi đăng ký và có tài liệu tham khảo trong quá trình học."
+          inverse
         />
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {stories.map((story) => (
-            <article key={story.name} className="rounded-[2rem] bg-white p-7 shadow-sm">
-              <div className="text-sm font-bold text-[#003A99]">{story.role}</div>
-              <h3 className="mt-4 text-2xl font-black">{story.name}</h3>
-              <p className="mt-5 leading-7 text-slate-600">{story.result}</p>
-            </article>
+        <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {resources.map((resource) => (
+            <Link
+              key={resource.href}
+              href={resource.href}
+              className="rounded-[var(--dayai-radius-xl)] border border-[var(--dayai-border)] bg-[var(--dayai-surface)] p-6 transition hover:-translate-y-0.5 hover:border-[var(--dayai-accent)]"
+            >
+              <h3 className="text-xl font-black">{resource.title}</h3>
+              <p className="mt-4 text-sm leading-6 text-[var(--dayai-text-muted)]">{resource.desc}</p>
+            </Link>
           ))}
         </div>
       </div>
@@ -504,19 +452,32 @@ function StudentStories() {
 
 function InstructorSection() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8">
-      <SectionIntro
-        title="Giảng viên dẫn đường"
-        description="Hồ sơ sạch, ít phô trương, tập trung vào chuyên môn và khả năng giúp người học đi từ hiểu đến làm được."
-      />
-      <div className="mt-10 grid gap-5 lg:grid-cols-3">
-        {instructors.map((instructor) => (
-          <article key={instructor.name} className="rounded-[2rem] border border-black/10 p-6">
-            <div className="aspect-[4/3] rounded-[1.5rem] bg-gradient-to-br from-slate-100 to-blue-100" />
-            <h3 className="mt-6 text-2xl font-black">{instructor.name}</h3>
-            <p className="mt-2 text-slate-600">{instructor.focus}</p>
-          </article>
-        ))}
+    <section className="dayai-section bg-white">
+      <div className="dayai-container">
+        <SectionIntro
+          eyebrow="Mentor"
+          title="Giảng viên thực chiến, không chỉ dạy công cụ."
+          description="Đội ngũ mentor hướng dẫn theo mục tiêu học tập, theo bài thực hành và theo năng lực cần đạt của từng nhóm học viên."
+        />
+        <div className="mt-12 grid gap-4 md:grid-cols-3">
+          {instructorCards.map((instructor) => (
+            <article key={instructor.name} className="dayai-card overflow-hidden">
+              <div className="relative aspect-[4/3] bg-[var(--dayai-surface-muted)]">
+                <Image
+                  src={instructor.image}
+                  alt={instructor.name}
+                  fill
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-black">{instructor.name}</h3>
+                <p className="mt-2 text-sm font-semibold leading-6 text-[var(--dayai-text-muted)]">{instructor.role}</p>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -524,99 +485,45 @@ function InstructorSection() {
 
 function FinalCta() {
   return (
-    <section id="final-cta" className="px-5 pb-24 sm:px-8">
-      <div className="mx-auto max-w-7xl rounded-[2.75rem] bg-[#003A99] px-6 py-20 text-center text-white sm:px-10">
-        <h2 className="font-display mx-auto max-w-4xl text-5xl leading-[1.05] tracking-[-0.02em] sm:text-7xl">
-          Bắt đầu hành trình AI của bạn hôm nay
-        </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/72">
-          Chọn đúng lộ trình ngay từ đầu để học AI có định hướng, có thực hành
-          và có người đồng hành.
-        </p>
-        <Link
-          href="/khoa-hoc/ai-can-ban"
-          className="mt-10 inline-flex rounded-full bg-white px-10 py-4 font-bold text-[#003A99] transition hover:scale-[1.03]"
-        >
-          Xem khóa AI Căn Bản
-        </Link>
+    <section className="bg-white px-0 pb-24">
+      <div className="dayai-container rounded-[var(--dayai-radius-2xl)] bg-[var(--dayai-primary)] px-6 py-16 text-center text-white shadow-[var(--dayai-shadow-md)] sm:px-10">
+        <div className="mx-auto max-w-3xl">
+          <div className="text-xs font-black uppercase">Bắt đầu sprint học AI của bạn</div>
+          <h2 className="mt-4 text-4xl font-black leading-tight sm:text-5xl">
+            Chọn đúng lộ trình trước khi chọn công cụ.
+          </h2>
+          <p className="mt-6 text-sm leading-7 text-blue-50">
+            DAYAI giúp bạn xác định mục tiêu, học theo bài thực hành và theo dõi tiến bộ qua portal.
+          </p>
+          <Link href="/dang-ky-tu-van/" className="dayai-btn mt-8 bg-white text-[var(--dayai-primary)]">
+            Đăng ký tư vấn
+          </Link>
+        </div>
       </div>
     </section>
   );
 }
 
 function SectionIntro({
+  eyebrow,
   title,
   description,
-  dark = false,
+  inverse = false,
 }: {
+  eyebrow: string;
   title: string;
   description: string;
-  dark?: boolean;
+  inverse?: boolean;
 }) {
   return (
     <div className="max-w-3xl">
-      <h2 className={`font-display text-5xl leading-[1.05] tracking-[-0.02em] sm:text-6xl ${dark ? "text-white" : "text-black"}`}>
+      <div className={`dayai-kicker ${inverse ? "text-[var(--dayai-accent)]" : ""}`}>{eyebrow}</div>
+      <h2 className={`mt-4 text-3xl font-black leading-tight sm:text-4xl ${inverse ? "text-white" : "text-[var(--dayai-text)]"}`}>
         {title}
       </h2>
-      <p className={`mt-5 text-lg leading-8 ${dark ? "text-white/62" : "text-slate-600"}`}>
+      <p className={`mt-5 text-sm leading-7 ${inverse ? "text-[var(--dayai-text-muted)]" : "text-[var(--dayai-text-muted)]"}`}>
         {description}
       </p>
     </div>
-  );
-}
-
-function HumanGrowthIcon() {
-  return (
-    <svg aria-hidden="true" className="size-6" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M5 18c4.5-.5 7.5-3.4 8.2-8.8M9 19c5.6-.4 9.2-3.8 10-10"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="1.8"
-      />
-      <path
-        d="M5.5 13.5c2.9 0 5-2.1 5-5m4 1.5 4.5-1.5-1.2 4.5"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-    </svg>
-  );
-}
-
-function JourneyIcon() {
-  return (
-    <svg aria-hidden="true" className="size-6" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M4 17c3.5-6 9-9 16-10"
-        stroke="currentColor"
-        strokeLinecap="round"
-        strokeWidth="2"
-      />
-      <path
-        d="M6 17h4v3H6zM13 12h4v8h-4z"
-        fill="currentColor"
-        opacity="0.18"
-      />
-      <circle cx="5" cy="17" r="1.6" fill="currentColor" />
-      <circle cx="12" cy="11" r="1.6" fill="currentColor" />
-      <circle cx="19" cy="7" r="1.6" fill="currentColor" />
-    </svg>
-  );
-}
-
-function CourseIcon() {
-  return (
-    <svg aria-hidden="true" className="size-6" viewBox="0 0 24 24" fill="none">
-      <path
-        d="M5 6.5A2.5 2.5 0 0 1 7.5 4H19v15H7.5A2.5 2.5 0 0 1 5 16.5z"
-        stroke="currentColor"
-        strokeLinejoin="round"
-        strokeWidth="1.8"
-      />
-      <path d="M8 8h7M8 11h5" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
-      <path d="M7 19a2 2 0 0 1 0-4h12" stroke="currentColor" strokeLinecap="round" strokeWidth="1.8" />
-    </svg>
   );
 }

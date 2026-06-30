@@ -1,4 +1,4 @@
-﻿<x-filament-panels::page>
+<x-filament-panels::page>
     @php
         $summary = $this->getSummary();
         $leadFunnel = $this->getLeadFunnel();
@@ -40,70 +40,81 @@
     @endphp
 
     <style>
-        .dayai-dashboard { display: grid; gap: 24px; }
-        .dayai-hero { position: relative; overflow: hidden; border-radius: 28px; padding: 28px; color: #fff; background: radial-gradient(circle at 10% 20%, rgba(0, 174, 239, .48), transparent 28%), radial-gradient(circle at 82% 12%, rgba(245, 180, 0, .35), transparent 24%), linear-gradient(135deg, #031633 0%, #003a99 52%, #07111f 100%); box-shadow: 0 24px 80px rgba(0, 58, 153, .28); }
-        .dayai-hero:after { content: ''; position: absolute; inset: -80px -120px auto auto; width: 360px; height: 360px; border-radius: 999px; background: rgba(255,255,255,.13); filter: blur(6px); }
-        .dayai-hero__content { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 18px; }
-        .dayai-eyebrow { margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #bfefff; }
-        .dayai-title { margin: 0; max-width: 760px; font-size: clamp(30px, 4vw, 52px); line-height: 1.02; font-weight: 850; letter-spacing: -.04em; }
-        .dayai-subtitle { margin: 14px 0 0; max-width: 760px; color: rgba(255,255,255,.78); font-size: 15px; line-height: 1.7; }
-        .dayai-hero__badge { border: 1px solid rgba(255,255,255,.24); border-radius: 18px; padding: 14px 16px; background: rgba(255,255,255,.1); backdrop-filter: blur(16px); min-width: 190px; }
-        .dayai-hero__badge strong { display: block; font-size: 28px; line-height: 1; }
-        .dayai-hero__badge span { display: block; margin-top: 6px; color: rgba(255,255,255,.72); font-size: 12px; }
-        .dayai-grid { display: grid; gap: 16px; }
+        .dayai-dashboard { display: grid; gap: 24px; font-family: ui-sans-serif, system-ui, sans-serif; }
+        .dayai-hero { position: relative; overflow: hidden; border-radius: 24px; padding: 32px; color: #fff; background: radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.3), transparent 45%), radial-gradient(circle at 90% 80%, rgba(79, 70, 229, 0.3), transparent 45%), linear-gradient(135deg, #090d16 0%, #1e1b4b 100%); box-shadow: 0 20px 50px rgba(9, 9, 11, 0.3); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.3s ease; }
+        .dayai-hero::after { content: ''; position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%); filter: blur(40px); pointer-events: none; }
+        .dayai-hero__content { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+        .dayai-eyebrow { margin: 0 0 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #38bdf8; text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3); }
+        .dayai-title { margin: 0; max-width: 760px; font-size: clamp(26px, 3.5vw, 44px); line-height: 1.1; font-weight: 850; letter-spacing: -0.03em; background: linear-gradient(135deg, #fff 40%, #e2e8f0 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .dayai-subtitle { margin: 12px 0 0; max-width: 700px; color: #94a3b8; font-size: 14px; line-height: 1.6; }
+        .dayai-hero__badge { border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 16px 20px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); min-width: 200px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); text-align: center; }
+        .dayai-hero__badge strong { display: block; font-size: 32px; line-height: 1; font-weight: 900; background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .dayai-hero__badge span { display: block; margin-top: 6px; color: #94a3b8; font-size: 12px; font-weight: 500; }
+        .dayai-grid { display: grid; gap: 20px; }
         .dayai-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
         .dayai-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
         .dayai-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        .dayai-card { overflow: hidden; border: 1px solid rgba(148, 163, 184, .22); border-radius: 22px; background: var(--dayai-card-bg, #fff); box-shadow: 0 14px 40px rgba(15, 23, 42, .06); }
-        .dark .dayai-card { --dayai-card-bg: #101827; border-color: rgba(255,255,255,.1); box-shadow: 0 14px 50px rgba(0,0,0,.24); }
-        .dayai-kpi { position: relative; min-height: 145px; padding: 20px; }
-        .dayai-kpi:before { content: ''; position: absolute; inset: 0 0 auto; height: 4px; background: var(--accent, #00aeef); }
-        .dayai-kpi__label { color: #64748b; font-size: 13px; font-weight: 750; }
-        .dark .dayai-kpi__label { color: #9ca3af; }
-        .dayai-kpi__value { margin-top: 16px; color: #0f172a; font-size: 34px; line-height: 1; font-weight: 850; letter-spacing: -.04em; }
-        .dark .dayai-kpi__value { color: #fff; }
-        .dayai-kpi__hint { margin-top: 12px; color: #64748b; font-size: 13px; }
-        .dark .dayai-kpi__hint { color: #aab3c2; }
-        .dayai-tone-blue { --accent: #00aeef; }
-        .dayai-tone-green { --accent: #22c55e; }
-        .dayai-tone-indigo { --accent: #6366f1; }
-        .dayai-tone-gold { --accent: #f5b400; }
-        .dayai-section { padding: 20px; }
-        .dayai-section__head { display: flex; align-items: start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
-        .dayai-section__title { margin: 0; color: #0f172a; font-size: 17px; font-weight: 850; letter-spacing: -.02em; }
-        .dark .dayai-section__title { color: #fff; }
-        .dayai-section__desc { margin: 6px 0 0; color: #64748b; font-size: 13px; line-height: 1.6; }
-        .dark .dayai-section__desc { color: #9ca3af; }
-        .dayai-pill { display: inline-flex; align-items: center; border-radius: 999px; padding: 6px 10px; background: rgba(0, 174, 239, .12); color: #0076bd; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; white-space: nowrap; }
-        .dark .dayai-pill { background: rgba(0, 174, 239, .18); color: #7ddcff; }
-        .dayai-mini-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-        .dayai-mini { border-radius: 16px; padding: 15px; background: #f8fafc; border: 1px solid rgba(148, 163, 184, .16); }
-        .dark .dayai-mini { background: rgba(255,255,255,.045); border-color: rgba(255,255,255,.08); }
-        .dayai-mini__label { color: #64748b; font-size: 12px; line-height: 1.4; }
-        .dark .dayai-mini__label { color: #aab3c2; }
-        .dayai-mini__value { margin-top: 10px; color: #0f172a; font-size: 21px; font-weight: 850; letter-spacing: -.03em; }
-        .dark .dayai-mini__value { color: #fff; }
-        .dayai-table-wrap { overflow-x: auto; }
+        .dayai-card { overflow: hidden; border-radius: 20px; background: #ffffff; border: 1px solid rgba(226, 232, 240, 0.8); box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03), 0 1px 3px rgba(15, 23, 42, 0.02); transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
+        .dayai-card:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06), 0 2px 8px rgba(15, 23, 42, 0.04); }
+        .dark .dayai-card { background: #111827; border-color: rgba(255, 255, 255, 0.05); box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2); }
+        .dark .dayai-card:hover { box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35); }
+        .dayai-kpi { position: relative; min-height: 140px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        .dayai-kpi::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent, #0ea5e9); border-top-left-radius: 20px; border-bottom-left-radius: 20px; }
+        .dayai-kpi__label { color: #64748b; font-size: 13px; font-weight: 600; letter-spacing: 0.01em; }
+        .dark .dayai-kpi__label { color: #94a3b8; }
+        .dayai-kpi__value { margin-top: 12px; color: #0f172a; font-size: 32px; line-height: 1; font-weight: 800; letter-spacing: -0.03em; }
+        .dark .dayai-kpi__value { color: #f8fafc; }
+        .dayai-kpi__hint { margin-top: 12px; color: #64748b; font-size: 12px; display: flex; align-items: center; gap: 4px; }
+        .dark .dayai-kpi__hint { color: #94a3b8; }
+        .dayai-tone-blue { --accent: #0284c7; }
+        .dayai-tone-green { --accent: #16a34a; }
+        .dayai-tone-indigo { --accent: #4f46e5; }
+        .dayai-tone-gold { --accent: #d97706; }
+        .dayai-section { padding: 24px; }
+        .dayai-section__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid rgba(226, 232, 240, 0.8); padding-bottom: 16px; }
+        .dark .dayai-section__head { border-bottom-color: rgba(255, 255, 255, 0.05); }
+        .dayai-section__title { margin: 0; color: #0f172a; font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+        .dark .dayai-section__title { color: #f8fafc; }
+        .dayai-section__desc { margin: 4px 0 0; color: #64748b; font-size: 13px; line-height: 1.5; }
+        .dark .dayai-section__desc { color: #94a3b8; }
+        .dayai-pill { display: inline-flex; align-items: center; border-radius: 8px; padding: 4px 8px; background: rgba(2, 132, 199, 0.08); color: #0284c7; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+        .dark .dayai-pill { background: rgba(56, 189, 248, 0.12); color: #38bdf8; }
+        .dayai-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; color: #fff; background: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%); border-radius: 10px; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); transition: all 0.2s ease-in-out; cursor: pointer; border: none; outline: none; }
+        .dayai-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(2, 132, 199, 0.35); filter: brightness(1.08); }
+        .dayai-btn-primary:active { transform: translateY(0); }
+        .dayai-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+        .dayai-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: #fff; animation: dayai-spin 1s ease-in-out infinite; }
+        @keyframes dayai-spin { to { transform: rotate(360deg); } }
+        .dayai-mini-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+        .dayai-mini { border-radius: 14px; padding: 18px; background: #f8fafc; border: 1px solid rgba(226, 232, 240, 0.8); transition: background-color 0.2s ease; }
+        .dark .dayai-mini { background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.04); }
+        .dayai-mini__label { color: #64748b; font-size: 12px; font-weight: 500; }
+        .dark .dayai-mini__label { color: #94a3b8; }
+        .dayai-mini__value { margin-top: 8px; color: #0f172a; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+        .dark .dayai-mini__value { color: #f8fafc; }
+        .dayai-table-wrap { overflow-x: auto; margin: 0 -24px -24px; }
         .dayai-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
-        .dayai-table th { background: #f8fafc; color: #64748b; font-size: 11px; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; text-align: left; padding: 12px 16px; border-bottom: 1px solid rgba(148, 163, 184, .18); }
-        .dark .dayai-table th { background: rgba(255,255,255,.045); color: #aab3c2; border-color: rgba(255,255,255,.08); }
-        .dayai-table td { color: #334155; padding: 14px 16px; border-bottom: 1px solid rgba(148, 163, 184, .14); vertical-align: middle; }
-        .dark .dayai-table td { color: #d1d5db; border-color: rgba(255,255,255,.07); }
+        .dayai-table th { background: #f8fafc; color: #475569; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; text-align: left; padding: 12px 24px; border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
+        .dark .dayai-table th { background: rgba(255, 255, 255, 0.02); color: #94a3b8; border-bottom-color: rgba(255, 255, 255, 0.05); }
+        .dayai-table td { color: #334155; padding: 14px 24px; border-bottom: 1px solid rgba(226, 232, 240, 0.5); vertical-align: middle; }
+        .dark .dayai-table td { color: #cbd5e1; border-bottom-color: rgba(255, 255, 255, 0.03); }
         .dayai-table tr:last-child td { border-bottom: 0; }
-        .dayai-table .strong { color: #0f172a; font-weight: 800; }
-        .dark .dayai-table .strong { color: #fff; }
+        .dayai-table .strong { color: #0f172a; font-weight: 700; }
+        .dark .dayai-table .strong { color: #f8fafc; }
         .dayai-right { text-align: right !important; }
-        .dayai-list { display: grid; gap: 10px; }
-        .dayai-list-item { display: flex; align-items: center; justify-content: space-between; gap: 14px; border-radius: 16px; padding: 13px 14px; background: #f8fafc; border: 1px solid rgba(148, 163, 184, .14); }
-        .dark .dayai-list-item { background: rgba(255,255,255,.045); border-color: rgba(255,255,255,.08); }
-        .dayai-list-item__title { color: #0f172a; font-size: 13px; font-weight: 800; }
-        .dark .dayai-list-item__title { color: #fff; }
+        .dayai-list { display: grid; gap: 12px; }
+        .dayai-list-item { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-radius: 14px; padding: 14px 18px; background: #f8fafc; border: 1px solid rgba(226, 232, 240, 0.5); transition: all 0.2s ease; }
+        .dayai-list-item:hover { background: #f1f5f9; border-color: rgba(226, 232, 240, 0.8); }
+        .dark .dayai-list-item { background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.04); }
+        .dark .dayai-list-item:hover { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.08); }
+        .dayai-list-item__title { color: #0f172a; font-size: 13px; font-weight: 700; }
+        .dark .dayai-list-item__title { color: #f8fafc; }
         .dayai-list-item__meta { margin-top: 4px; color: #64748b; font-size: 12px; }
-        .dark .dayai-list-item__meta { color: #aab3c2; }
-        .dayai-list-item__value { color: #0f172a; font-size: 13px; font-weight: 850; text-align: right; white-space: nowrap; }
-        .dark .dayai-list-item__value { color: #fff; }
-        .dayai-empty { padding: 28px 16px; color: #64748b; text-align: center; font-size: 13px; }
-        .dark .dayai-empty { color: #aab3c2; }
+        .dark .dayai-list-item__meta { color: #94a3b8; }
+        .dayai-list-item__value { color: #0f172a; font-size: 13px; font-weight: 800; text-align: right; white-space: nowrap; }
+        .dark .dayai-list-item__value { color: #f8fafc; }
+        .dayai-empty { padding: 32px 24px; color: #64748b; text-align: center; font-size: 13px; }
+        .dark .dayai-empty { color: #94a3b8; }
         @media (max-width: 1100px) { .dayai-grid--4, .dayai-mini-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dayai-grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width: 760px) { .dayai-hero { padding: 22px; } .dayai-grid--4, .dayai-grid--3, .dayai-grid--2, .dayai-mini-grid { grid-template-columns: 1fr; } .dayai-section__head { display: block; } .dayai-pill { margin-top: 10px; } }
     </style>
@@ -265,7 +276,19 @@
         <section class="dayai-card dayai-section">
             <div class="dayai-section__head">
                 <div><h2 class="dayai-section__title">Automation health</h2><p class="dayai-section__desc">Theo dõi workflow chăm sóc lead, lịch học và công nợ.</p></div>
-                <span class="dayai-pill">Workflow</span>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button 
+                        type="button" 
+                        wire:click="runAutomation" 
+                        wire:loading.attr="disabled"
+                        class="dayai-btn-primary"
+                    >
+                        <span wire:loading wire:target="runAutomation" class="dayai-spinner"></span>
+                        <span wire:loading.remove wire:target="runAutomation">Chạy thử Automation ngay</span>
+                        <span wire:loading wire:target="runAutomation">Đang xử lý...</span>
+                    </button>
+                    <span class="dayai-pill">Workflow</span>
+                </div>
             </div>
             <div class="dayai-mini-grid">
                 <div class="dayai-mini"><div class="dayai-mini__label">Workflow active</div><div class="dayai-mini__value">{{ number_format($automationHealth['active_workflow_count']) }}</div></div>

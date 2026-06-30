@@ -51,4 +51,6 @@ class VideoLesson extends Model
     public function course(): BelongsTo { return $this->belongsTo(Course::class); }
     public function courseModule(): BelongsTo { return $this->belongsTo(CourseModule::class); }
     public function progressRecords(): HasMany { return $this->hasMany(VideoLessonProgress::class); }
+    public function questionBanks(): HasMany { return $this->hasMany(QuestionBank::class); }
+    public function questions(): HasMany { return $this->hasMany(Question::class); }
 }

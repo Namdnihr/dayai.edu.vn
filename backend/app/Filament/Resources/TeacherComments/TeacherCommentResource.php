@@ -34,9 +34,9 @@ class TeacherCommentResource extends Resource
 
     protected static ?string $pluralModelLabel = 'nhận xét giáo viên';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Tiến bộ học viên';
+    protected static string|UnitEnum|null $navigationGroup = 'LMS & Khóa học';
 
-    protected static ?int $navigationSort = 30;
+    protected static ?int $navigationSort = 60;
 
     public static function form(Schema $schema): Schema
     {

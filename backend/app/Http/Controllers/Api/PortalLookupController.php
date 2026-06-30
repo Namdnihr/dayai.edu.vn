@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Assessment;
 use App\Models\CustomerAccount;
 use App\Models\GuardianRelation;
 use App\Models\Notification;
 use App\Models\PortalAuthToken;
+use App\Models\QuizAttempt;
 use App\Models\StudentProfile;
 use App\Models\VideoLesson;
 use App\Models\VideoLessonProgress;
@@ -36,6 +38,7 @@ class PortalLookupController extends Controller
                 'attendanceRecords.classSession.classGroup',
                 'assessmentResults.assessment',
                 'assessmentResults.teacherProfile.person',
+                'quizAttempts.assessment',
                 'teacherComments.classSession',
                 'teacherComments.teacherProfile.person',
                 'progressReports.teacherProfile.person',
@@ -54,7 +57,7 @@ class PortalLookupController extends Controller
 
         if (! $student) {
             return response()->json([
-                'message' => 'Không tìm thấy học viên với thông tin đã nhập.',
+                'message' => 'Kh?ng t?m th?y h?c vi?n v?i th?ng tin ?? nh?p.',
             ], 404);
         }
 
@@ -62,7 +65,7 @@ class PortalLookupController extends Controller
 
         if (! $portalAccess) {
             return response()->json([
-                'message' => 'Phiên portal không hợp lệ hoặc đã hết hạn. Vui lòng xác thực lại.',
+                'message' => 'Phi?n portal kh?ng h?p l? ho?c ?? h?t h?n. Vui l?ng x?c th?c l?i.',
             ], 401);
         }
 
@@ -117,6 +120,8 @@ class PortalLookupController extends Controller
             'excused' => $student->attendanceRecords->where('status', 'excused')->count(),
         ];
 
+        $courseIds = $student->enrollments->pluck('course_id')->filter()->unique()->values();
+
         $assessmentResults = $student->assessmentResults
             ->where('status', 'published')
             ->sortByDesc('assessed_at')
@@ -132,6 +137,50 @@ class PortalLookupController extends Controller
                 'improvements' => $result->improvements,
                 'teacher' => $result->teacherProfile?->person?->full_name,
                 'assessed_at' => $result->assessed_at?->toDateTimeString(),
+            ])
+            ->values();
+
+        $classGroupIds = $student->enrollments->pluck('class_group_id')->filter()->unique()->values();
+        $availableAssessments = Assessment::query()
+            ->with(['course', 'courseModule', 'videoLesson'])
+            ->withCount('assessmentQuestions')
+            ->where('tenant_id', $student->tenant_id)
+            ->where('status', 'published')
+            ->whereIn('assessment_type', ['entry', 'quiz', 'practice', 'final'])
+            ->where(function ($query) use ($courseIds, $classGroupIds): void {
+                $query->whereIn('course_id', $courseIds)
+                    ->orWhereIn('class_group_id', $classGroupIds);
+            })
+            ->orderByDesc('assessment_at')
+            ->get()
+            ->map(fn (Assessment $assessment): array => [
+                'id' => $assessment->id,
+                'title' => $assessment->title,
+                'assessment_type' => $assessment->assessment_type,
+                'course' => $assessment->course?->name,
+                'module' => $assessment->courseModule?->title,
+                'video' => $assessment->videoLesson?->title,
+                'description' => $assessment->description,
+                'max_score' => (float) $assessment->max_score,
+                'question_count' => (int) $assessment->assessment_questions_count,
+                'assessment_at' => $assessment->assessment_at?->toDateTimeString(),
+            ])
+            ->values();
+
+        $quizAttempts = $student->quizAttempts
+            ->sortByDesc('created_at')
+            ->take(10)
+            ->map(fn (QuizAttempt $attempt): array => [
+                'attempt_code' => $attempt->attempt_code,
+                'assessment_id' => $attempt->assessment_id,
+                'assessment' => $attempt->assessment?->title,
+                'attempt_no' => $attempt->attempt_no,
+                'status' => $attempt->status,
+                'score' => $attempt->score !== null ? (float) $attempt->score : null,
+                'max_score' => (float) $attempt->max_score,
+                'correct_count' => $attempt->correct_count,
+                'question_count' => $attempt->question_count,
+                'submitted_at' => $attempt->submitted_at?->toDateTimeString(),
             ])
             ->values();
 
@@ -187,7 +236,6 @@ class PortalLookupController extends Controller
             ])->values(),
         ];
 
-        $courseIds = $student->enrollments->pluck('course_id')->filter()->unique()->values();
         $lessonProgress = VideoLessonProgress::query()
             ->where('tenant_id', $student->tenant_id)
             ->where('student_profile_id', $student->id)
@@ -352,6 +400,8 @@ class PortalLookupController extends Controller
             'upcoming_sessions' => $upcomingSessions,
             'attendance' => $attendance,
             'assessment_results' => $assessmentResults,
+            'available_assessments' => $availableAssessments,
+            'quiz_attempts' => $quizAttempts,
             'teacher_comments' => $teacherComments,
             'progress_reports' => $progressReports,
             'finance' => $finance,

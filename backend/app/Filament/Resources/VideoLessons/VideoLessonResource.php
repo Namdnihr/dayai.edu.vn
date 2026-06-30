@@ -28,13 +28,13 @@ class VideoLessonResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::VideoCamera;
 
-    protected static ?string $navigationLabel = 'Video Academy';
+    protected static ?string $navigationLabel = 'Bài học video';
 
-    protected static ?string $modelLabel = 'video bài học';
+    protected static ?string $modelLabel = 'bài học video';
 
-    protected static ?string $pluralModelLabel = 'video academy';
+    protected static ?string $pluralModelLabel = 'bài học video';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Nội dung';
+    protected static string|UnitEnum|null $navigationGroup = 'LMS & Khóa học';
 
     protected static ?int $navigationSort = 30;
 

@@ -1,610 +1,694 @@
-# DAYAI - Current Sprint
+﻿# DAYAI - Current Sprint
 
-File này dùng để biết ngay dự án đang ở đâu và bước tiếp theo là gì. Nếu có thay đổi ưu tiên, cập nhật file này trước rồi mới triển khai.
+File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä‘Ã¢u vÃ  bÆ°á»›c tiáº¿p theo lÃ  gÃ¬. Náº¿u cÃ³ thay Ä‘á»•i Æ°u tiÃªn, cáº­p nháº­t file nÃ y trÆ°á»›c rá»“i má»›i triá»ƒn khai.
 
 ## Sprint 0 - Product Foundation
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Khóa scope MVP P0.
-- [x] Khóa mô hình dữ liệu lõi.
-- [x] Khóa luồng nghiệp vụ chính.
-- [x] Chuẩn bị đủ thông tin để scaffold backend/frontend mà không bị đổi hướng liên tục.
+- [x] KhÃ³a scope MVP P0.
+- [x] KhÃ³a mÃ´ hÃ¬nh dá»¯ liá»‡u lÃµi.
+- [x] KhÃ³a luá»“ng nghiá»‡p vá»¥ chÃ­nh.
+- [x] Chuáº©n bá»‹ Ä‘á»§ thÃ´ng tin Ä‘á»ƒ scaffold backend/frontend mÃ  khÃ´ng bá»‹ Ä‘á»•i hÆ°á»›ng liÃªn tá»¥c.
 
-### Việc Đang Cần Làm Ngay
+### Viá»‡c Äang Cáº§n LÃ m Ngay
 
 - [x] Review `docs/00-pm-master-checklist.md`.
-- [x] Tách MVP P0 thành user stories cụ thể.
-- [x] Thiết kế database schema P0: bảng, cột, quan hệ, enum/status.
-- [x] Thiết kế module backend Laravel theo boundary rõ ràng.
-- [x] Thiết kế menu Filament admin MVP.
-- [x] Thiết kế public website / landing page cần những trang nào.
-- [x] Chốt demo flow đầu tiên: lead -> tư vấn -> đăng ký -> xếp lớp -> điểm danh -> thu phí.
+- [x] TÃ¡ch MVP P0 thÃ nh user stories cá»¥ thá»ƒ.
+- [x] Thiáº¿t káº¿ database schema P0: báº£ng, cá»™t, quan há»‡, enum/status.
+- [x] Thiáº¿t káº¿ module backend Laravel theo boundary rÃµ rÃ ng.
+- [x] Thiáº¿t káº¿ menu Filament admin MVP.
+- [x] Thiáº¿t káº¿ public website / landing page cáº§n nhá»¯ng trang nÃ o.
+- [x] Chá»‘t demo flow Ä‘áº§u tiÃªn: lead -> tÆ° váº¥n -> Ä‘Äƒng kÃ½ -> xáº¿p lá»›p -> Ä‘iá»ƒm danh -> thu phÃ­.
 
-### Kết Quả Cần Có Sau Sprint 0
+### Káº¿t Quáº£ Cáº§n CÃ³ Sau Sprint 0
 
-- [x] Một bộ schema database P0 có thể triển khai.
-- [x] Một backlog user stories MVP có ưu tiên rõ.
-- [x] Một danh sách màn hình admin và website cần làm.
-- [x] Một kế hoạch Sprint 1 để bắt đầu code.
+- [x] Má»™t bá»™ schema database P0 cÃ³ thá»ƒ triá»ƒn khai.
+- [x] Má»™t backlog user stories MVP cÃ³ Æ°u tiÃªn rÃµ.
+- [x] Má»™t danh sÃ¡ch mÃ n hÃ¬nh admin vÃ  website cáº§n lÃ m.
+- [x] Má»™t káº¿ hoáº¡ch Sprint 1 Ä‘á»ƒ báº¯t Ä‘áº§u code.
 
 ## Sprint 1 - Backend Core & Admin Base
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Dựng nền backend và admin để bắt đầu nhập dữ liệu thật.
+- [x] Dá»±ng ná»n backend vÃ  admin Ä‘á»ƒ báº¯t Ä‘áº§u nháº­p dá»¯ liá»‡u tháº­t.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
 - [x] Scaffold Laravel backend.
-- [x] Cấu hình PostgreSQL, Redis, Docker.
-- [x] Cài Filament admin.
-- [x] Tạo authentication admin.
-- [x] Tạo roles/permissions cơ bản.
-- [x] Tạo entity lõi: people, organizations, users.
-- [x] Tạo audit log cơ bản.
+- [x] Cáº¥u hÃ¬nh PostgreSQL, Redis, Docker.
+- [x] CÃ i Filament admin.
+- [x] Táº¡o authentication admin.
+- [x] Táº¡o roles/permissions cÆ¡ báº£n.
+- [x] Táº¡o entity lÃµi: people, organizations, users.
+- [x] Táº¡o audit log cÆ¡ báº£n.
 
-### Demo Cuối Sprint 1
+### Demo Cuá»‘i Sprint 1
 
-- [x] Admin đăng nhập được.
-- [x] Tạo/sửa/xem cá nhân.
-- [x] Tạo/sửa/xem doanh nghiệp.
-- [x] Gán role cơ bản cho user.
-- [x] Xem audit log thao tác quan trọng.
+- [x] Admin Ä‘Äƒng nháº­p Ä‘Æ°á»£c.
+- [x] Táº¡o/sá»­a/xem cÃ¡ nhÃ¢n.
+- [x] Táº¡o/sá»­a/xem doanh nghiá»‡p.
+- [x] GÃ¡n role cÆ¡ báº£n cho user.
+- [x] Xem audit log thao tÃ¡c quan trá»ng.
 
-## Sprint 2 - CRM Tuyển Sinh
+## Sprint 2 - CRM Tuyá»ƒn Sinh
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Quản lý lead và lịch sử tư vấn.
+- [x] Quáº£n lÃ½ lead vÃ  lá»‹ch sá»­ tÆ° váº¥n.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo lead sources.
-- [x] Tạo leads.
-- [x] Tạo lead assignments.
-- [x] Tạo consultation activities.
-- [x] Tạo trial registrations.
-- [x] Tạo trạng thái lead.
-- [x] Chuyển lead thành customer/student/company.
+- [x] Táº¡o lead sources.
+- [x] Táº¡o leads.
+- [x] Táº¡o lead assignments.
+- [x] Táº¡o consultation activities.
+- [x] Táº¡o trial registrations.
+- [x] Táº¡o tráº¡ng thÃ¡i lead.
+- [x] Chuyá»ƒn lead thÃ nh customer/student/company.
 
-### Demo Cuối Sprint 2
+### Demo Cuá»‘i Sprint 2
 
-- [x] Nhập lead mới.
-- [x] Phân loại lead theo phụ huynh, sinh viên, chủ doanh nghiệp, công ty.
-- [x] Gán tư vấn viên.
-- [x] Ghi lịch sử tư vấn.
-- [x] Chuyển lead thành hồ sơ khách hàng.
+- [x] Nháº­p lead má»›i.
+- [x] PhÃ¢n loáº¡i lead theo phá»¥ huynh, sinh viÃªn, chá»§ doanh nghiá»‡p, cÃ´ng ty.
+- [x] GÃ¡n tÆ° váº¥n viÃªn.
+- [x] Ghi lá»‹ch sá»­ tÆ° váº¥n.
+- [x] Chuyá»ƒn lead thÃ nh há»“ sÆ¡ khÃ¡ch hÃ ng.
 
 ## Sprint 3 - Learning Core
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Quản lý khóa học, lớp học, học viên và điểm danh cơ bản.
+- [x] Quáº£n lÃ½ khÃ³a há»c, lá»›p há»c, há»c viÃªn vÃ  Ä‘iá»ƒm danh cÆ¡ báº£n.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo courses.
-- [x] Tạo course modules.
-- [x] Tạo class groups.
-- [x] Tạo class sessions.
-- [x] Tạo student profiles.
-- [x] Tạo guardian relations.
-- [x] Tạo enrollments.
-- [x] Tạo attendance.
+- [x] Táº¡o courses.
+- [x] Táº¡o course modules.
+- [x] Táº¡o class groups.
+- [x] Táº¡o class sessions.
+- [x] Táº¡o student profiles.
+- [x] Táº¡o guardian relations.
+- [x] Táº¡o enrollments.
+- [x] Táº¡o attendance.
 
-### Demo Cuối Sprint 3
+### Demo Cuá»‘i Sprint 3
 
-- [x] Tạo khóa học.
-- [x] Tạo lớp học.
-- [x] Xếp học viên vào lớp.
-- [x] Điểm danh một buổi học.
-- [x] Xem lịch sử điểm danh của học viên.
+- [x] Táº¡o khÃ³a há»c.
+- [x] Táº¡o lá»›p há»c.
+- [x] Xáº¿p há»c viÃªn vÃ o lá»›p.
+- [x] Äiá»ƒm danh má»™t buá»•i há»c.
+- [x] Xem lá»‹ch sá»­ Ä‘iá»ƒm danh cá»§a há»c viÃªn.
 
 ## Sprint 4 - Finance MVP
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Quản lý đăng ký khóa học, học phí, thanh toán và công nợ.
+- [x] Quáº£n lÃ½ Ä‘Äƒng kÃ½ khÃ³a há»c, há»c phÃ­, thanh toÃ¡n vÃ  cÃ´ng ná»£.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo customer accounts.
-- [x] Tạo orders.
-- [x] Tạo order items.
-- [x] Tạo invoices.
-- [x] Tạo payments.
-- [x] Tạo receivables.
-- [x] Tạo receipts.
-- [x] Tạo báo cáo doanh thu cơ bản.
+- [x] Táº¡o customer accounts.
+- [x] Táº¡o orders.
+- [x] Táº¡o order items.
+- [x] Táº¡o invoices.
+- [x] Táº¡o payments.
+- [x] Táº¡o receivables.
+- [x] Táº¡o receipts.
+- [x] Táº¡o bÃ¡o cÃ¡o doanh thu cÆ¡ báº£n.
 
-### Demo Cuối Sprint 4
+### Demo Cuá»‘i Sprint 4
 
-- [x] Tạo đơn đăng ký khóa học.
-- [x] Ghi nhận người mua khác người học.
-- [x] Ghi nhận thanh toán một phần/toàn phần.
-- [x] Xem công nợ còn lại.
-- [x] In/xem phiếu thu cơ bản.
+- [x] Táº¡o Ä‘Æ¡n Ä‘Äƒng kÃ½ khÃ³a há»c.
+- [x] Ghi nháº­n ngÆ°á»i mua khÃ¡c ngÆ°á»i há»c.
+- [x] Ghi nháº­n thanh toÃ¡n má»™t pháº§n/toÃ n pháº§n.
+- [x] Xem cÃ´ng ná»£ cÃ²n láº¡i.
+- [x] In/xem phiáº¿u thu cÆ¡ báº£n.
 
 ## Sprint 5 - Website & Lead Capture
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Website và landing page gửi lead vào CRM.
+- [x] Website vÃ  landing page gá»­i lead vÃ o CRM.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
 - [x] Scaffold Next.js frontend.
-- [x] Tạo trang chủ.
-- [x] Tạo trang khóa học.
-- [x] Tạo landing page khóa học.
-- [x] Tạo form tư vấn.
-- [x] Tạo form học thử.
-- [x] Gửi form về backend CRM.
+- [x] Táº¡o trang chá»§.
+- [x] Táº¡o trang khÃ³a há»c.
+- [x] Táº¡o landing page khÃ³a há»c.
+- [x] Táº¡o form tÆ° váº¥n.
+- [x] Táº¡o form há»c thá»­.
+- [x] Gá»­i form vá» backend CRM.
 
-### Demo Cuối Sprint 5
+### Demo Cuá»‘i Sprint 5
 
-- [x] Khách truy cập landing page.
-- [x] Điền form đăng ký tư vấn/học thử.
-- [x] Lead xuất hiện trong admin CRM.
-- [x] Tư vấn viên nhận và xử lý lead.
-- [x] Tách trang chủ DAYAI khỏi landing page từng khóa.
-- [x] Trang chủ có khu video academy và kho kiến thức AI.
-- [x] Bổ sung chiến lược domain: `dayai.edu.vn` là portal, `k01.dayai.edu.vn` là landing campaign.
-- [x] Thêm route demo local `/k01` cho landing khóa/campaign.
+- [x] KhÃ¡ch truy cáº­p landing page.
+- [x] Äiá»n form Ä‘Äƒng kÃ½ tÆ° váº¥n/há»c thá»­.
+- [x] Lead xuáº¥t hiá»‡n trong admin CRM.
+- [x] TÆ° váº¥n viÃªn nháº­n vÃ  xá»­ lÃ½ lead.
+- [x] TÃ¡ch trang chá»§ DAYAI khá»i landing page tá»«ng khÃ³a.
+- [x] Trang chá»§ cÃ³ khu video academy vÃ  kho kiáº¿n thá»©c AI.
+- [x] Bá»• sung chiáº¿n lÆ°á»£c domain: `dayai.edu.vn` lÃ  portal, `k01.dayai.edu.vn` lÃ  landing campaign.
+- [x] ThÃªm route demo local `/k01` cho landing khÃ³a/campaign.
 
 ## Sprint 6 - Phase 1 End-to-End Hardening
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Kiểm thử, vá lỗi và demo trọn luồng Phase 1.
+- [x] Kiá»ƒm thá»­, vÃ¡ lá»—i vÃ  demo trá»n luá»“ng Phase 1.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Rà lại route admin và frontend.
-- [x] Rà chiến lược domain/campaign trước khi deploy.
-- [x] Chuẩn hóa dữ liệu demo end-to-end.
-- [x] Test lead website -> CRM -> tư vấn -> chuyển đổi.
-- [x] Test đăng ký khóa học -> xếp lớp -> điểm danh -> thu phí.
-- [x] Ghi lại hướng dẫn demo Phase 1.
+- [x] RÃ  láº¡i route admin vÃ  frontend.
+- [x] RÃ  chiáº¿n lÆ°á»£c domain/campaign trÆ°á»›c khi deploy.
+- [x] Chuáº©n hÃ³a dá»¯ liá»‡u demo end-to-end.
+- [x] Test lead website -> CRM -> tÆ° váº¥n -> chuyá»ƒn Ä‘á»•i.
+- [x] Test Ä‘Äƒng kÃ½ khÃ³a há»c -> xáº¿p lá»›p -> Ä‘iá»ƒm danh -> thu phÃ­.
+- [x] Ghi láº¡i hÆ°á»›ng dáº«n demo Phase 1.
 
-### Demo Cuối Sprint 6
+### Demo Cuá»‘i Sprint 6
 
-- [x] Một lead từ website đi hết luồng đến thu phí.
-- [x] Admin xem được CRM, learning, finance và báo cáo.
-- [x] Có checklist nghiệm thu Phase 1.
+- [x] Má»™t lead tá»« website Ä‘i háº¿t luá»“ng Ä‘áº¿n thu phÃ­.
+- [x] Admin xem Ä‘Æ°á»£c CRM, learning, finance vÃ  bÃ¡o cÃ¡o.
+- [x] CÃ³ checklist nghiá»‡m thu Phase 1.
 
 ## Sprint 7 - Content & Video CMS
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Quản trị được nội dung website chính: danh mục, bài viết/tài nguyên và video academy.
+- [x] Quáº£n trá»‹ Ä‘Æ°á»£c ná»™i dung website chÃ­nh: danh má»¥c, bÃ i viáº¿t/tÃ i nguyÃªn vÃ  video academy.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo content categories.
-- [x] Tạo content items cho bài viết, checklist, prompt library, case study.
-- [x] Tạo video lessons cho Video Academy.
-- [x] Tạo admin resources nhóm `Nội dung`.
-- [x] Seed dữ liệu demo cho kho kiến thức và video.
+- [x] Táº¡o content categories.
+- [x] Táº¡o content items cho bÃ i viáº¿t, checklist, prompt library, case study.
+- [x] Táº¡o video lessons cho Video Academy.
+- [x] Táº¡o admin resources nhÃ³m `Ná»™i dung`.
+- [x] Seed dá»¯ liá»‡u demo cho kho kiáº¿n thá»©c vÃ  video.
 
-### Demo Cuối Sprint 7
+### Demo Cuá»‘i Sprint 7
 
-- [x] Admin thấy menu `Nội dung`.
-- [x] Quản trị được `Danh mục nội dung`.
-- [x] Quản trị được `Bài viết & tài nguyên`.
-- [x] Quản trị được `Video Academy`.
-- [x] Có dữ liệu demo để frontend sau này đọc động.
+- [x] Admin tháº¥y menu `Ná»™i dung`.
+- [x] Quáº£n trá»‹ Ä‘Æ°á»£c `Danh má»¥c ná»™i dung`.
+- [x] Quáº£n trá»‹ Ä‘Æ°á»£c `BÃ i viáº¿t & tÃ i nguyÃªn`.
+- [x] Quáº£n trá»‹ Ä‘Æ°á»£c `Video Academy`.
+- [x] CÃ³ dá»¯ liá»‡u demo Ä‘á»ƒ frontend sau nÃ y Ä‘á»c Ä‘á»™ng.
 
 ## Sprint 8 - Public Content API & Dynamic Portal
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Website chính đọc nội dung động từ CMS thay vì hardcode Video Academy và Kho kiến thức.
+- [x] Website chÃ­nh Ä‘á»c ná»™i dung Ä‘á»™ng tá»« CMS thay vÃ¬ hardcode Video Academy vÃ  Kho kiáº¿n thá»©c.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo public API `GET /api/content/home`.
-- [x] Tạo Next.js proxy `GET /api/content/home`.
-- [x] Trang chủ đọc dynamic `knowledge_items`.
-- [x] Trang chủ đọc dynamic `video_lessons`.
-- [x] Có fallback nội dung khi backend API chưa sẵn sàng.
-- [x] Thêm backend test cho public content API.
+- [x] Táº¡o public API `GET /api/content/home`.
+- [x] Táº¡o Next.js proxy `GET /api/content/home`.
+- [x] Trang chá»§ Ä‘á»c dynamic `knowledge_items`.
+- [x] Trang chá»§ Ä‘á»c dynamic `video_lessons`.
+- [x] CÃ³ fallback ná»™i dung khi backend API chÆ°a sáºµn sÃ ng.
+- [x] ThÃªm backend test cho public content API.
 
-### Demo Cuối Sprint 8
+### Demo Cuá»‘i Sprint 8
 
-- [x] Admin nhập/xem nội dung trong nhóm `Nội dung`.
-- [x] Public API trả bài viết/video đã xuất bản.
-- [x] Trang chủ hiển thị bài viết/video từ CMS.
+- [x] Admin nháº­p/xem ná»™i dung trong nhÃ³m `Ná»™i dung`.
+- [x] Public API tráº£ bÃ i viáº¿t/video Ä‘Ã£ xuáº¥t báº£n.
+- [x] Trang chá»§ hiá»ƒn thá»‹ bÃ i viáº¿t/video tá»« CMS.
 - [x] Frontend build pass.
 - [x] Backend test pass.
 
 ## Sprint 9 - Parent & Student Portal Lite
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Tạo cổng tra cứu phụ huynh/học viên bản nhẹ bằng số điện thoại và mã học viên.
+- [x] Táº¡o cá»•ng tra cá»©u phá»¥ huynh/há»c viÃªn báº£n nháº¹ báº±ng sá»‘ Ä‘iá»‡n thoáº¡i vÃ  mÃ£ há»c viÃªn.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo API `POST /api/portal/lookup`.
-- [x] Trả thông tin học viên, khóa đang học, lớp học.
-- [x] Trả lịch học và điểm danh.
-- [x] Trả học phí, đã thanh toán và công nợ.
-- [x] Trả video học liên quan từ Video Academy.
-- [x] Tạo frontend page `/portal`.
-- [x] Thêm tests cho portal lookup API.
+- [x] Táº¡o API `POST /api/portal/lookup`.
+- [x] Tráº£ thÃ´ng tin há»c viÃªn, khÃ³a Ä‘ang há»c, lá»›p há»c.
+- [x] Tráº£ lá»‹ch há»c vÃ  Ä‘iá»ƒm danh.
+- [x] Tráº£ há»c phÃ­, Ä‘Ã£ thanh toÃ¡n vÃ  cÃ´ng ná»£.
+- [x] Tráº£ video há»c liÃªn quan tá»« Video Academy.
+- [x] Táº¡o frontend page `/portal`.
+- [x] ThÃªm tests cho portal lookup API.
 
-### Demo Cuối Sprint 9
+### Demo Cuá»‘i Sprint 9
 
-- [x] Phụ huynh/học viên mở `/portal`.
-- [x] Nhập SĐT + mã học viên.
-- [x] Xem lịch học, điểm danh, công nợ và video liên quan.
-- [x] Sai thông tin thì báo không tìm thấy.
+- [x] Phá»¥ huynh/há»c viÃªn má»Ÿ `/portal`.
+- [x] Nháº­p SÄT + mÃ£ há»c viÃªn.
+- [x] Xem lá»‹ch há»c, Ä‘iá»ƒm danh, cÃ´ng ná»£ vÃ  video liÃªn quan.
+- [x] Sai thÃ´ng tin thÃ¬ bÃ¡o khÃ´ng tÃ¬m tháº¥y.
 
 ## Sprint 10 - Student Progress Reports
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Quản lý đánh giá, nhận xét giáo viên và báo cáo tiến bộ để portal theo dõi được phát triển học viên.
+- [x] Quáº£n lÃ½ Ä‘Ã¡nh giÃ¡, nháº­n xÃ©t giÃ¡o viÃªn vÃ  bÃ¡o cÃ¡o tiáº¿n bá»™ Ä‘á»ƒ portal theo dÃµi Ä‘Æ°á»£c phÃ¡t triá»ƒn há»c viÃªn.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo bảng `assessments`.
-- [x] Tạo bảng `assessment_results`.
-- [x] Tạo bảng `teacher_comments`.
-- [x] Tạo bảng `progress_reports`.
-- [x] Tạo Filament admin resources nhóm `Tiến bộ học viên`.
-- [x] Seed dữ liệu demo cho học viên `HV-000001`.
-- [x] Mở rộng API `POST /api/portal/lookup`.
-- [x] Mở rộng frontend `/portal` hiển thị tiến độ, điểm đánh giá và nhận xét.
-- [x] Thêm backend test cho dữ liệu progress trong portal.
+- [x] Táº¡o báº£ng `assessments`.
+- [x] Táº¡o báº£ng `assessment_results`.
+- [x] Táº¡o báº£ng `teacher_comments`.
+- [x] Táº¡o báº£ng `progress_reports`.
+- [x] Táº¡o Filament admin resources nhÃ³m `Tiáº¿n bá»™ há»c viÃªn`.
+- [x] Seed dá»¯ liá»‡u demo cho há»c viÃªn `HV-000001`.
+- [x] Má»Ÿ rá»™ng API `POST /api/portal/lookup`.
+- [x] Má»Ÿ rá»™ng frontend `/portal` hiá»ƒn thá»‹ tiáº¿n Ä‘á»™, Ä‘iá»ƒm Ä‘Ã¡nh giÃ¡ vÃ  nháº­n xÃ©t.
+- [x] ThÃªm backend test cho dá»¯ liá»‡u progress trong portal.
 
-### Demo Cuối Sprint 10
+### Demo Cuá»‘i Sprint 10
 
-- [x] Admin thấy nhóm menu `Tiến bộ học viên`.
-- [x] Admin quản lý được bài đánh giá, kết quả đánh giá, nhận xét giáo viên và báo cáo tiến bộ.
-- [x] Portal demo hiển thị `% tiến độ`, điểm đánh giá đầu vào và nhận xét giáo viên.
+- [x] Admin tháº¥y nhÃ³m menu `Tiáº¿n bá»™ há»c viÃªn`.
+- [x] Admin quáº£n lÃ½ Ä‘Æ°á»£c bÃ i Ä‘Ã¡nh giÃ¡, káº¿t quáº£ Ä‘Ã¡nh giÃ¡, nháº­n xÃ©t giÃ¡o viÃªn vÃ  bÃ¡o cÃ¡o tiáº¿n bá»™.
+- [x] Portal demo hiá»ƒn thá»‹ `% tiáº¿n Ä‘á»™`, Ä‘iá»ƒm Ä‘Ã¡nh giÃ¡ Ä‘áº§u vÃ o vÃ  nháº­n xÃ©t giÃ¡o viÃªn.
 - [x] Backend test pass.
 - [x] Frontend lint/build pass.
 
 ## Sprint 11 - Company / HR Portal Lite
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Hoàn thiện mảnh B2B lite cho công ty mua khóa học cho nhân sự: HR tra cứu danh sách học viên, tiến độ và công nợ.
+- [x] HoÃ n thiá»‡n máº£nh B2B lite cho cÃ´ng ty mua khÃ³a há»c cho nhÃ¢n sá»±: HR tra cá»©u danh sÃ¡ch há»c viÃªn, tiáº¿n Ä‘á»™ vÃ  cÃ´ng ná»£.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tận dụng schema `organizations`, `organization_contacts`, `student_profiles.organization_id`, `customer_accounts.organization_id`.
-- [x] Tạo API `POST /api/company-portal/lookup`.
-- [x] Seed công ty demo `Example Corp` và HR `hr@examplecorp.test`.
-- [x] Seed 2 nhân sự học theo công ty.
+- [x] Táº­n dá»¥ng schema `organizations`, `organization_contacts`, `student_profiles.organization_id`, `customer_accounts.organization_id`.
+- [x] Táº¡o API `POST /api/company-portal/lookup`.
+- [x] Seed cÃ´ng ty demo `Example Corp` vÃ  HR `hr@examplecorp.test`.
+- [x] Seed 2 nhÃ¢n sá»± há»c theo cÃ´ng ty.
 - [x] Seed order/invoice/payment B2B demo.
-- [x] Tạo Next.js proxy `POST /api/company-portal/lookup`.
-- [x] Tạo frontend page `/company-portal`.
-- [x] Thêm link `HR Portal` trên homepage.
-- [x] Thêm backend test cho company portal lookup API.
+- [x] Táº¡o Next.js proxy `POST /api/company-portal/lookup`.
+- [x] Táº¡o frontend page `/company-portal`.
+- [x] ThÃªm link `HR Portal` trÃªn homepage.
+- [x] ThÃªm backend test cho company portal lookup API.
 
-### Demo Cuối Sprint 11
+### Demo Cuá»‘i Sprint 11
 
-- [x] HR mở `/company-portal`.
-- [x] Nhập email HR và mã công ty.
-- [x] Xem danh sách nhân sự đang học.
-- [x] Xem tiến độ, điểm đánh giá, điểm danh từng nhân sự.
-- [x] Xem tổng học phí, đã thanh toán và công nợ B2B.
+- [x] HR má»Ÿ `/company-portal`.
+- [x] Nháº­p email HR vÃ  mÃ£ cÃ´ng ty.
+- [x] Xem danh sÃ¡ch nhÃ¢n sá»± Ä‘ang há»c.
+- [x] Xem tiáº¿n Ä‘á»™, Ä‘iá»ƒm Ä‘Ã¡nh giÃ¡, Ä‘iá»ƒm danh tá»«ng nhÃ¢n sá»±.
+- [x] Xem tá»•ng há»c phÃ­, Ä‘Ã£ thanh toÃ¡n vÃ  cÃ´ng ná»£ B2B.
 - [x] Backend test pass.
 - [x] Frontend lint/build pass.
 
 ## Sprint 12 - Notification Center Lite
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Có hệ thống thông báo cơ bản để admin đăng thông báo và portal hiển thị cho học viên/phụ huynh/HR.
+- [x] CÃ³ há»‡ thá»‘ng thÃ´ng bÃ¡o cÆ¡ báº£n Ä‘á»ƒ admin Ä‘Äƒng thÃ´ng bÃ¡o vÃ  portal hiá»ƒn thá»‹ cho há»c viÃªn/phá»¥ huynh/HR.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo bảng `notifications`.
-- [x] Tạo model `Notification`.
-- [x] Gắn thông báo với `person`, `student_profile`, `organization`.
-- [x] Tạo Filament admin resource `Thông báo`.
-- [x] Seed thông báo demo cho học viên `HV-000001`.
-- [x] Seed thông báo demo cho HR `Example Corp`.
-- [x] Mở rộng API `POST /api/portal/lookup`.
-- [x] Mở rộng API `POST /api/company-portal/lookup`.
-- [x] Hiển thị thông báo trên `/portal` và `/company-portal`.
-- [x] Thêm backend tests cho notifications trong portal API.
+- [x] Táº¡o báº£ng `notifications`.
+- [x] Táº¡o model `Notification`.
+- [x] Gáº¯n thÃ´ng bÃ¡o vá»›i `person`, `student_profile`, `organization`.
+- [x] Táº¡o Filament admin resource `ThÃ´ng bÃ¡o`.
+- [x] Seed thÃ´ng bÃ¡o demo cho há»c viÃªn `HV-000001`.
+- [x] Seed thÃ´ng bÃ¡o demo cho HR `Example Corp`.
+- [x] Má»Ÿ rá»™ng API `POST /api/portal/lookup`.
+- [x] Má»Ÿ rá»™ng API `POST /api/company-portal/lookup`.
+- [x] Hiá»ƒn thá»‹ thÃ´ng bÃ¡o trÃªn `/portal` vÃ  `/company-portal`.
+- [x] ThÃªm backend tests cho notifications trong portal API.
 
-### Demo Cuối Sprint 12
+### Demo Cuá»‘i Sprint 12
 
-- [x] Admin quản lý được `Thông báo` trong nhóm `Nội dung`.
-- [x] Portal phụ huynh/học viên hiển thị thông báo lịch học, học phí, tiến bộ.
-- [x] Portal doanh nghiệp/HR hiển thị thông báo tiến độ nhóm và công nợ B2B.
+- [x] Admin quáº£n lÃ½ Ä‘Æ°á»£c `ThÃ´ng bÃ¡o` trong nhÃ³m `Ná»™i dung`.
+- [x] Portal phá»¥ huynh/há»c viÃªn hiá»ƒn thá»‹ thÃ´ng bÃ¡o lá»‹ch há»c, há»c phÃ­, tiáº¿n bá»™.
+- [x] Portal doanh nghiá»‡p/HR hiá»ƒn thá»‹ thÃ´ng bÃ¡o tiáº¿n Ä‘á»™ nhÃ³m vÃ  cÃ´ng ná»£ B2B.
 - [x] Backend test pass.
 - [x] Frontend lint/build pass.
 
 ## Sprint 13 - Operations & Admissions Dashboard
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Có một màn dashboard điều hành để xem nhanh tuyển sinh, vận hành lớp học, tiến độ học viên và tài chính.
+- [x] CÃ³ má»™t mÃ n dashboard Ä‘iá»u hÃ nh Ä‘á»ƒ xem nhanh tuyá»ƒn sinh, váº­n hÃ nh lá»›p há»c, tiáº¿n Ä‘á»™ há»c viÃªn vÃ  tÃ i chÃ­nh.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo Filament page `Dashboard vận hành`.
-- [x] Thêm KPI lead tổng, lead mới, chuyển đổi.
-- [x] Thêm KPI học viên đang học, lớp hoạt động, lịch sắp tới.
-- [x] Thêm KPI doanh số, đã thu, công nợ.
-- [x] Thêm phễu tuyển sinh theo trạng thái lead.
-- [x] Thêm hiệu quả nguồn lead.
-- [x] Thêm lịch học sắp tới.
-- [x] Thêm danh sách học viên cần chú ý theo điểm danh.
-- [x] Thêm doanh thu theo khóa.
-- [x] Thêm backend test cho dashboard metrics.
+- [x] Táº¡o Filament page `Dashboard váº­n hÃ nh`.
+- [x] ThÃªm KPI lead tá»•ng, lead má»›i, chuyá»ƒn Ä‘á»•i.
+- [x] ThÃªm KPI há»c viÃªn Ä‘ang há»c, lá»›p hoáº¡t Ä‘á»™ng, lá»‹ch sáº¯p tá»›i.
+- [x] ThÃªm KPI doanh sá»‘, Ä‘Ã£ thu, cÃ´ng ná»£.
+- [x] ThÃªm phá»…u tuyá»ƒn sinh theo tráº¡ng thÃ¡i lead.
+- [x] ThÃªm hiá»‡u quáº£ nguá»“n lead.
+- [x] ThÃªm lá»‹ch há»c sáº¯p tá»›i.
+- [x] ThÃªm danh sÃ¡ch há»c viÃªn cáº§n chÃº Ã½ theo Ä‘iá»ƒm danh.
+- [x] ThÃªm doanh thu theo khÃ³a.
+- [x] ThÃªm backend test cho dashboard metrics.
 
-### Demo Cuối Sprint 13
+### Demo Cuá»‘i Sprint 13
 
-- [x] Admin mở được `Dashboard vận hành`.
-- [x] Xem KPI tuyển sinh, vận hành, tài chính.
-- [x] Xem phễu lead và hiệu quả nguồn lead.
-- [x] Xem lớp/buổi học sắp tới và học viên cần chú ý.
+- [x] Admin má»Ÿ Ä‘Æ°á»£c `Dashboard váº­n hÃ nh`.
+- [x] Xem KPI tuyá»ƒn sinh, váº­n hÃ nh, tÃ i chÃ­nh.
+- [x] Xem phá»…u lead vÃ  hiá»‡u quáº£ nguá»“n lead.
+- [x] Xem lá»›p/buá»•i há»c sáº¯p tá»›i vÃ  há»c viÃªn cáº§n chÃº Ã½.
 - [x] Backend test pass.
 - [x] Frontend lint/build pass.
 
 ## Sprint 14 - Course Certificates
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Quản lý chứng chỉ hoàn thành khóa học và hiển thị chứng chỉ trong portal học viên/HR.
+- [x] Quáº£n lÃ½ chá»©ng chá»‰ hoÃ n thÃ nh khÃ³a há»c vÃ  hiá»ƒn thá»‹ chá»©ng chá»‰ trong portal há»c viÃªn/HR.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo bảng `certificates`.
-- [x] Tạo model `Certificate`.
-- [x] Gắn chứng chỉ với học viên, enrollment, khóa học, lớp học.
-- [x] Tạo admin resource `Chứng chỉ` trong nhóm `Tiến bộ học viên`.
-- [x] Seed chứng chỉ demo cho học viên `HV-000001`.
-- [x] Seed chứng chỉ demo cho nhân sự công ty `Example Corp`.
-- [x] Mở rộng API `POST /api/portal/lookup`.
-- [x] Mở rộng API `POST /api/company-portal/lookup`.
-- [x] Hiển thị chứng chỉ trên `/portal`.
-- [x] Hiển thị trạng thái chứng chỉ trong `/company-portal`.
-- [x] Thêm backend tests cho chứng chỉ trong portal API.
+- [x] Táº¡o báº£ng `certificates`.
+- [x] Táº¡o model `Certificate`.
+- [x] Gáº¯n chá»©ng chá»‰ vá»›i há»c viÃªn, enrollment, khÃ³a há»c, lá»›p há»c.
+- [x] Táº¡o admin resource `Chá»©ng chá»‰` trong nhÃ³m `Tiáº¿n bá»™ há»c viÃªn`.
+- [x] Seed chá»©ng chá»‰ demo cho há»c viÃªn `HV-000001`.
+- [x] Seed chá»©ng chá»‰ demo cho nhÃ¢n sá»± cÃ´ng ty `Example Corp`.
+- [x] Má»Ÿ rá»™ng API `POST /api/portal/lookup`.
+- [x] Má»Ÿ rá»™ng API `POST /api/company-portal/lookup`.
+- [x] Hiá»ƒn thá»‹ chá»©ng chá»‰ trÃªn `/portal`.
+- [x] Hiá»ƒn thá»‹ tráº¡ng thÃ¡i chá»©ng chá»‰ trong `/company-portal`.
+- [x] ThÃªm backend tests cho chá»©ng chá»‰ trong portal API.
 
-### Demo Cuối Sprint 14
+### Demo Cuá»‘i Sprint 14
 
-- [x] Admin quản lý được `Chứng chỉ`.
-- [x] Portal học viên/phụ huynh hiển thị chứng chỉ đã cấp.
-- [x] Portal doanh nghiệp/HR hiển thị chứng chỉ từng nhân sự.
+- [x] Admin quáº£n lÃ½ Ä‘Æ°á»£c `Chá»©ng chá»‰`.
+- [x] Portal há»c viÃªn/phá»¥ huynh hiá»ƒn thá»‹ chá»©ng chá»‰ Ä‘Ã£ cáº¥p.
+- [x] Portal doanh nghiá»‡p/HR hiá»ƒn thá»‹ chá»©ng chá»‰ tá»«ng nhÃ¢n sá»±.
 - [x] Backend test pass.
 - [x] Frontend lint/build pass.
 
 ## Sprint 15 - Role-Based Access Control
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Thiết lập phân quyền MVP cho admin theo vai trò: admin, sales, teacher, accountant.
+- [x] Thiáº¿t láº­p phÃ¢n quyá»n MVP cho admin theo vai trÃ²: admin, sales, teacher, accountant.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo permission map chuẩn cho CRM, học tập, tài chính, tiến bộ, nội dung, quản trị.
-- [x] Seed permissions và gán quyền theo role.
-- [x] Áp permission vào toàn bộ Filament Resource.
-- [x] Khóa dashboard vận hành theo `view_dashboard`.
-- [x] Khóa báo cáo doanh thu theo `manage_finance`.
-- [x] Thêm backend tests cho ma trận quyền role.
+- [x] Táº¡o permission map chuáº©n cho CRM, há»c táº­p, tÃ i chÃ­nh, tiáº¿n bá»™, ná»™i dung, quáº£n trá»‹.
+- [x] Seed permissions vÃ  gÃ¡n quyá»n theo role.
+- [x] Ãp permission vÃ o toÃ n bá»™ Filament Resource.
+- [x] KhÃ³a dashboard váº­n hÃ nh theo `view_dashboard`.
+- [x] KhÃ³a bÃ¡o cÃ¡o doanh thu theo `manage_finance`.
+- [x] ThÃªm backend tests cho ma tráº­n quyá»n role.
 
-### Demo Cuối Sprint 15
+### Demo Cuá»‘i Sprint 15
 
-- [x] Admin xem được toàn bộ resource.
-- [x] Sales xem được CRM nhưng không xem được tài chính.
-- [x] Accountant xem được tài chính nhưng không xem được CRM.
-- [x] Teacher xem được học tập/tiến bộ nhưng không xem được tài chính.
+- [x] Admin xem Ä‘Æ°á»£c toÃ n bá»™ resource.
+- [x] Sales xem Ä‘Æ°á»£c CRM nhÆ°ng khÃ´ng xem Ä‘Æ°á»£c tÃ i chÃ­nh.
+- [x] Accountant xem Ä‘Æ°á»£c tÃ i chÃ­nh nhÆ°ng khÃ´ng xem Ä‘Æ°á»£c CRM.
+- [x] Teacher xem Ä‘Æ°á»£c há»c táº­p/tiáº¿n bá»™ nhÆ°ng khÃ´ng xem Ä‘Æ°á»£c tÃ i chÃ­nh.
 - [x] Backend test pass.
 
 ## Sprint 16 - Demo Role Accounts
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Tạo tài khoản demo cố định theo từng role để kiểm thử admin trực tiếp trên browser.
+- [x] Táº¡o tÃ i khoáº£n demo cá»‘ Ä‘á»‹nh theo tá»«ng role Ä‘á»ƒ kiá»ƒm thá»­ admin trá»±c tiáº¿p trÃªn browser.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Seed tài khoản `sales@dayai.edu.vn`.
-- [x] Seed tài khoản `teacher@dayai.edu.vn`.
-- [x] Seed tài khoản `accountant@dayai.edu.vn`.
-- [x] Gán role đúng cho từng tài khoản demo.
-- [x] Dùng chung mật khẩu demo `password`.
-- [x] Thêm backend test đảm bảo tài khoản demo được seed đúng role.
+- [x] Seed tÃ i khoáº£n `sales@dayai.edu.vn`.
+- [x] Seed tÃ i khoáº£n `teacher@dayai.edu.vn`.
+- [x] Seed tÃ i khoáº£n `accountant@dayai.edu.vn`.
+- [x] GÃ¡n role Ä‘Ãºng cho tá»«ng tÃ i khoáº£n demo.
+- [x] DÃ¹ng chung máº­t kháº©u demo `password`.
+- [x] ThÃªm backend test Ä‘áº£m báº£o tÃ i khoáº£n demo Ä‘Æ°á»£c seed Ä‘Ãºng role.
 
-### Demo Cuối Sprint 16
+### Demo Cuá»‘i Sprint 16
 
-- [x] Đăng nhập admin bằng `admin@dayai.edu.vn`.
-- [x] Đăng nhập sales bằng `sales@dayai.edu.vn`.
-- [x] Đăng nhập teacher bằng `teacher@dayai.edu.vn`.
-- [x] Đăng nhập accountant bằng `accountant@dayai.edu.vn`.
-- [x] Kiểm tra mỗi role chỉ thấy đúng nhóm menu được phân quyền.
+- [x] ÄÄƒng nháº­p admin báº±ng `admin@dayai.edu.vn`.
+- [x] ÄÄƒng nháº­p sales báº±ng `sales@dayai.edu.vn`.
+- [x] ÄÄƒng nháº­p teacher báº±ng `teacher@dayai.edu.vn`.
+- [x] ÄÄƒng nháº­p accountant báº±ng `accountant@dayai.edu.vn`.
+- [x] Kiá»ƒm tra má»—i role chá»‰ tháº¥y Ä‘Ãºng nhÃ³m menu Ä‘Æ°á»£c phÃ¢n quyá»n.
 
 ## Sprint 17 - Phase 1 Closure UAT
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Có checklist nghiệm thu Phase 1 để kiểm thử toàn bộ luồng demo mà không phát sinh scope mới.
+- [x] CÃ³ checklist nghiá»‡m thu Phase 1 Ä‘á»ƒ kiá»ƒm thá»­ toÃ n bá»™ luá»“ng demo mÃ  khÃ´ng phÃ¡t sinh scope má»›i.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo tài liệu `Phase 1 Closure UAT Checklist`.
-- [x] Chốt nguyên tắc không thêm module mới trong UAT.
-- [x] Chốt checklist public website, CRM, học tập, tài chính, portal, phân quyền.
-- [x] Thêm bug bash template.
-- [x] Chốt điều kiện đóng Phase 1.
+- [x] Táº¡o tÃ i liá»‡u `Phase 1 Closure UAT Checklist`.
+- [x] Chá»‘t nguyÃªn táº¯c khÃ´ng thÃªm module má»›i trong UAT.
+- [x] Chá»‘t checklist public website, CRM, há»c táº­p, tÃ i chÃ­nh, portal, phÃ¢n quyá»n.
+- [x] ThÃªm bug bash template.
+- [x] Chá»‘t Ä‘iá»u kiá»‡n Ä‘Ã³ng Phase 1.
 
 ## Sprint 18 - Production Readiness
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Có checklist triển khai staging/production cho môi trường thật.
+- [x] CÃ³ checklist triá»ƒn khai staging/production cho mÃ´i trÆ°á»ng tháº­t.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Tạo checklist environment production.
-- [x] Tạo checklist domain/routing/HTTPS.
-- [x] Tạo checklist security, backup, logging, deployment, rollback.
-- [x] Chốt điều kiện go-live.
+- [x] Táº¡o checklist environment production.
+- [x] Táº¡o checklist domain/routing/HTTPS.
+- [x] Táº¡o checklist security, backup, logging, deployment, rollback.
+- [x] Chá»‘t Ä‘iá»u kiá»‡n go-live.
 
 ## Sprint 19 - SEO & Content Launch
 
-### Mục Tiêu
+### Má»¥c TiÃªu
 
-- [x] Chuẩn bị SEO kỹ thuật và checklist nội dung thật trước khi public website.
+- [x] Chuáº©n bá»‹ SEO ká»¹ thuáº­t vÃ  checklist ná»™i dung tháº­t trÆ°á»›c khi public website.
 
-### Dự Kiến Việc Làm
+### Dá»± Kiáº¿n Viá»‡c LÃ m
 
-- [x] Cập nhật metadata global cho Next.js.
-- [x] Thêm metadata riêng cho landing `AI Căn Bản`.
-- [x] Thêm `robots.txt`.
-- [x] Thêm `sitemap.xml`.
-- [x] Tạo checklist nội dung thật cho trang chủ, landing, kiến thức, video.
+- [x] Cáº­p nháº­t metadata global cho Next.js.
+- [x] ThÃªm metadata riÃªng cho landing `AI CÄƒn Báº£n`.
+- [x] ThÃªm `robots.txt`.
+- [x] ThÃªm `sitemap.xml`.
+- [x] Táº¡o checklist ná»™i dung tháº­t cho trang chá»§, landing, kiáº¿n thá»©c, video.
 
-## Luồng Demo MVP Cuối Cùng
+## Luá»“ng Demo MVP Cuá»‘i CÃ¹ng
 
-- [x] Khách vào landing page.
-- [x] Khách gửi form đăng ký tư vấn.
-- [x] Lead vào CRM.
-- [x] Tư vấn viên gọi và cập nhật lịch sử tư vấn.
-- [x] Admin xem dashboard tuyển sinh và vận hành.
-- [x] Lead chuyển thành khách hàng/học viên/công ty.
-- [x] Tạo đăng ký khóa học.
-- [x] Xếp học viên vào lớp.
-- [x] Điểm danh buổi học.
-- [x] Xem đánh giá, nhận xét giáo viên và báo cáo tiến bộ.
-- [x] HR xem danh sách nhân sự học, tiến độ nhóm và công nợ B2B.
-- [x] Xem thông báo từ trung tâm trên portal.
-- [x] Xem chứng chỉ hoàn thành khóa học.
-- [x] Kiểm tra phân quyền admin theo vai trò.
-- [x] Đăng nhập bằng tài khoản demo từng role.
-- [x] Chạy checklist UAT đóng Phase 1.
-- [x] Kiểm tra production readiness.
-- [x] Kiểm tra SEO/content launch checklist.
-- [x] Ghi nhận thanh toán.
-- [x] Xem công nợ và phiếu thu.
+- [x] KhÃ¡ch vÃ o landing page.
+- [x] KhÃ¡ch gá»­i form Ä‘Äƒng kÃ½ tÆ° váº¥n.
+- [x] Lead vÃ o CRM.
+- [x] TÆ° váº¥n viÃªn gá»i vÃ  cáº­p nháº­t lá»‹ch sá»­ tÆ° váº¥n.
+- [x] Admin xem dashboard tuyá»ƒn sinh vÃ  váº­n hÃ nh.
+- [x] Lead chuyá»ƒn thÃ nh khÃ¡ch hÃ ng/há»c viÃªn/cÃ´ng ty.
+- [x] Táº¡o Ä‘Äƒng kÃ½ khÃ³a há»c.
+- [x] Xáº¿p há»c viÃªn vÃ o lá»›p.
+- [x] Äiá»ƒm danh buá»•i há»c.
+- [x] Xem Ä‘Ã¡nh giÃ¡, nháº­n xÃ©t giÃ¡o viÃªn vÃ  bÃ¡o cÃ¡o tiáº¿n bá»™.
+- [x] HR xem danh sÃ¡ch nhÃ¢n sá»± há»c, tiáº¿n Ä‘á»™ nhÃ³m vÃ  cÃ´ng ná»£ B2B.
+- [x] Xem thÃ´ng bÃ¡o tá»« trung tÃ¢m trÃªn portal.
+- [x] Xem chá»©ng chá»‰ hoÃ n thÃ nh khÃ³a há»c.
+- [x] Kiá»ƒm tra phÃ¢n quyá»n admin theo vai trÃ².
+- [x] ÄÄƒng nháº­p báº±ng tÃ i khoáº£n demo tá»«ng role.
+- [x] Cháº¡y checklist UAT Ä‘Ã³ng Phase 1.
+- [x] Kiá»ƒm tra production readiness.
+- [x] Kiá»ƒm tra SEO/content launch checklist.
+- [x] Ghi nháº­n thanh toÃ¡n.
+- [x] Xem cÃ´ng ná»£ vÃ  phiáº¿u thu.
 
 ## Phase 2 Review & Phase 3 Planning
 
-### M?c Ti�u
+### M?c Tiêu
 
-- [x] Ch?t tr?ng th�i b�n giao Phase 2.
-- [x] T�ch ph?n c�n n? sang Phase 3 thay v� k�o d�i Phase 2.
+- [x] Ch?t tr?ng thái bàn giao Phase 2.
+- [x] Tách ph?n còn n? sang Phase 3 thay vì kéo dài Phase 2.
 - [x] L?p roadmap Phase 3 g?m Sprint 28-33.
-- [x] Uu ti�n 3 sprint d?u: Portal Auth, LMS Player, Affiliate.
+- [x] Uu tiên 3 sprint d?u: Portal Auth, LMS Player, Affiliate.
 
-### T�i Li?u Ch�nh
+### Tài Li?u Chính
 
 - [x] `docs/18-phase2-review-phase3-roadmap.md`
 
 ## Sprint 28 - Portal Auth & Security
 
-### M?c Ti�u
+### M?c Tiêu
 
-- [x] Chuy?n portal ph? huynh/h?c vi�n sang flow x�c th?c OTP demo tru?c khi tr? d? li?u.
-- [x] T?o token portal c� h?n d�ng v� access token d� verify.
-- [x] B?t `/api/portal/lookup` y�u c?u `portal_access_token` h?p l?.
-- [x] Th�m rate limit request OTP.
-- [x] C?p nh?t frontend `/portal` th�nh 2 bu?c: g?i m� v� x�c th?c.
-- [x] Th�m test b?o v? lu?ng lookup thi?u token.
-- [ ] T�ch s�u quy?n h?c vi�n/ph? huynh/HR v� audit log dang nh?p portal.
+- [x] Chuy?n portal ph? huynh/h?c viên sang flow xác th?c OTP demo tru?c khi tr? d? li?u.
+- [x] T?o token portal có h?n dùng và access token dã verify.
+- [x] B?t `/api/portal/lookup` yêu c?u `portal_access_token` h?p l?.
+- [x] Thêm rate limit request OTP.
+- [x] C?p nh?t frontend `/portal` thành 2 bu?c: g?i mã và xác th?c.
+- [x] Thêm test b?o v? lu?ng lookup thi?u token.
+- [ ] Tách sâu quy?n h?c viên/ph? huynh/HR và audit log dang nh?p portal.
 
 ### Sprint 28 Completion Update
 
-- [x] T�ch quy?n h?c vi�n/ph? huynh b?ng `access_role`; HR v?n thu?c company portal ri�ng.
-- [x] Ghi audit log request OTP, verify th�nh c�ng v� verify th?t b?i.
-- [x] Ki?m th? student token kh�ng xem du?c nh?n x�t ch? d�nh cho ph? huynh.
+- [x] Tách quy?n h?c viên/ph? huynh b?ng `access_role`; HR v?n thu?c company portal riêng.
+- [x] Ghi audit log request OTP, verify thành công và verify th?t b?i.
+- [x] Ki?m th? student token không xem du?c nh?n xét ch? dành cho ph? huynh.
 
 ## Sprint 29 - LMS Player & Realtime Progress
 
-### M?c Ti�u
+### M?c Tiêu
 
-- [x] T?o API portal lesson detail c� ki?m tra token, enrollment v� access level.
-- [x] T?o API c?p nh?t ti?n d? b�i h?c: ph?n tram, v? tr� xem g?n nh?t, tr?ng th�i ho�n th�nh.
-- [x] T?o trang `/portal/bai-hoc/[slug]` d? h?c vi�n xem video v� t�i li?u.
-- [x] N?i n�t `V�o h?c` t? LMS trong portal sang trang b�i h?c.
-- [x] Luu session portal ? `sessionStorage` sau OTP d? trang b�i h?c d?c du?c.
-- [x] Th�m test cho lesson detail v� progress update.
-- [ ] Tracking t? d?ng theo interval/player event s? l�m s�u hon n?u c?n.
+- [x] T?o API portal lesson detail có ki?m tra token, enrollment và access level.
+- [x] T?o API c?p nh?t ti?n d? bài h?c: ph?n tram, v? trí xem g?n nh?t, tr?ng thái hoàn thành.
+- [x] T?o trang `/portal/bai-hoc/[slug]` d? h?c viên xem video và tài li?u.
+- [x] N?i nút `Vào h?c` t? LMS trong portal sang trang bài h?c.
+- [x] Luu session portal ? `sessionStorage` sau OTP d? trang bài h?c d?c du?c.
+- [x] Thêm test cho lesson detail và progress update.
+- [ ] Tracking t? d?ng theo interval/player event s? làm sâu hon n?u c?n.
 
 ## Sprint 30 - Affiliate & Referral Module
 
-### M?c Ti�u
+### M?c Tiêu
 
-- [x] T?o schema affiliate partner, affiliate link, click v� commission.
+- [x] T?o schema affiliate partner, affiliate link, click và commission.
 - [x] Public lead affiliate t? ghi nh?n click attribution.
-- [x] Order c� lead affiliate t? t?o commission pending.
-- [x] Commission c� tr?ng th�i d? duy?t/tr? sau: pending, approved, paid, rejected.
+- [x] Order có lead affiliate t? t?o commission pending.
+- [x] Commission có tr?ng thái d? duy?t/tr? sau: pending, approved, paid, rejected.
 - [x] Test lead affiliate -> click -> order -> commission.
-- [ ] Dashboard hi?u qu? affiliate v� portal d?i t�c l�m ? bu?c ti?p theo n?u c?n.
+- [ ] Dashboard hi?u qu? affiliate và portal d?i tác làm ? bu?c ti?p theo n?u c?n.
 
 ### Sprint 30 Deepening Update
 
-- [x] Th�m admin resources cho partner, link, click v� commission affiliate.
-- [x] Th�m affiliate performance v�o dashboard v?n h�nh.
+- [x] Thêm admin resources cho partner, link, click và commission affiliate.
+- [x] Thêm affiliate performance vào dashboard v?n hành.
 - [x] B? sung readiness metrics: partner active, click, hoa h?ng ch? duy?t.
-- [x] G?n quy?n truy c?p affiliate theo nh�m CRM/finance.
+- [x] G?n quy?n truy c?p affiliate theo nhóm CRM/finance.
 - [x] B? sung test dashboard affiliate.
-- [ ] Portal ho?c m�n h�nh lite cho partner xem k?t qu? s? t�ch sang backlog sau Sprint 30.
+- [ ] Portal ho?c màn hình lite cho partner xem k?t qu? s? tách sang backlog sau Sprint 30.
 
 ### Sprint 30 Affiliate Closure Update
 
-- [x] Th�m API `affiliate-portal/lookup` cho d?i t�c xem hi?u qu? theo m� partner/link.
-- [x] Th�m trang `/affiliate-portal` cho d?i t�c xem click, lead, hoa h?ng v� link chi?n d?ch.
+- [x] Thêm API `affiliate-portal/lookup` cho d?i tác xem hi?u qu? theo mã partner/link.
+- [x] Thêm trang `/affiliate-portal` cho d?i tác xem click, lead, hoa h?ng và link chi?n d?ch.
 - [x] Ch?n index SEO cho affiliate portal.
 - [x] B? sung test nghi?m thu affiliate portal.
 
 ## Sprint 31 - Automation & Notification Workflows
 
-### M?c Ti�u
+### M?c Tiêu
 
-- [x] T?o l�i automation cham s�c lead, nh?c follow-up, l?ch h?c v� c�ng n?.
-- [x] D�ng notification portal l�m outbox demo tru?c khi t�ch h?p email/Zalo/SMS th?t.
+- [x] T?o lõi automation cham sóc lead, nh?c follow-up, l?ch h?c và công n?.
+- [x] Dùng notification portal làm outbox demo tru?c khi tích h?p email/Zalo/SMS th?t.
 
 ### Checklist
 
-- [x] T?o schema automation workflows, messages v� logs.
-- [x] T?o runner service c� ch?ng g?i l?p b?ng cooldown.
+- [x] T?o schema automation workflows, messages và logs.
+- [x] T?o runner service có ch?ng g?i l?p b?ng cooldown.
 - [x] Seed workflow m?c d?nh cho DAYAI.
-- [x] Th�m command `automation:run`.
-- [x] Th�m dashboard automation health.
-- [x] Test lead confirmation v� ch?ng spam trong cooldown.
-- [ ] T�ch h?p provider g?i th?t email/Zalo/SMS ? sprint sau n?u c?n.
+- [x] Thêm command `automation:run`.
+- [x] Thêm dashboard automation health.
+- [x] Test lead confirmation và ch?ng spam trong cooldown.
+- [ ] Tích h?p provider g?i th?t email/Zalo/SMS ? sprint sau n?u c?n.
 
 ## Sprint 32 - BI Reports & Export
 
-### M?c Ti�u
+### M?c Tiêu
 
-- [x] T?o n?n b�o c�o BI c� th? xu?t CSV d? sales/k? to�n/admin d?i chi?u s? li?u.
+- [x] T?o n?n báo cáo BI có th? xu?t CSV d? sales/k? toán/admin d?i chi?u s? li?u.
 
 ### Checklist
 
-- [x] B�o c�o tuy?n sinh theo ngu?n, campaign v� affiliate.
-- [x] B�o c�o doanh thu theo kh�a v� chi nh�nh.
-- [x] B�o c�o hi?u qu? l?p h?c theo si s?, di?m danh v� ti?n d?.
-- [x] B�o c�o c�ng n? aging.
-- [x] API export CSV cho t?ng b�o c�o.
-- [x] Trang Filament `BI Reports & Export` d? admin thao t�c nhanh.
-- [x] Test service v� CSV export.
-- [ ] B? l?c th?i gian/kh�a/ngu?n n�ng cao s? l�m s�u sau n?u c?n.
+- [x] Báo cáo tuy?n sinh theo ngu?n, campaign và affiliate.
+- [x] Báo cáo doanh thu theo khóa và chi nhánh.
+- [x] Báo cáo hi?u qu? l?p h?c theo si s?, di?m danh và ti?n d?.
+- [x] Báo cáo công n? aging.
+- [x] API export CSV cho t?ng báo cáo.
+- [x] Trang Filament `BI Reports & Export` d? admin thao tác nhanh.
+- [x] Test service và CSV export.
+- [ ] B? l?c th?i gian/khóa/ngu?n nâng cao s? làm sâu sau n?u c?n.
 
 ## Sprint 33 - Production Hardening & Go-Live
 
-### M?c Ti�u
+### M?c Tiêu
 
-- [x] Chu?n b? h? th?ng d? checklist d? deploy staging/production c� ki?m so�t.
+- [x] Chu?n b? h? th?ng d? checklist d? deploy staging/production có ki?m soát.
 
 ### Checklist
 
-- [x] Th�m health check API `/api/health` ki?m tra app/database/cache.
-- [x] Th�m `.env.production.example` cho backend v� frontend.
-- [x] Th�m go-live runbook Phase 3.
-- [x] Chu?n h�a smoke test sau deploy.
-- [x] Ghi checklist backup, restore v� rollback.
+- [x] Thêm health check API `/api/health` ki?m tra app/database/cache.
+- [x] Thêm `.env.production.example` cho backend và frontend.
+- [x] Thêm go-live runbook Phase 3.
+- [x] Chu?n hóa smoke test sau deploy.
+- [x] Ghi checklist backup, restore và rollback.
 - [x] Ghi security review tru?c go-live.
-- [ ] C?u h�nh h? t?ng th?t, HTTPS th?t, SMTP/S3 th?t s? l�m khi c� server/domain production.
+- [ ] C?u hình h? t?ng th?t, HTTPS th?t, SMTP/S3 th?t s? làm khi có server/domain production.
+
+## Sprint 34 - Online Assessment & Quiz Engine
+
+### Muc Tieu
+
+- [x] Tao nen quiz/assessment online de hoc vien lam bai trong portal.
+- [x] Cho admin quan ly ngan hang cau hoi, cau hoi, dap an va luot lam bai.
+- [x] Gan assessment vao khoa hoc/module/video lesson de hien dung ngu canh hoc.
+- [x] Dong bo ket qua objective quiz sang bao cao danh gia hoc vien.
+
+### Checklist
+
+- [x] Tao schema `question_banks`, `questions`, `question_options`, `assessment_questions`.
+- [x] Tao schema `quiz_attempts`, `quiz_attempt_answers`.
+- [x] Tao model va quan he cho question bank, question, option, assessment question, quiz attempt.
+- [x] Tao Filament resources cho ngan hang cau hoi, cau hoi va luot lam bai.
+- [x] Mo rong form/table assessment de gan course module, video lesson va cau hoi.
+- [x] Tao API `POST /api/portal/assessments/{assessment}/start`.
+- [x] Tao API `POST /api/portal/quiz-attempts/{attemptCode}/submit`.
+- [x] Khoa start/submit theo portal access token, enrollment va tenant.
+- [x] Cham tu dong cau hoi single choice, multiple choice va true/false.
+- [x] Chan nop lai attempt da submit/graded.
+- [x] Tu cap nhat `assessment_results` cho quiz cham tu dong hoan toan.
+- [x] Hien thi bai kiem tra va lich su lam bai trong `/portal`.
+- [x] Hien thi assessment lien quan trong lesson player.
+- [x] Seed du lieu demo quiz cho hoc vien portal.
+- [x] Them feature test `PortalQuizApiTest` cho start/submit/resubmit/access scope.
+- [x] Frontend production build pass.
+- [x] PHP lint pass cho cac file Sprint 34.
+- [x] Backend feature test pass trong Docker/PHP 8.4 runtime.
+
+### Demo Cuoi Sprint
+
+- [x] Hoc vien dang nhap portal bang OTP demo.
+- [x] Hoc vien thay bai kiem tra duoc mo theo khoa/bai hoc.
+- [x] Hoc vien bat dau quiz, chon dap an va nop bai.
+- [x] Portal tra diem, so cau dung va lich su luot lam bai.
+- [x] Admin xem duoc luot lam bai va co the chot/cham lai neu can.
+- [x] Chay `php artisan test --filter=PortalQuizApiTest` khi Docker Desktop hoac PHP 8.4 san sang.
+
+## Sprint 35 - Frontend UI & Experience Foundation
+
+### Muc Tieu
+
+- [ ] Chot ban do giao dien cho public website, portal hoc vien/phu huynh, HR portal, affiliate portal va admin Filament.
+- [ ] Chuan hoa visual language DAYAI de cac man hinh khong bi lech nhau.
+- [ ] Uu tien homepage, portal dashboard, lesson player/quiz va admin module grouping.
+- [ ] Tao nen de cac sprint sau polish tung man hinh nhanh va co kiem soat.
+
+### Tai Lieu Chinh
+
+- [x] `docs/20-sprint35-frontend-ui-plan.md`
+
+### Checklist
+
+- [x] Tao UI inventory cho public site, portals va admin.
+- [x] Lap ban do man hinh theo nhom nguoi dung.
+- [x] Chot navigation IA cho public website.
+- [ ] Chot portal IA cho hoc vien/phu huynh.
+- [ ] Chot admin module grouping theo role.
+- [ ] Chuan hoa design tokens: color, typography, spacing, radius, shadow, status colors.
+- [ ] Chuan hoa component patterns: button, badge, stat, table, filter, form, tab, empty state, alert.
+- [x] Redesign homepage first viewport va cac section chinh.
+- [ ] Redesign portal dashboard layout.
+- [ ] Redesign quiz/lesson player area cho ro trang thai hoc.
+- [ ] Lap admin UX spec cho dashboard, list, create/edit, view/detail, relation manager.
+- [x] Chay `npm run lint` va `npm run build` sau moi cum frontend.
+
+### Demo Cuoi Sprint
+
+- [x] Homepage co giao dien moi thong nhat voi brand DAYAI.
+- [ ] Portal hoc vien co dashboard ro rang: hoc tiep, lich hoc, hoc phi, tien do, quiz.
+- [ ] Lesson player/quiz UI de lam bai va xem ket qua.
+- [ ] Admin co module grouping/UX spec de theme Filament va polish tung resource.
+
+### Handoff 2026-07-01
+
+- [x] Course catalog `/khoa-hoc` da co filter/search/sort, course detail, card CTA dong bo va mot modal chung cho free/paid access.
+- [x] Free course da chuyen sang account-first: email/password, verify email, roi mo enrollment.
+- [x] Paid course da co checkout demo: tao order/invoice, mark-paid, roi mo enrollment.
+- [x] Tao hoc vien demo `hocvien.demo@dayai.edu.vn` / `Dayai@123456`, phone `0901002003`, student code `HV-260630181712-IOBH`, co 2 khoa active.
+- [ ] Ngay mai tiep tuc tu portal UI: dashboard hoc vien, tab khoa hoc/LMS, lesson player va quiz UI.
+- [ ] Sau portal moi quay sang admin UX spec va module grouping.
+

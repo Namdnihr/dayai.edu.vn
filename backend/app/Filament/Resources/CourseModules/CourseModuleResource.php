@@ -34,9 +34,9 @@ class CourseModuleResource extends Resource
 
     protected static ?string $pluralModelLabel = 'module khóa học';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
+    protected static string|UnitEnum|null $navigationGroup = 'LMS & Khóa học';
 
-    protected static ?int $navigationSort = 70;
+    protected static ?int $navigationSort = 20;
 
     public static function form(Schema $schema): Schema
     {

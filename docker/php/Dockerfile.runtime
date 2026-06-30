@@ -27,6 +27,7 @@ WORKDIR /var/www/html
 COPY backend/ /var/www/html/
 
 RUN composer dump-autoload -o --no-interaction \
+    && touch .env \
     && mkdir -p bootstrap/cache storage/app/public storage/framework/cache/data storage/framework/sessions storage/framework/testing storage/framework/views storage/logs \
     && chown -R www-data:www-data bootstrap/cache storage \
     && chmod -R ug+rwX bootstrap/cache storage

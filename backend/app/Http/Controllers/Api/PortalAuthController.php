@@ -27,7 +27,7 @@ class PortalAuthController extends Controller
 
         if (RateLimiter::tooManyAttempts($rateKey, 5)) {
             return response()->json([
-                'message' => 'Bạn đã yêu cầu mã quá nhiều lần. Vui lòng thử lại sau.',
+                'message' => 'B?n ?? y?u c?u m? qu? nhi?u l?n. Vui l?ng th? l?i sau.',
             ], 429);
         }
 
@@ -44,7 +44,7 @@ class PortalAuthController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Không tìm thấy học viên với thông tin đã nhập.',
+                'message' => 'Kh?ng t?m th?y h?c vi?n v?i th?ng tin ?? nh?p.',
             ], 404);
         }
 
@@ -69,7 +69,7 @@ class PortalAuthController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Mã xác thực đã được tạo. Ở môi trường demo, mã được trả về trực tiếp để kiểm thử.',
+            'message' => 'M? x?c th?c ?? ???c t?o. ? m?i tr??ng demo, m? ???c tr? v? tr?c ti?p ?? ki?m th?.',
             'request_id' => $token->id,
             'expires_at' => $token->expires_at?->toDateTimeString(),
             'demo_otp' => app()->environment('production') ? null : $code,
@@ -94,7 +94,7 @@ class PortalAuthController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Mã xác thực đã hết hạn hoặc không hợp lệ.',
+                'message' => 'M? x?c th?c ?? h?t h?n ho?c kh?ng h?p l?.',
             ], 422);
         }
 
@@ -105,7 +105,7 @@ class PortalAuthController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Bạn đã nhập sai quá số lần cho phép. Vui lòng yêu cầu mã mới.',
+                'message' => 'B?n ?? nh?p sai qu? s? l?n cho ph?p. Vui l?ng y?u c?u m? m?i.',
             ], 429);
         }
 
@@ -119,7 +119,7 @@ class PortalAuthController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Mã xác thực không đúng.',
+                'message' => 'M? x?c th?c kh?ng ??ng.',
             ], 422);
         }
 
@@ -135,7 +135,7 @@ class PortalAuthController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Xác thực portal thành công.',
+            'message' => 'X?c th?c portal th?nh c?ng.',
             'portal_access_token' => $accessToken,
             'access_role' => $token->access_role,
             'expires_at' => $token->expires_at?->toDateTimeString(),

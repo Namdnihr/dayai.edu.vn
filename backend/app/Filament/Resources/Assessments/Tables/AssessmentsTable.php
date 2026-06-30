@@ -9,6 +9,7 @@ use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
@@ -19,42 +20,59 @@ class AssessmentsTable
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->label('Bài đánh giá')
+                    ->label('B?i ??nh gi?')
                     ->searchable(),
                 TextColumn::make('course.name')
-                    ->label('Khóa học')
+                    ->label('Kh?a h?c')
                     ->searchable(),
+                TextColumn::make('courseModule.title')
+                    ->label('Module')
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('videoLesson.title')
+                    ->label('Video')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('classGroup.name')
-                    ->label('Lớp')
-                    ->searchable(),
+                    ->label('L?p')
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('assessment_type')
-                    ->label('Loại')
-                    ->searchable(),
+                    ->label('Lo?i')
+                    ->badge(),
+                TextColumn::make('assessment_questions_count')
+                    ->label('S? c?u')
+                    ->counts('assessmentQuestions'),
                 TextColumn::make('status')
-                    ->label('Trạng thái')
-                    ->searchable(),
+                    ->label('Tr?ng th?i')
+                    ->badge(),
                 TextColumn::make('max_score')
-                    ->label('Điểm tối đa')
+                    ->label('?i?m t?i ?a')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('assessment_at')
-                    ->label('Ngày đánh giá')
-                    ->dateTime()
+                    ->label('Ng?y ??nh gi?')
+                    ->dateTime('d/m/Y H:i')
                     ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                SelectFilter::make('assessment_type')
+                    ->label('Lo?i')
+                    ->options([
+                        'entry' => '??u v?o',
+                        'quiz' => 'Quiz nhanh',
+                        'practice' => 'B?i luy?n t?p',
+                        'project' => 'D? ?n',
+                        'final' => 'Cu?i kh?a',
+                        'progress' => 'Ti?n b?',
+                    ]),
+                SelectFilter::make('status')
+                    ->label('Tr?ng th?i')
+                    ->options([
+                        'draft' => 'Nh?p',
+                        'published' => '?? c?ng b?',
+                        'archived' => 'L?u tr?',
+                    ]),
                 TrashedFilter::make(),
             ])
             ->recordActions([

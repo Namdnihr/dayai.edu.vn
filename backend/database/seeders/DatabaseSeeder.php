@@ -5,6 +5,10 @@ namespace Database\Seeders;
 use App\Models\ActivityLog;
 use App\Models\Assessment;
 use App\Models\AssessmentResult;
+use App\Models\QuestionOption;
+use App\Models\QuestionBank;
+use App\Models\Question;
+use App\Models\AssessmentQuestion;
 use App\Models\AttendanceRecord;
 use App\Models\Branch;
 use App\Models\Certificate;
@@ -38,6 +42,7 @@ use App\Models\Tenant;
 use App\Models\TrialRegistration;
 use App\Models\User;
 use App\Models\VideoLesson;
+use App\Models\VideoLessonProgress;
 use App\Services\AutomationWorkflowRunner;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -635,6 +640,98 @@ class DatabaseSeeder extends Seeder
             ],
         );
 
+        $course->forceFill([
+            'name' => 'AI Căn Bản Cho Người Mới',
+            'short_description' => 'Khóa nhập môn giúp học viên hiểu và ứng dụng AI vào học tập, công việc hằng ngày.',
+            'description' => 'Học viên làm quen với nền tảng AI, cách viết prompt, quy trình kiểm chứng kết quả và thực hành tạo sản phẩm nhỏ bằng AI.',
+            'outcomes' => ['Hiểu nền tảng AI', 'Viết prompt hiệu quả', 'Ứng dụng AI vào học tập và công việc'],
+        ])->save();
+
+        $classGroup->forceFill([
+            'name' => 'AI Căn Bản - Lớp tối T2/T4',
+            'schedule_note' => 'Tối thứ 2/4, 19:30 - 21:30',
+            'status' => 'active',
+        ])->save();
+
+        $studentPerson->forceFill([
+            'full_name' => 'Học viên Demo',
+            'display_name' => 'Học viên Demo',
+        ])->save();
+
+        $studentProfile->forceFill([
+            'learning_goal' => 'Học AI để áp dụng vào học tập, làm bài tập, thuyết trình và đồ án cá nhân.',
+            'status' => 'active',
+        ])->save();
+
+        foreach ([
+            ['sort_order' => 1, 'title' => 'Tổng quan AI và cách học an toàn', 'description' => 'Hiểu AI là gì, dùng AI có trách nhiệm và biết cách kiểm chứng thông tin.', 'duration_minutes' => 90, 'learning_objectives' => ['Hiểu khái niệm AI', 'Biết giới hạn của AI', 'Dùng AI an toàn']],
+            ['sort_order' => 2, 'title' => 'Prompt Engineering căn bản', 'description' => 'Thực hành viết prompt rõ mục tiêu, có ngữ cảnh và tiêu chí đầu ra.', 'duration_minutes' => 120, 'learning_objectives' => ['Viết prompt có cấu trúc', 'Tối ưu câu hỏi', 'Đánh giá kết quả AI']],
+            ['sort_order' => 3, 'title' => 'Dự án: Trợ lý học tập bằng AI', 'description' => 'Tạo trợ lý học tập cá nhân để tóm tắt, lập kế hoạch và luyện tập.', 'duration_minutes' => 120, 'learning_objectives' => ['Thiết kế workflow học tập', 'Tạo prompt mẫu', 'Trình bày sản phẩm cuối khóa']],
+        ] as $demoModule) {
+            CourseModule::query()->updateOrCreate(
+                [
+                    'tenant_id' => $tenant->id,
+                    'course_id' => $course->id,
+                    'sort_order' => $demoModule['sort_order'],
+                ],
+                [
+                    'title' => $demoModule['title'],
+                    'description' => $demoModule['description'],
+                    'duration_minutes' => $demoModule['duration_minutes'],
+                    'learning_objectives' => $demoModule['learning_objectives'],
+                ],
+            );
+        }
+
+        $modules = $course->modules()->orderBy('sort_order')->get()->values();
+
+        foreach ([
+            ['module_index' => 0, 'sort_order' => 1, 'title' => 'Bài 1: AI là gì và học AI bắt đầu từ đâu?', 'slug' => 'ai-la-gi-va-hoc-ai-bat-dau-tu-dau', 'duration_minutes' => 24, 'summary' => 'Bài nhập môn giúp học viên hiểu đúng về AI, ứng dụng thực tế và rủi ro cần tránh.', 'progress' => 100, 'status' => 'completed'],
+            ['module_index' => 0, 'sort_order' => 2, 'title' => 'Bài 2: Nguyên tắc dùng AI an toàn', 'slug' => 'nguyen-tac-dung-ai-an-toan', 'duration_minutes' => 18, 'summary' => 'Cách bảo vệ dữ liệu cá nhân, kiểm chứng nguồn và tránh phụ thuộc vào AI.', 'progress' => 70, 'status' => 'in_progress'],
+            ['module_index' => 1, 'sort_order' => 1, 'title' => 'Bài 3: Công thức prompt rõ mục tiêu', 'slug' => 'cong-thuc-prompt-ro-muc-tieu', 'duration_minutes' => 32, 'summary' => 'Thực hành khung prompt gồm vai trò, bối cảnh, nhiệm vụ, ràng buộc và tiêu chí đánh giá.', 'progress' => 35, 'status' => 'in_progress'],
+            ['module_index' => 1, 'sort_order' => 2, 'title' => 'Bài 4: Dùng AI để học và làm bài thuyết trình', 'slug' => 'dung-ai-de-hoc-va-lam-bai-thuyet-trinh', 'duration_minutes' => 28, 'summary' => 'Ứng dụng AI để lập dàn ý, tạo slide, luyện phản biện và chuẩn bị trình bày.', 'progress' => 0, 'status' => 'not_started'],
+            ['module_index' => 2, 'sort_order' => 1, 'title' => 'Bài 5: Xây trợ lý học tập cá nhân', 'slug' => 'xay-tro-ly-hoc-tap-ca-nhan', 'duration_minutes' => 40, 'summary' => 'Dự án cuối khóa: thiết kế trợ lý AI hỗ trợ ôn tập, tóm tắt và lập kế hoạch học.', 'progress' => 0, 'status' => 'not_started'],
+        ] as $demoLesson) {
+            $lesson = VideoLesson::query()->updateOrCreate(
+                [
+                    'tenant_id' => $tenant->id,
+                    'slug' => $demoLesson['slug'],
+                ],
+                [
+                    'course_id' => $course->id,
+                    'course_module_id' => $modules->get($demoLesson['module_index'])?->id,
+                    'sort_order' => $demoLesson['sort_order'],
+                    'title' => $demoLesson['title'],
+                    'status' => 'published',
+                    'video_provider' => 'youtube',
+                    'video_url' => 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+                    'duration_minutes' => $demoLesson['duration_minutes'],
+                    'access_level' => 'student',
+                    'summary' => $demoLesson['summary'],
+                    'resources' => [['title' => 'Worksheet thực hành', 'url' => '/tai-nguyen/mau-prompt-chatgpt/']],
+                    'published_at' => now(),
+                    'metadata' => ['category_id' => $videoCategory->id],
+                ],
+            );
+
+            VideoLessonProgress::query()->updateOrCreate(
+                [
+                    'student_profile_id' => $studentProfile->id,
+                    'video_lesson_id' => $lesson->id,
+                ],
+                [
+                    'tenant_id' => $tenant->id,
+                    'enrollment_id' => $enrollment->id,
+                    'status' => $demoLesson['status'],
+                    'progress_percent' => $demoLesson['progress'],
+                    'last_position_seconds' => $demoLesson['progress'] > 0 ? 420 : 0,
+                    'started_at' => $demoLesson['progress'] > 0 ? now()->subDays(2) : null,
+                    'last_watched_at' => $demoLesson['progress'] > 0 ? now()->subHours(6) : null,
+                    'completed_at' => $demoLesson['status'] === 'completed' ? now()->subDay() : null,
+                ],
+            );
+        }
+
         $firstSession = $classGroup->sessions()->orderBy('session_no')->first();
 
         if ($firstSession) {
@@ -670,6 +767,168 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Kiá»ƒm tra tÆ° duy logic, kháº£ nÄƒng dÃ¹ng cÃ´ng cá»¥ AI vÃ  má»¥c tiÃªu há»c táº­p.',
             ],
         );
+
+
+        $firstModule = $modules->first();
+        $firstLesson = VideoLesson::query()
+            ->where('tenant_id', $tenant->id)
+            ->where('course_id', $course->id)
+            ->orderBy('sort_order')
+            ->first();
+
+        $entryAssessment->forceFill([
+            'course_id' => $course->id,
+            'course_module_id' => $firstModule?->id,
+            'video_lesson_id' => $firstLesson?->id,
+            'assessment_type' => 'entry',
+            'status' => 'published',
+            'max_score' => 10,
+            'weight_percent' => 20,
+            'assessment_at' => now()->subDays(2),
+            'description' => 'Ki?m tra t? duy logic, kh? n?ng d?ng c?ng c? AI v? m?c ti?u h?c t?p.',
+        ])->save();
+
+        $questionBank = QuestionBank::query()->updateOrCreate(
+            [
+                'tenant_id' => $tenant->id,
+                'course_id' => $course->id,
+                'name' => 'Question Bank - AI C?n B?n',
+            ],
+            [
+                'course_module_id' => $firstModule?->id,
+                'video_lesson_id' => $firstLesson?->id,
+                'bank_type' => 'course',
+                'audience_type' => 'student',
+                'level' => 'beginner',
+                'status' => 'active',
+                'description' => 'B? c?u h?i demo cho ki?m tra ??u v?o v? quiz nhanh c?a kh?a AI C?n B?n.',
+                'tags' => ['ai-can-ban', 'quiz', 'demo'],
+            ],
+        );
+
+        $demoQuestions = [
+            [
+                'sort_order' => 1,
+                'prompt' => 'Khi d?ng AI ?? h? tr? h?c t?p, h?nh ??ng n?o an to?n v? ??ng nh?t?',
+                'question_type' => 'single_choice',
+                'difficulty' => 'easy',
+                'explanation' => 'AI n?n ???c d?ng nh? tr? l? h?c t?p; ng??i h?c v?n c?n ki?m ch?ng v? hi?u b?n ch?t.',
+                'options' => [
+                    ['content' => 'Sao ch?p nguy?n v?n c?u tr? l?i c?a AI m? kh?ng ki?m tra', 'is_correct' => false],
+                    ['content' => 'D?ng AI ?? g?i ?, sau ?? t? ki?m ch?ng v? di?n ??t l?i', 'is_correct' => true],
+                    ['content' => '??a to?n b? th?ng tin c? nh?n l?n AI ?? nh?n c?u tr? l?i ch?nh x?c h?n', 'is_correct' => false],
+                    ['content' => 'Tin m?i ngu?n AI ??a ra v? AI lu?n ??ng', 'is_correct' => false],
+                ],
+            ],
+            [
+                'sort_order' => 2,
+                'prompt' => 'M?t prompt t?t th??ng c?n y?u t? n?o?',
+                'question_type' => 'multiple_choice',
+                'difficulty' => 'medium',
+                'explanation' => 'Prompt t?t n?n c? vai tr?, b?i c?nh, nhi?m v?, r?ng bu?c v? ti?u ch? ??u ra r? r?ng.',
+                'options' => [
+                    ['content' => 'M?c ti?u r? r?ng', 'is_correct' => true],
+                    ['content' => 'B?i c?nh ?? c? th?', 'is_correct' => true],
+                    ['content' => 'Y?u c?u c?ng m? h? c?ng t?t', 'is_correct' => false],
+                    ['content' => 'Ti?u ch? ??nh gi? k?t qu?', 'is_correct' => true],
+                ],
+            ],
+            [
+                'sort_order' => 3,
+                'prompt' => 'Vi?t ng?n g?n 2 vi?c c?n l?m ?? ki?m ch?ng m?t c?u tr? l?i do AI t?o ra.',
+                'question_type' => 'short_answer',
+                'difficulty' => 'medium',
+                'explanation' => 'C? th? ki?m tra ngu?n, so s?nh nhi?u ngu?n, h?i l?i AI v? c?n c?, v? nh? gi?o vi?n/mentor ph?n bi?n.',
+                'options' => [],
+            ],
+        ];
+
+        foreach ($demoQuestions as $demoQuestion) {
+            $question = Question::query()->updateOrCreate(
+                [
+                    'tenant_id' => $tenant->id,
+                    'question_bank_id' => $questionBank->id,
+                    'prompt' => $demoQuestion['prompt'],
+                ],
+                [
+                    'course_id' => $course->id,
+                    'course_module_id' => $firstModule?->id,
+                    'video_lesson_id' => $firstLesson?->id,
+                    'question_type' => $demoQuestion['question_type'],
+                    'difficulty' => $demoQuestion['difficulty'],
+                    'status' => 'published',
+                    'explanation' => $demoQuestion['explanation'],
+                    'default_score' => $demoQuestion['question_type'] === 'short_answer' ? 2 : 1,
+                    'time_limit_seconds' => 120,
+                    'tags' => ['ai-can-ban', 'entry'],
+                ],
+            );
+
+            foreach ($demoQuestion['options'] as $optionIndex => $option) {
+                QuestionOption::query()->updateOrCreate(
+                    [
+                        'tenant_id' => $tenant->id,
+                        'question_id' => $question->id,
+                        'sort_order' => $optionIndex + 1,
+                    ],
+                    [
+                        'content' => $option['content'],
+                        'is_correct' => $option['is_correct'],
+                    ],
+                );
+            }
+
+            AssessmentQuestion::query()->updateOrCreate(
+                [
+                    'tenant_id' => $tenant->id,
+                    'assessment_id' => $entryAssessment->id,
+                    'question_id' => $question->id,
+                ],
+                [
+                    'sort_order' => $demoQuestion['sort_order'],
+                    'score' => $question->default_score,
+                    'is_required' => true,
+                ],
+            );
+        }
+
+        $moduleQuiz = Assessment::query()->updateOrCreate(
+            [
+                'tenant_id' => $tenant->id,
+                'course_id' => $course->id,
+                'title' => 'Quiz nhanh: AI an toàn & prompt rõ mục tiêu',
+            ],
+            [
+                'course_module_id' => $firstModule?->id,
+                'video_lesson_id' => null,
+                'class_group_id' => $classGroup->id,
+                'assessment_type' => 'quiz',
+                'status' => 'published',
+                'max_score' => 4,
+                'weight_percent' => 10,
+                'assessment_at' => now(),
+                'description' => 'Bài quiz ngắn sau module đầu tiên để kiểm tra mức hiểu về học AI an toàn và cách viết prompt rõ ràng.',
+            ],
+        );
+
+        Question::query()
+            ->where('question_bank_id', $questionBank->id)
+            ->orderBy('created_at')
+            ->get()
+            ->each(function (Question $question, int $index) use ($moduleQuiz, $tenant): void {
+                AssessmentQuestion::query()->updateOrCreate(
+                    [
+                        'tenant_id' => $tenant->id,
+                        'assessment_id' => $moduleQuiz->id,
+                        'question_id' => $question->id,
+                    ],
+                    [
+                        'sort_order' => $index + 1,
+                        'score' => $question->default_score,
+                        'is_required' => true,
+                    ],
+                );
+            });
 
         AssessmentResult::query()->firstOrCreate(
             [

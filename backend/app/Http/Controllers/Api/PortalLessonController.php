@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Assessment;
 use App\Models\PortalAuthToken;
 use App\Models\StudentProfile;
 use App\Models\VideoLesson;
@@ -29,14 +30,33 @@ class PortalLessonController extends Controller
             ], 404);
         }
 
-        $progress = VideoLessonProgress::query()
+        $courseLessons = VideoLesson::query()
+            ->select('video_lessons.*')
+            ->leftJoin('course_modules', 'course_modules.id', '=', 'video_lessons.course_module_id')
+            ->with(['courseModule'])
+            ->where('video_lessons.tenant_id', $student->tenant_id)
+            ->where('video_lessons.course_id', $lesson->course_id)
+            ->where('video_lessons.status', 'published')
+            ->whereIn('video_lessons.access_level', ['public', 'student'])
+            ->orderByRaw('COALESCE(course_modules.sort_order, 999999)')
+            ->orderBy('video_lessons.sort_order')
+            ->orderBy('video_lessons.created_at')
+            ->get();
+
+        $progressRecords = VideoLessonProgress::query()
             ->where('student_profile_id', $student->id)
-            ->where('video_lesson_id', $lesson->id)
-            ->first();
+            ->whereIn('video_lesson_id', $courseLessons->pluck('id'))
+            ->get()
+            ->keyBy('video_lesson_id');
+
+        $progress = $progressRecords->get($lesson->id);
 
         return response()->json([
             'access_role' => $portalAccess->access_role,
             'lesson' => $this->lessonPayload($lesson, $progress),
+            'navigation' => $this->navigationPayload($lesson, $courseLessons, $progressRecords),
+            'outline' => $this->outlinePayload($courseLessons, $progressRecords),
+            'assessments' => $this->assessmentPayload($lesson, $student),
         ]);
     }
 
@@ -174,6 +194,96 @@ class PortalLessonController extends Controller
             'resources' => $lesson->resources ?? [],
             'progress' => $this->progressPayload($progress),
         ];
+    }
+
+    protected function navigationPayload(VideoLesson $lesson, $courseLessons, $progressRecords): array
+    {
+        $orderedLessons = $courseLessons->values();
+        $currentIndex = $orderedLessons->search(fn (VideoLesson $courseLesson): bool => $courseLesson->id === $lesson->id);
+        $previousLesson = $currentIndex !== false && $currentIndex > 0 ? $orderedLessons[$currentIndex - 1] : null;
+        $nextLesson = $currentIndex !== false && $currentIndex < $orderedLessons->count() - 1 ? $orderedLessons[$currentIndex + 1] : null;
+
+        return [
+            'previous_lesson' => $previousLesson ? $this->compactLessonPayload($previousLesson, $progressRecords->get($previousLesson->id)) : null,
+            'next_lesson' => $nextLesson ? $this->compactLessonPayload($nextLesson, $progressRecords->get($nextLesson->id)) : null,
+        ];
+    }
+
+    protected function outlinePayload($courseLessons, $progressRecords): array
+    {
+        return $courseLessons
+            ->groupBy(fn (VideoLesson $lesson): string => $lesson->course_module_id ?: 'uncategorized')
+            ->map(function ($lessons): array {
+                $firstLesson = $lessons->first();
+
+                return [
+                    'module_id' => $firstLesson?->course_module_id,
+                    'module' => $firstLesson?->courseModule?->title ?? 'Bài học độc lập',
+                    'lessons' => $lessons->values(),
+                ];
+            })
+            ->values()
+            ->map(fn (array $module): array => [
+                'module_id' => $module['module_id'],
+                'module' => $module['module'],
+                'lessons' => $module['lessons']
+                    ->map(fn (VideoLesson $outlineLesson): array => $this->compactLessonPayload($outlineLesson, $progressRecords->get($outlineLesson->id)))
+                    ->values()
+                    ->all(),
+            ])
+            ->all();
+    }
+
+    protected function compactLessonPayload(VideoLesson $lesson, ?VideoLessonProgress $progress): array
+    {
+        return [
+            'title' => $lesson->title,
+            'slug' => $lesson->slug,
+            'duration_minutes' => $lesson->duration_minutes,
+            'progress' => $this->progressPayload($progress),
+        ];
+    }
+
+    protected function assessmentPayload(VideoLesson $lesson, StudentProfile $student): array
+    {
+        return Assessment::query()
+            ->withCount('assessmentQuestions')
+            ->with(['quizAttempts' => fn ($query) => $query
+                ->where('student_profile_id', $student->id)
+                ->latest('submitted_at')
+                ->latest()])
+            ->where('tenant_id', $student->tenant_id)
+            ->where('status', 'published')
+            ->where(function ($query) use ($lesson): void {
+                $query->where('video_lesson_id', $lesson->id)
+                    ->orWhere(function ($moduleQuery) use ($lesson): void {
+                        $moduleQuery->whereNull('video_lesson_id')
+                            ->where('course_module_id', $lesson->course_module_id);
+                    });
+            })
+            ->orderBy('assessment_at')
+            ->get()
+            ->map(function (Assessment $assessment): array {
+                $latestAttempt = $assessment->quizAttempts->first();
+
+                return [
+                    'id' => $assessment->id,
+                    'title' => $assessment->title,
+                    'assessment_type' => $assessment->assessment_type,
+                    'description' => $assessment->description,
+                    'max_score' => (float) $assessment->max_score,
+                    'question_count' => (int) $assessment->assessment_questions_count,
+                    'latest_attempt' => $latestAttempt ? [
+                        'attempt_code' => $latestAttempt->attempt_code,
+                        'status' => $latestAttempt->status,
+                        'score' => $latestAttempt->score !== null ? (float) $latestAttempt->score : null,
+                        'max_score' => (float) $latestAttempt->max_score,
+                        'submitted_at' => $latestAttempt->submitted_at?->toDateTimeString(),
+                    ] : null,
+                ];
+            })
+            ->values()
+            ->all();
     }
 
     protected function progressPayload(?VideoLessonProgress $progress): array

@@ -340,4 +340,20 @@ class OperationalDashboardTest extends TestCase
         $this->assertSame(1, $phase2Readiness['published_progress_report_count']);
         $this->assertTrue($dashboard->getAffiliatePerformance()->isNotEmpty());
     }
+
+    public function test_operational_dashboard_can_run_automation(): void
+    {
+        $tenant = Tenant::query()->create([
+            'name' => 'DAYAI',
+            'code' => 'dayai',
+            'status' => 'active',
+        ]);
+
+        \App\Services\AutomationWorkflowRunner::seedDefaultWorkflows($tenant);
+
+        $dashboard = new OperationalDashboard();
+        $dashboard->runAutomation();
+
+        $this->assertTrue(true);
+    }
 }

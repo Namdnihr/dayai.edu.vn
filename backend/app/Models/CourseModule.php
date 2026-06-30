@@ -33,4 +33,6 @@ class CourseModule extends Model
     public function tenant(): BelongsTo { return $this->belongsTo(Tenant::class); }
     public function course(): BelongsTo { return $this->belongsTo(Course::class); }
     public function videoLessons(): HasMany { return $this->hasMany(VideoLesson::class)->orderBy('sort_order'); }
+    public function questionBanks(): HasMany { return $this->hasMany(QuestionBank::class); }
+    public function questions(): HasMany { return $this->hasMany(Question::class); }
 }

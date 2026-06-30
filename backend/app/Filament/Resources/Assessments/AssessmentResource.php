@@ -6,6 +6,7 @@ use App\Filament\Resources\Assessments\Pages\CreateAssessment;
 use App\Filament\Resources\Assessments\Pages\EditAssessment;
 use App\Filament\Resources\Assessments\Pages\ListAssessments;
 use App\Filament\Resources\Assessments\Pages\ViewAssessment;
+use App\Filament\Resources\Assessments\RelationManagers;
 use App\Filament\Resources\Assessments\Schemas\AssessmentForm;
 use App\Filament\Resources\Assessments\Schemas\AssessmentInfolist;
 use App\Filament\Resources\Assessments\Tables\AssessmentsTable;
@@ -28,15 +29,15 @@ class AssessmentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ClipboardDocumentCheck;
 
-    protected static ?string $navigationLabel = 'Bài đánh giá';
+    protected static ?string $navigationLabel = 'B?i ??nh gi?';
 
-    protected static ?string $modelLabel = 'bài đánh giá';
+    protected static ?string $modelLabel = 'b?i ??nh gi?';
 
-    protected static ?string $pluralModelLabel = 'bài đánh giá';
+    protected static ?string $pluralModelLabel = 'b?i ??nh gi?';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Tiến bộ học viên';
+    protected static string|UnitEnum|null $navigationGroup = 'LMS & Kh?a h?c';
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 40;
 
     public static function form(Schema $schema): Schema
     {
@@ -56,7 +57,7 @@ class AssessmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\QuestionsRelationManager::class,
         ];
     }
 

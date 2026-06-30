@@ -8,6 +8,8 @@ use App\Models\AffiliateCommission;
 use App\Models\AffiliatePartner;
 use App\Models\AutomationLog;
 use App\Models\AutomationWorkflow;
+use App\Services\AutomationWorkflowRunner;
+use Filament\Notifications\Notification;
 use App\Models\ClassGroup;
 use App\Models\ClassSession;
 use App\Models\ContentItem;
@@ -292,5 +294,32 @@ class OperationalDashboard extends Page
             'warm' => 'Ấm',
             'cold' => 'Lạnh',
         ][$temperature ?? ''] ?? 'Chưa rõ';
+    }
+
+    public function runAutomation(): void
+    {
+        try {
+            $runner = app(AutomationWorkflowRunner::class);
+            $summary = $runner->run();
+
+            Notification::make()
+                ->title('Chạy automation thành công')
+                ->success()
+                ->body(sprintf(
+                    'Đã quét xong: %d workflow, %d lead/học viên. Gửi thành công: %d, Bỏ qua: %d, Thất bại: %d.',
+                    $summary['workflow_count'],
+                    $summary['processed_count'],
+                    $summary['sent_count'],
+                    $summary['skipped_count'],
+                    $summary['failed_count']
+                ))
+                ->send();
+        } catch (\Throwable $exception) {
+            Notification::make()
+                ->title('Lỗi chạy automation')
+                ->danger()
+                ->body($exception->getMessage())
+                ->send();
+        }
     }
 }

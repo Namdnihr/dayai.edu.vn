@@ -34,9 +34,9 @@ class CertificateResource extends Resource
 
     protected static ?string $pluralModelLabel = 'chứng chỉ';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Tiến bộ học viên';
+    protected static string|UnitEnum|null $navigationGroup = 'LMS & Khóa học';
 
-    protected static ?int $navigationSort = 50;
+    protected static ?int $navigationSort = 80;
 
     public static function form(Schema $schema): Schema
     {

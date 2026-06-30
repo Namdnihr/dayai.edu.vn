@@ -50,61 +50,107 @@ export function LeadForm({
   }
 
   return (
-    <form id="lead-form" onSubmit={handleSubmit} className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-2xl shadow-blue-950/10 md:p-8">
-      <div className="grid gap-5">
-        <Field label="Họ tên" name="full_name" placeholder="Nguyễn Minh Anh" required />
-        <Field label="Số điện thoại" name="phone" placeholder="0901 000 001" required />
-        <Field label="Email" name="email" placeholder="ban@example.com" type="email" />
+    <form
+      id="lead-form"
+      onSubmit={handleSubmit}
+      className="overflow-hidden rounded-[var(--dayai-radius-2xl)] border border-white/20 bg-white text-[var(--dayai-text)] shadow-[var(--dayai-shadow-md)]"
+    >
+      <div className="border-b border-[var(--dayai-border)] bg-[var(--dayai-bg-subtle)] p-6 md:p-8">
+        <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+          <div>
+            <div className="dayai-kicker">Form tư vấn</div>
+            <h3 className="mt-3 text-2xl font-black leading-tight">Nhận lộ trình học AI phù hợp</h3>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-[var(--dayai-text-muted)]">
+              Điền vài thông tin chính, đội ngũ DAYAI sẽ gợi ý khóa học, lịch học và hình thức học phù hợp.
+            </p>
+          </div>
+          <div className="grid gap-2 text-sm font-bold text-[var(--dayai-text-muted)]">
+            <span className="rounded-[var(--dayai-radius-full)] border border-[var(--dayai-border)] bg-white px-3 py-2">
+              Phản hồi trong 24 giờ
+            </span>
+            <span className="rounded-[var(--dayai-radius-full)] border border-[var(--dayai-border)] bg-white px-3 py-2">
+              Không chia sẻ dữ liệu
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-6 p-6 md:p-8">
+        <div className="grid gap-5 md:grid-cols-2">
+          <Field label="Họ tên" name="full_name" placeholder="Nguyễn Minh Anh" required />
+          <Field label="Số điện thoại" name="phone" placeholder="0901 000 001" required />
+          <Field label="Email" name="email" placeholder="ban@example.com" type="email" />
+          <Field label="Tên công ty nếu có" name="company_name" placeholder="DAYAI Co., Ltd" />
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2">
+          <SelectField
+            label="Bạn thuộc nhóm nào?"
+            name="lead_type"
+            required
+            options={[
+              ["parent", "Phụ huynh mua cho con"],
+              ["student", "Học sinh, sinh viên tự đăng ký"],
+              ["business_owner", "Chủ doanh nghiệp đi học"],
+              ["company", "Công ty mua cho nhân sự"],
+            ]}
+          />
+          <SelectField
+            label="Khóa quan tâm"
+            name="interested_course_id"
+            options={[
+              ["AI-FUNDAMENTALS", "AI Căn Bản"],
+              ["PROMPT-ENGINEERING", "Prompt Engineering"],
+              ["AI-BUSINESS", "AI Cho Doanh Nghiệp"],
+            ]}
+          />
+        </div>
 
         <label className="grid gap-2">
-          <span className="text-sm font-bold text-slate-700">Bạn thuộc nhóm nào?</span>
-          <select name="lead_type" required className="rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100">
-            <option value="parent">Phụ huynh mua cho con</option>
-            <option value="student">Sinh viên tự đăng ký</option>
-            <option value="business_owner">Chủ doanh nghiệp đi học</option>
-            <option value="company">Công ty mua cho nhân sự</option>
-          </select>
+          <span className="text-sm font-black text-[var(--dayai-text)]">Nhu cầu học</span>
+          <textarea
+            name="learning_goal"
+            rows={4}
+            placeholder="Tôi muốn học AI để..."
+            className="form-control resize-none"
+          />
         </label>
 
-        <Field label="Tên công ty nếu có" name="company_name" placeholder="DAYAI Co., Ltd" />
-
-        <label className="grid gap-2">
-          <span className="text-sm font-bold text-slate-700">Khóa quan tâm</span>
-          <select name="interested_course_id" className="rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100">
-            <option value="AI-FUNDAMENTALS">AI Căn Bản</option>
-            <option value="PROMPT-ENGINEERING">Prompt Engineering</option>
-            <option value="AI-BUSINESS">AI Cho Doanh Nghiệp</option>
-          </select>
-        </label>
-
-        <label className="grid gap-2">
-          <span className="text-sm font-bold text-slate-700">Nhu cầu học</span>
-          <textarea name="learning_goal" rows={4} placeholder="Tôi muốn học AI để..." className="resize-none rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100" />
-        </label>
-
-        <label className="grid gap-2">
-          <span className="text-sm font-bold text-slate-700">Hình thức đăng ký</span>
-          <select name="request_type" className="rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100">
-            <option value="consultation">Đăng ký tư vấn</option>
-            <option value="trial">Đăng ký học thử</option>
-          </select>
-        </label>
+        <SelectField
+          label="Hình thức đăng ký"
+          name="request_type"
+          options={[
+            ["consultation", "Đăng ký tư vấn"],
+            ["trial", "Đăng ký học thử"],
+          ]}
+        />
 
         <input type="hidden" name="preferred_contact_method" value="phone" />
         <input type="hidden" name="utm_source" value={source} />
         <input type="hidden" name="utm_medium" value={medium} />
         <input type="hidden" name="utm_campaign" value={campaign} />
 
-        <button
-          type="submit"
-          disabled={submitState === "submitting"}
-          className="rounded-full bg-blue-600 px-7 py-4 font-black text-white shadow-xl shadow-blue-600/20 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {submitState === "submitting" ? "Đang gửi..." : "Gửi đăng ký"}
-        </button>
+        <div className="rounded-[var(--dayai-radius-xl)] border border-[var(--dayai-border)] bg-[var(--dayai-bg-subtle)] p-4">
+          <button
+            type="submit"
+            disabled={submitState === "submitting"}
+            className="dayai-btn dayai-btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {submitState === "submitting" ? "Đang gửi..." : "Gửi đăng ký tư vấn"}
+          </button>
+          <p className="mt-3 text-center text-xs font-semibold leading-5 text-[var(--dayai-text-subtle)]">
+            DAYAI chỉ dùng thông tin này để tư vấn lộ trình học và lịch học phù hợp.
+          </p>
+        </div>
 
         {message ? (
-          <p className={submitState === "error" ? "text-sm font-semibold text-red-600" : "text-sm font-semibold text-emerald-600"}>
+          <p
+            className={
+              submitState === "error"
+                ? "rounded-[var(--dayai-radius-lg)] bg-red-50 p-4 text-sm font-semibold text-[var(--dayai-danger)]"
+                : "rounded-[var(--dayai-radius-lg)] bg-green-50 p-4 text-sm font-semibold text-[var(--dayai-success)]"
+            }
+          >
             {message}
           </p>
         ) : null}
@@ -128,14 +174,33 @@ function Field({
 }) {
   return (
     <label className="grid gap-2">
-      <span className="text-sm font-bold text-slate-700">{label}</span>
-      <input
-        name={name}
-        required={required}
-        type={type}
-        placeholder={placeholder}
-        className="rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
-      />
+      <span className="text-sm font-black text-[var(--dayai-text)]">{label}</span>
+      <input name={name} required={required} type={type} placeholder={placeholder} className="form-control" />
+    </label>
+  );
+}
+
+function SelectField({
+  label,
+  name,
+  options,
+  required = false,
+}: {
+  label: string;
+  name: string;
+  options: Array<[string, string]>;
+  required?: boolean;
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="text-sm font-black text-[var(--dayai-text)]">{label}</span>
+      <select name={name} required={required} className="form-control">
+        {options.map(([value, label]) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }

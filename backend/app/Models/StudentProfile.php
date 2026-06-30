@@ -75,6 +75,11 @@ class StudentProfile extends Model
         return $this->hasMany(AssessmentResult::class);
     }
 
+    public function quizAttempts(): HasMany
+    {
+        return $this->hasMany(QuizAttempt::class);
+    }
+
     public function teacherComments(): HasMany
     {
         return $this->hasMany(TeacherComment::class);

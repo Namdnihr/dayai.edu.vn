@@ -1,0 +1,56 @@
+:root {
+  --dayai-primary: #1E6BFF;
+  --dayai-secondary: #7B61FF;
+  --dayai-accent: #06B6D4;
+  --dayai-success: #22C55E;
+  --dayai-warning: #F59E0B;
+  --dayai-danger: #EF4444;
+
+  --dayai-bg: #FFFFFF;
+  --dayai-bg-subtle: #F8FAFC;
+  --dayai-surface: #FFFFFF;
+  --dayai-surface-muted: #F1F5F9;
+  --dayai-surface-tint: #EFF6FF;
+  --dayai-border: #E2E8F0;
+  --dayai-border-strong: #CBD5E1;
+  --dayai-text: #0F172A;
+  --dayai-text-muted: #475569;
+  --dayai-text-subtle: #64748B;
+
+  --dayai-space-1: 4px;
+  --dayai-space-2: 8px;
+  --dayai-space-3: 12px;
+  --dayai-space-4: 16px;
+  --dayai-space-6: 24px;
+  --dayai-space-8: 32px;
+  --dayai-space-12: 48px;
+  --dayai-space-16: 64px;
+  --dayai-space-24: 96px;
+
+  --dayai-radius-sm: 8px;
+  --dayai-radius-md: 12px;
+  --dayai-radius-lg: 16px;
+  --dayai-radius-xl: 20px;
+  --dayai-radius-2xl: 24px;
+  --dayai-radius-full: 999px;
+
+  --dayai-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --dayai-shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --dayai-shadow-md: 0 18px 48px rgba(15, 23, 42, 0.12);
+}
+
+[data-theme='dark'], .dayai-dark {
+  --dayai-bg: #070A12;
+  --dayai-bg-subtle: #0B1020;
+  --dayai-surface: #101827;
+  --dayai-surface-muted: #151C2B;
+  --dayai-surface-raised: #1B2435;
+  --dayai-border: #243148;
+  --dayai-border-strong: #334155;
+  --dayai-text: #F8FAFC;
+  --dayai-text-muted: #CBD5E1;
+  --dayai-text-subtle: #94A3B8;
+  --dayai-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --dayai-shadow-sm: 0 12px 32px rgba(0, 0, 0, 0.32);
+  --dayai-shadow-md: 0 24px 64px rgba(0, 0, 0, 0.42);
+}

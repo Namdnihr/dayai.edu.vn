@@ -42,6 +42,7 @@ class Enrollment extends Model
     public function order(): BelongsTo { return $this->belongsTo(Order::class); }
     public function attendanceRecords(): HasMany { return $this->hasMany(AttendanceRecord::class); }
     public function assessmentResults(): HasMany { return $this->hasMany(AssessmentResult::class); }
+    public function quizAttempts(): HasMany { return $this->hasMany(QuizAttempt::class); }
     public function teacherComments(): HasMany { return $this->hasMany(TeacherComment::class); }
     public function progressReports(): HasMany { return $this->hasMany(ProgressReport::class); }
     public function certificates(): HasMany { return $this->hasMany(Certificate::class); }

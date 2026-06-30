@@ -34,9 +34,9 @@ class ProgressReportResource extends Resource
 
     protected static ?string $pluralModelLabel = 'báo cáo tiến bộ';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Tiến bộ học viên';
+    protected static string|UnitEnum|null $navigationGroup = 'LMS & Khóa học';
 
-    protected static ?int $navigationSort = 40;
+    protected static ?int $navigationSort = 70;
 
     public static function form(Schema $schema): Schema
     {

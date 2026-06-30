@@ -1,4 +1,7 @@
+import { CourseCatalogPage } from "@/components/courses/course-catalog-page";
+import { CourseDetailPage } from "@/components/courses/course-detail-page";
 import { SeoLandingPage } from "@/components/seo/seo-landing-page";
+import { findCatalogCourse } from "@/lib/course-catalog";
 import {
   generateSectionMetadata,
   generateSectionStaticParams,
@@ -17,5 +20,20 @@ export async function generateMetadata({ params }: { params: Promise<SeoRoutePar
 }
 
 export default async function CoursesPage({ params }: { params: Promise<SeoRouteParams> }) {
-  return <SeoLandingPage page={await getSectionPage(section, params)} />;
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug ?? [];
+
+  if (slug.length === 0) {
+    return <CourseCatalogPage />;
+  }
+
+  if (slug.length === 1) {
+    const course = findCatalogCourse(slug[0]);
+
+    if (course) {
+      return <CourseDetailPage course={course} />;
+    }
+  }
+
+  return <SeoLandingPage page={await getSectionPage(section, Promise.resolve(resolvedParams))} />;
 }
