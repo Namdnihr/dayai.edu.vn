@@ -20,6 +20,8 @@ class VideoLessonProgress extends Model
         'status',
         'progress_percent',
         'last_position_seconds',
+        'interaction_state',
+        'learner_notes',
         'started_at',
         'completed_at',
         'last_watched_at',
@@ -30,6 +32,7 @@ class VideoLessonProgress extends Model
         return [
             'progress_percent' => 'integer',
             'last_position_seconds' => 'integer',
+            'interaction_state' => 'array',
             'started_at' => 'datetime',
             'completed_at' => 'datetime',
             'last_watched_at' => 'datetime',

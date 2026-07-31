@@ -34,7 +34,7 @@ class ProgressReportResource extends Resource
 
     protected static ?string $pluralModelLabel = 'báo cáo tiến bộ';
 
-    protected static string|UnitEnum|null $navigationGroup = 'LMS & Khóa học';
+    protected static string|UnitEnum|null $navigationGroup = 'Đào tạo & LMS';
 
     protected static ?int $navigationSort = 70;
 

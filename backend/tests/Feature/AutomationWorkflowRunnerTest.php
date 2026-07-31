@@ -39,6 +39,7 @@ class AutomationWorkflowRunnerTest extends TestCase
             'status' => 'new',
             'full_name' => 'Lead Automation',
             'phone' => '0901555000',
+            'email' => 'lead.automation@example.test',
             'course_slug' => 'ai-can-ban',
         ]);
 

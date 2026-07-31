@@ -34,7 +34,7 @@ class BranchResource extends Resource
 
     protected static ?string $pluralModelLabel = 'cơ sở';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
+    protected static string|UnitEnum|null $navigationGroup = 'Hệ thống';
 
     protected static ?int $navigationSort = 30;
 

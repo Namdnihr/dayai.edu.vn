@@ -29,13 +29,13 @@ class AssessmentResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ClipboardDocumentCheck;
 
-    protected static ?string $navigationLabel = 'B?i ??nh gi?';
+    protected static ?string $navigationLabel = 'Bài đánh giá';
 
     protected static ?string $modelLabel = 'b?i ??nh gi?';
 
     protected static ?string $pluralModelLabel = 'b?i ??nh gi?';
 
-    protected static string|UnitEnum|null $navigationGroup = 'LMS & Kh?a h?c';
+    protected static string|UnitEnum|null $navigationGroup = 'Kiểm tra & Đánh giá';
 
     protected static ?int $navigationSort = 40;
 

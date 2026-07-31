@@ -38,7 +38,7 @@ class AutomationMessageResource extends Resource
 
     protected static ?string $pluralModelLabel = 'mẫu email tự động';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
+    protected static string|UnitEnum|null $navigationGroup = 'Tự động hóa';
 
     protected static ?int $navigationSort = 71;
 

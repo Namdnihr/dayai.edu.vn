@@ -68,6 +68,26 @@ services:
     networks:
       - dayai
 
+  backend-test:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile.runtime
+    profiles:
+      - test
+    working_dir: /var/www/html
+    command: php artisan test
+    environment:
+      APP_ENV: testing
+      APP_DEBUG: "false"
+      APP_KEY: base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ":memory:"
+      DB_URL: ""
+      CACHE_STORE: array
+      QUEUE_CONNECTION: sync
+      SESSION_DRIVER: array
+      MAIL_MAILER: array
+
   nginx:
     image: nginx:1.27-alpine
     container_name: dayai-nginx
@@ -76,6 +96,7 @@ services:
     volumes:
       - ./backend/public:/var/www/html/public:ro
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - dayai-storage:/var/www/html/storage:ro
     depends_on:
       - backend
     networks:
@@ -85,7 +106,7 @@ services:
     image: postgres:17-alpine
     container_name: dayai-postgres
     ports:
-      - "5432:5432"
+      - "${DAYAI_POSTGRES_PORT:-5433}:5432"
     environment:
       POSTGRES_DB: dayai
       POSTGRES_USER: dayai_user
@@ -104,7 +125,7 @@ services:
     image: redis:8-alpine
     container_name: dayai-redis
     ports:
-      - "6379:6379"
+      - "${DAYAI_REDIS_PORT:-6380}:6379"
     volumes:
       - dayai-redis:/data
     networks:

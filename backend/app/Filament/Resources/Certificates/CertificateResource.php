@@ -34,7 +34,7 @@ class CertificateResource extends Resource
 
     protected static ?string $pluralModelLabel = 'chứng chỉ';
 
-    protected static string|UnitEnum|null $navigationGroup = 'LMS & Khóa học';
+    protected static string|UnitEnum|null $navigationGroup = 'Đào tạo & LMS';
 
     protected static ?int $navigationSort = 80;
 

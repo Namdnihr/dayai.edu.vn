@@ -34,7 +34,7 @@ class TrialRegistrationResource extends Resource
 
     protected static ?string $pluralModelLabel = 'đăng ký học thử';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
+    protected static string|UnitEnum|null $navigationGroup = 'CRM & Tuyển sinh';
 
     protected static ?int $navigationSort = 50;
 

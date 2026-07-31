@@ -74,15 +74,15 @@ Sprint 35 moves the project from feature expansion to a consistent product UI fo
 - [x] Create UI inventory for public site, portals, and admin.
 - [x] Map screens by user group.
 - [x] Lock public website navigation IA.
-- [ ] Lock student/parent portal IA.
-- [ ] Lock admin module grouping by role.
+- [x] Lock student/parent portal IA.
+- [x] Lock admin module grouping by role.
 - [x] Standardize design tokens: color, typography, spacing, radius, shadow, status colors.
-- [ ] Standardize component patterns: button, badge, stat, table, filter, form, tab, empty state, alert.
+- [x] Standardize component patterns: button, badge, stat, table, filter, form, tab, empty state, alert.
 - [x] Redesign homepage first viewport and main sections.
 - [x] Redesign public child page template for course, audience, solution, resource, news, contact, and consultation pages.
-- [ ] Redesign student portal dashboard layout.
-- [ ] Redesign lesson player and quiz UI.
-- [ ] Write admin UX spec for dashboard, list, create/edit, view/detail, relation managers.
+- [x] Redesign student portal dashboard layout.
+- [x] Redesign lesson player and quiz UI.
+- [x] Write admin UX spec for dashboard, list, create/edit, view/detail, relation managers.
 - [x] Run `npm run lint` and `npm run build` after the public homepage pass.
 
 ## 5. Implementation Order
@@ -200,3 +200,80 @@ Sprint 35 moves the project from feature expansion to a consistent product UI fo
 - Decide whether portal should keep OTP-first login only, or merge the new email/password learner account into a proper student login screen.
 - After portal UI, move to admin UX spec and module grouping: Learning, CRM, Finance, Content, Quiz/Assessment, Affiliate, Automation, Reports, Settings.
 - Keep SePay/payment integration as a planned backend integration item after local demo flow is stable and merchant credentials are available.
+
+## 14. Public Page Experience Pass
+
+- Rebuilt the shared public SEO landing template around page-specific experience profiles instead of a generic repeated layout.
+- Added dedicated content and visual directions for AI Kids, AI Student, AI Work, AI Business, AI Enterprise, Resources, AI News, Consultation, and Course pages.
+- Added richer sections for each profile: hero promise, experience outcomes, journey map, proof rows, related page cards, and contextual CTA.
+- Refactored `/doi-tuong-hoc/` into a deeper audience-routing hub with five distinct learning paths, comparison matrix, animated visual, and advisory CTA.
+- Added subtle motion utilities for lift, floating markers, and progress-line emphasis while keeping reduced-motion support.
+- Verified representative pages in browser: `/doi-tuong-hoc`, `/ai-enterprise`, `/tai-nguyen`, `/tin-tuc-ai`, `/dang-ky-tu-van`, `/ai-kids`, `/ai-student`, and `/ai-work`.
+- Re-ran `npm.cmd run lint` and `npm.cmd run build` successfully.
+
+## 15. Student Portal Experience Pass
+
+- Refactored `/portal` into a stronger learner-facing dashboard entry with a product header, demo learner cards, LMS/quiz/finance/notification/certificate chips, and clearer private learning copy.
+- Added an account-aware dashboard overview with a continue-learning panel, quick actions for quiz/finance/notifications, and more consistent token-based cards.
+- Polished the LMS course tab so lesson actions use client-side navigation and module/lesson progress reads as a learning workflow instead of a raw data list.
+- Refined `/portal/bai-hoc/[slug]` with a stronger lesson hero, video stage, progress-save panel, lesson navigation cards, outline, related assessments, and resources panel.
+- Replaced remaining internal lesson anchors with Next.js `Link` to reduce full page reload/flicker during portal navigation.
+- Verified local OTP demo login for `0901888000` / `HV-000001`, opened the authenticated portal dashboard, clicked into `/portal/bai-hoc/nguyen-tac-dung-ai-an-toan`, and confirmed no runtime error or horizontal overflow.
+- Re-ran `npm.cmd run lint` and `npm.cmd run build` successfully.
+
+## 16. Locked Student Portal IA
+
+- Entry: OTP request, OTP verification, session restore, and logout.
+- Overview: continue learning, next assessment, schedule, finance, notifications, and progress summary.
+- Courses: paid/free enrollments, module structure, lesson progress, and continue actions.
+- Schedule: upcoming sessions and attendance history.
+- Finance: balance, orders, invoices, payments, and receipts.
+- Reports: assessment results, teacher comments, and progress reports.
+- Tests: available assessments, quiz room, result state, and attempt history.
+- Notifications: learner-facing operational updates.
+- Certificates: issued certificates and related learning resources.
+
+## 17. Filament Admin IA And UX Spec
+
+- Replaced the broad legacy groups with role-oriented groups: Tổng quan, CRM & Tuyển sinh, Đào tạo & LMS, Kiểm tra & Đánh giá, Tài chính, Nội dung, Affiliate, Tự động hóa, Báo cáo, and Hệ thống.
+- Moved each Filament resource into its business group while preserving the existing resource permission checks.
+- Fixed broken Vietnamese navigation labels for question banks, questions, and assessments.
+- Added the detailed page-pattern and role matrix in `docs/21-sprint35-admin-ux-spec.md`.
+
+## 18. Shared Component Foundation
+
+- Added reusable frontend primitives for button, badge, alert, field/input, panel, stat, tab, empty state, filter bar, and responsive table shell.
+- Kept the primitives dependency-free and presentation-only so they can be composed inside both Server and Client Component trees.
+- Applied the first production pass to portal OTP, session messaging, dashboard tabs, stats, quiz actions/states, lesson progress controls, related assessments, and lesson empty states.
+- Added shared disabled, focus, status-tone, compact-size, and responsive overflow behavior to the global DAYAI component layer.
+
+## 19. Interactive Video Learning
+
+- Added the internal Full HD demo video for `Bài 1: AI là gì và học AI bắt đầu từ đâu?`.
+- Added required video checkpoints at 30, 60, 90, and 120 seconds with a 30-second response window and immediate learning feedback.
+- The HTML5 player pauses at the first unanswered checkpoint, blocks seeking past it, and cannot mark the lesson complete until every checkpoint has an answer.
+- Added backend persistence for checkpoint answers, correctness, learner notes, last position, and completion gating.
+- Added a lesson notebook with copy-ready AI prompts and personal notes saved per learner and lesson.
+- Added API coverage for blocked completion, checkpoint answer validation, correctness calculation, prompt configuration, and saved learner notes.
+
+## 20. Focused And Active Learning Pass
+
+- Added a compact mobile lesson hero and a focus mode that removes the course outline, keeps the video prominent, and places the notebook/practice workspace beside it on wide screens.
+- Added automatic video pause when the learner hides the tab or has no interaction for two minutes, plus an explicit resume prompt and persisted attention counters.
+- Replaced native video-only fullscreen with an interactive-stage fullscreen control so checkpoint dialogs and attention prompts remain visible while the lesson is fullscreen.
+- Added searchable timeline notes with click-to-seek behavior. These are intentionally labeled as time-based summaries, not verbatim captions.
+- Added debounced note autosave with visible dirty, saving, saved, and error states while retaining the manual save action.
+- Added an AI practice room for copying a prompt, using an external AI tool, pasting the result, reflecting on verification, rating confidence, and saving the exercise per lesson.
+- Added an end-of-lesson summary with correct-answer count, note/practice indicators, next-lesson action, and retry controls for incorrect checkpoints.
+- Extended the lesson progress API to persist practice sessions and attention metrics inside `interaction_state`.
+- Verified the pass with frontend lint/build, 29 backend tests (215 assertions), and direct browser checks for authenticated loading, focus mode, checkpoint gating, timeline seeking, and note autosave.
+
+## 21. Course Lesson Publisher
+
+- Rebuilt the Filament video-lesson form as a seven-part publishing workspace: course position, lesson content, video/resources, interactive checkpoints, timeline notes, practice prompts, and access/publishing.
+- Added direct MP4/WebM upload to public course storage while retaining YouTube, Vimeo, and external-link sources.
+- Added repeatable resource uploads, 30-second checkpoint authoring, correct-answer/explanation controls, timeline markers, and copy-ready AI prompts.
+- Reused the same publisher in the standalone `Bài học video` resource and inside each course's `Video bài học` relation manager.
+- Filtered modules by the selected course and preserved legacy lesson category metadata during edits.
+- Added public storage delivery through Nginx and API URL resolution for uploaded videos and resource files.
+- Migrated and seeded the running Docker environment, verified the real admin create/edit screens in the browser, and passed all 29 backend tests (215 assertions).

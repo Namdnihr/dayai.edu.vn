@@ -25,6 +25,7 @@ use App\Models\Tenant;
 use App\Models\VideoLesson;
 use App\Models\VideoLessonProgress;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class PortalLookupApiTest extends TestCase
@@ -258,12 +259,42 @@ class PortalLookupApiTest extends TestCase
             'title' => 'Video Portal',
             'slug' => 'video-portal',
             'status' => 'published',
-            'video_provider' => 'youtube',
+            'video_provider' => 'internal',
             'video_url' => 'https://example.com/video-portal',
+            'video_storage_path' => 'course-videos/video-portal.mp4',
             'access_level' => 'student',
             'duration_minutes' => 12,
             'resources' => [
-                ['title' => 'Worksheet AI', 'url' => 'https://example.com/worksheet.pdf'],
+                [
+                    'title' => 'Worksheet AI',
+                    'file_path' => 'course-resources/worksheet-ai.pdf',
+                ],
+            ],
+            'metadata' => [
+                'interactive_learning' => [
+                    'required_for_completion' => true,
+                    'checkpoints' => [
+                        [
+                            'id' => 'ai-definition',
+                            'at_seconds' => 30,
+                            'time_limit_seconds' => 30,
+                            'question' => 'AI là gì?',
+                            'options' => [
+                                ['id' => 'correct', 'label' => 'Khả năng máy thực hiện nhiệm vụ thông minh'],
+                                ['id' => 'wrong', 'label' => 'Chỉ là robot'],
+                            ],
+                            'correct_option_id' => 'correct',
+                            'explanation' => 'AI hỗ trợ máy thực hiện các nhiệm vụ thường cần trí thông minh con người.',
+                        ],
+                    ],
+                    'prompt_notes' => [
+                        [
+                            'id' => 'explain-ai',
+                            'title' => 'Giải thích AI',
+                            'prompt' => 'Hãy giải thích AI cho người mới.',
+                        ],
+                    ],
+                ],
             ],
             'published_at' => now(),
         ]);
@@ -342,7 +373,24 @@ class PortalLookupApiTest extends TestCase
         $lessonResponse
             ->assertOk()
             ->assertJsonPath('lesson.title', 'Video Portal')
-            ->assertJsonPath('lesson.progress.progress_percent', 100);
+            ->assertJsonPath('lesson.video_url', Storage::disk('public')->url('course-videos/video-portal.mp4'))
+            ->assertJsonPath('lesson.resources.0.url', Storage::disk('public')->url('course-resources/worksheet-ai.pdf'))
+            ->assertJsonPath('lesson.progress.progress_percent', 100)
+            ->assertJsonPath('lesson.interactive_learning.checkpoints.0.id', 'ai-definition')
+            ->assertJsonPath('lesson.interactive_learning.prompt_notes.0.id', 'explain-ai');
+
+        $blockedCompletionResponse = $this->postJson('/api/portal/lessons/video-portal/progress', [
+            'phone' => '0901888222',
+            'student_code' => 'HV-PORTAL',
+            'portal_access_token' => $authVerify->json('portal_access_token'),
+            'progress_percent' => 100,
+            'last_position_seconds' => 720,
+            'checkpoint_answers' => [],
+        ]);
+
+        $blockedCompletionResponse
+            ->assertStatus(422)
+            ->assertJsonPath('pending_checkpoints.0', 'ai-definition');
 
         $progressResponse = $this->postJson('/api/portal/lessons/video-portal/progress', [
             'phone' => '0901888222',
@@ -350,13 +398,40 @@ class PortalLookupApiTest extends TestCase
             'portal_access_token' => $authVerify->json('portal_access_token'),
             'progress_percent' => 45,
             'last_position_seconds' => 320,
+            'checkpoint_answers' => [
+                [
+                    'checkpoint_id' => 'ai-definition',
+                    'selected_option_id' => 'correct',
+                ],
+            ],
+            'learner_notes' => 'Ghi chú thực hành AI của học viên.',
+            'practice_sessions' => [
+                [
+                    'prompt_id' => 'explain-ai',
+                    'result' => 'AI đã đưa ra ba ví dụ gần gũi.',
+                    'reflection' => 'Tôi cần kiểm chứng ví dụ thứ ba.',
+                    'confidence' => 4,
+                    'updated_at' => now()->toIso8601String(),
+                ],
+            ],
+            'attention_metrics' => [
+                'hidden_pause_count' => 2,
+                'idle_pause_count' => 1,
+            ],
         ]);
 
         $progressResponse
             ->assertOk()
             ->assertJsonPath('progress.status', 'in_progress')
             ->assertJsonPath('progress.progress_percent', 45)
-            ->assertJsonPath('progress.last_position_seconds', 320);
+            ->assertJsonPath('progress.last_position_seconds', 320)
+            ->assertJsonPath('progress.checkpoint_answers.0.checkpoint_id', 'ai-definition')
+            ->assertJsonPath('progress.checkpoint_answers.0.is_correct', true)
+            ->assertJsonPath('progress.practice_sessions.0.prompt_id', 'explain-ai')
+            ->assertJsonPath('progress.practice_sessions.0.confidence', 4)
+            ->assertJsonPath('progress.attention_metrics.hidden_pause_count', 2)
+            ->assertJsonPath('progress.attention_metrics.idle_pause_count', 1)
+            ->assertJsonPath('progress.learner_notes', 'Ghi chú thực hành AI của học viên.');
 
         $studentAuthRequest = $this->postJson('/api/portal/auth/request', [
             'phone' => '0901888000',

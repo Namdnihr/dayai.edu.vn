@@ -32,7 +32,7 @@ class RoleResource extends Resource
 
     protected static ?string $pluralModelLabel = 'vai trò';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Phân quyền & bảo mật';
+    protected static string|UnitEnum|null $navigationGroup = 'Hệ thống';
 
     protected static ?int $navigationSort = 20;
 

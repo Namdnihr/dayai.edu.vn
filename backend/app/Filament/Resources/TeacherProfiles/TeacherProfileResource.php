@@ -34,7 +34,7 @@ class TeacherProfileResource extends Resource
 
     protected static ?string $pluralModelLabel = 'giảng viên';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
+    protected static string|UnitEnum|null $navigationGroup = 'Đào tạo & LMS';
 
     protected static ?int $navigationSort = 70;
 

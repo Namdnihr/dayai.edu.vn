@@ -28,6 +28,16 @@ class CoursesTable
                 TextColumn::make('name')
                     ->label('Tên khóa học')
                     ->searchable(),
+                TextColumn::make('modules_count')
+                    ->label('Module')
+                    ->counts('modules')
+                    ->badge()
+                    ->color('info'),
+                TextColumn::make('video_lessons_count')
+                    ->label('Bài video')
+                    ->counts('videoLessons')
+                    ->badge()
+                    ->color('success'),
                 TextColumn::make('slug')
                     ->label('Slug')
                     ->toggleable(isToggledHiddenByDefault: true)

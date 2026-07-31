@@ -27,7 +27,7 @@ class AffiliateCommissionResource extends Resource
     protected static ?string $navigationLabel = 'Hoa hồng affiliate';
     protected static ?string $modelLabel = 'hoa hồng affiliate';
     protected static ?string $pluralModelLabel = 'hoa hồng affiliate';
-    protected static string|UnitEnum|null $navigationGroup = 'Tài chính';
+    protected static string|UnitEnum|null $navigationGroup = 'Affiliate';
     protected static ?int $navigationSort = 75;
 
     public static function form(Schema $schema): Schema

@@ -33,7 +33,7 @@ class AffiliatePartnerResource extends Resource
     protected static ?string $navigationLabel = 'Đối tác affiliate';
     protected static ?string $modelLabel = 'đối tác affiliate';
     protected static ?string $pluralModelLabel = 'đối tác affiliate';
-    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
+    protected static string|UnitEnum|null $navigationGroup = 'Affiliate';
     protected static ?int $navigationSort = 31;
 
     public static function form(Schema $schema): Schema

@@ -34,12 +34,16 @@ class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Blue,
             ])
             ->navigationGroups([
-                'Vận hành trung tâm',
-                'Tiến bộ học viên',
-                'Nội dung',
-                'Dữ liệu nền',
+                'Tổng quan',
+                'CRM & Tuyển sinh',
+                'Đào tạo & LMS',
+                'Kiểm tra & Đánh giá',
                 'Tài chính',
-                'Phân quyền & bảo mật',
+                'Nội dung',
+                'Affiliate',
+                'Tự động hóa',
+                'Báo cáo',
+                'Hệ thống',
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

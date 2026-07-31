@@ -1,25 +1,8 @@
-import { NextResponse } from "next/server";
-
-const backendUrl = process.env.BACKEND_API_URL ?? "http://localhost:8080/api";
+import { postBackendJson } from "@/lib/backend-api";
 
 export async function POST(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const payload = await request.json();
   const { slug } = await params;
 
-  const response = await fetch(`${backendUrl}/portal/lessons/${slug}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-
-  const result = await response.json().catch(() => ({
-    message: "Không đọc được phản hồi bài học.",
-  }));
-
-  return NextResponse.json(result, {
-    status: response.status,
-  });
+  return postBackendJson(`/portal/lessons/${slug}`, payload, "Không đọc được phản hồi bài học.");
 }

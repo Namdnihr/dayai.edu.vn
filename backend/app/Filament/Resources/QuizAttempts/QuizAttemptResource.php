@@ -29,7 +29,7 @@ class QuizAttemptResource extends Resource
     protected static ?string $navigationLabel = "L\u{1B0}\u{1EE3}t l\u{E0}m b\u{E0}i";
     protected static ?string $modelLabel = "l\u{1B0}\u{1EE3}t l\u{E0}m b\u{E0}i";
     protected static ?string $pluralModelLabel = "l\u{1B0}\u{1EE3}t l\u{E0}m b\u{E0}i";
-    protected static string|UnitEnum|null $navigationGroup = "LMS & Kh\u{F3}a h\u{1ECD}c";
+    protected static string|UnitEnum|null $navigationGroup = 'Kiểm tra & Đánh giá';
     protected static ?int $navigationSort = 60;
 
     public static function form(Schema $schema): Schema { return QuizAttemptForm::configure($schema); }

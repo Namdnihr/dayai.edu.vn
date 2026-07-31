@@ -23,6 +23,7 @@ class VideoLesson extends Model
         'status',
         'video_provider',
         'video_url',
+        'video_storage_path',
         'duration_minutes',
         'access_level',
         'summary',

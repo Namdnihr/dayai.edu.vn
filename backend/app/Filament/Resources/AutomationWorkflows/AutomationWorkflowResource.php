@@ -37,7 +37,7 @@ class AutomationWorkflowResource extends Resource
 
     protected static ?string $pluralModelLabel = 'kịch bản tự động';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
+    protected static string|UnitEnum|null $navigationGroup = 'Tự động hóa';
 
     protected static ?int $navigationSort = 70;
 

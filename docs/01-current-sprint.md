@@ -666,22 +666,22 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä�
 - [x] Tao UI inventory cho public site, portals va admin.
 - [x] Lap ban do man hinh theo nhom nguoi dung.
 - [x] Chot navigation IA cho public website.
-- [ ] Chot portal IA cho hoc vien/phu huynh.
-- [ ] Chot admin module grouping theo role.
-- [ ] Chuan hoa design tokens: color, typography, spacing, radius, shadow, status colors.
-- [ ] Chuan hoa component patterns: button, badge, stat, table, filter, form, tab, empty state, alert.
+- [x] Chot portal IA cho hoc vien/phu huynh.
+- [x] Chot admin module grouping theo role.
+- [x] Chuan hoa design tokens: color, typography, spacing, radius, shadow, status colors.
+- [x] Chuan hoa component patterns: button, badge, stat, table, filter, form, tab, empty state, alert.
 - [x] Redesign homepage first viewport va cac section chinh.
-- [ ] Redesign portal dashboard layout.
-- [ ] Redesign quiz/lesson player area cho ro trang thai hoc.
-- [ ] Lap admin UX spec cho dashboard, list, create/edit, view/detail, relation manager.
+- [x] Redesign portal dashboard layout.
+- [x] Redesign quiz/lesson player area cho ro trang thai hoc.
+- [x] Lap admin UX spec cho dashboard, list, create/edit, view/detail, relation manager.
 - [x] Chay `npm run lint` va `npm run build` sau moi cum frontend.
 
 ### Demo Cuoi Sprint
 
 - [x] Homepage co giao dien moi thong nhat voi brand DAYAI.
-- [ ] Portal hoc vien co dashboard ro rang: hoc tiep, lich hoc, hoc phi, tien do, quiz.
-- [ ] Lesson player/quiz UI de lam bai va xem ket qua.
-- [ ] Admin co module grouping/UX spec de theme Filament va polish tung resource.
+- [x] Portal hoc vien co dashboard ro rang: hoc tiep, lich hoc, hoc phi, tien do, quiz.
+- [x] Lesson player/quiz UI de lam bai va xem ket qua.
+- [x] Admin co module grouping/UX spec de theme Filament va polish tung resource.
 
 ### Handoff 2026-07-01
 
@@ -689,6 +689,7 @@ File nÃ y dÃ¹ng Ä‘á»ƒ biáº¿t ngay dá»± Ã¡n Ä‘ang á»Ÿ Ä�
 - [x] Free course da chuyen sang account-first: email/password, verify email, roi mo enrollment.
 - [x] Paid course da co checkout demo: tao order/invoice, mark-paid, roi mo enrollment.
 - [x] Tao hoc vien demo `hocvien.demo@dayai.edu.vn` / `Dayai@123456`, phone `0901002003`, student code `HV-260630181712-IOBH`, co 2 khoa active.
-- [ ] Ngay mai tiep tuc tu portal UI: dashboard hoc vien, tab khoa hoc/LMS, lesson player va quiz UI.
-- [ ] Sau portal moi quay sang admin UX spec va module grouping.
+- [x] Hoan thanh portal UI: dashboard hoc vien, tab khoa hoc/LMS, lesson player va quiz UI.
+- [x] Hoan thanh admin UX spec va module grouping theo role.
+- [x] Them video bai hoc noi bo, checkpoint cau hoi 30 giay bat buoc, so tay prompt va ghi chu hoc vien.
 

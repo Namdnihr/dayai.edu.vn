@@ -34,7 +34,7 @@ class LeadSourceResource extends Resource
 
     protected static ?string $pluralModelLabel = 'nguồn lead';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
+    protected static string|UnitEnum|null $navigationGroup = 'CRM & Tuyển sinh';
 
     protected static ?int $navigationSort = 20;
 

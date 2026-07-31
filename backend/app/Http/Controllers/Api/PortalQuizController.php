@@ -32,13 +32,13 @@ class PortalQuizController extends Controller
             ->first();
 
         if (! $assessment) {
-            return response()->json(['message' => 'Kh?ng t?m th?y b?i ki?m tra ph? h?p v?i h?c vi?n.'], 404);
+            return response()->json(['message' => 'Không tìm thấy bài kiểm tra phù hợp với học viên.'], 404);
         }
 
         $assessment->load(['assessmentQuestions.question.options']);
 
         if ($assessment->assessmentQuestions->isEmpty()) {
-            return response()->json(['message' => 'B?i ki?m tra ch?a c? c?u h?i.'], 422);
+            return response()->json(['message' => 'Bài kiểm tra chưa có câu hỏi.'], 422);
         }
 
         $enrollment = $student->enrollments
@@ -96,12 +96,12 @@ class PortalQuizController extends Controller
             ->first();
 
         if (! $attempt) {
-            return response()->json(['message' => 'Kh?ng t?m th?y l??t l?m b?i.'], 404);
+            return response()->json(['message' => 'Không tìm thấy lượt làm bài.'], 404);
         }
 
         if ($attempt->status !== 'in_progress') {
             return response()->json([
-                'message' => 'L??t l?m b?i n?y kh?ng c?n ? tr?ng th?i ?ang l?m.',
+                'message' => 'Lượt làm bài này không còn ở trạng thái đang làm.',
                 'attempt' => $this->serializeAttempt($attempt),
             ], 422);
         }
@@ -163,7 +163,7 @@ class PortalQuizController extends Controller
         }
 
         return response()->json([
-            'message' => '?? n?p b?i ki?m tra th?nh c?ng.',
+            'message' => 'Đã nộp bài kiểm tra thành công.',
             'attempt' => $this->serializeAttempt($attempt, includeAnswers: true),
         ]);
     }
@@ -195,7 +195,7 @@ class PortalQuizController extends Controller
             ->first();
 
         if (! $student) {
-            return response()->json(['message' => 'Kh?ng t?m th?y h?c vi?n v?i th?ng tin ?? nh?p.'], 404);
+            return response()->json(['message' => 'Không tìm thấy học viên với thông tin đã nhập.'], 404);
         }
 
         $portalAccess = PortalAuthToken::query()
@@ -209,7 +209,7 @@ class PortalQuizController extends Controller
             ->first();
 
         if (! $portalAccess) {
-            return response()->json(['message' => 'Phi?n portal kh?ng h?p l? ho?c ?? h?t h?n. Vui l?ng x?c th?c l?i.'], 401);
+            return response()->json(['message' => 'Phiên portal không hợp lệ hoặc đã hết hạn. Vui lòng xác thực lại.'], 401);
         }
 
         return [$student, $portalAccess];

@@ -34,7 +34,7 @@ class OrganizationResource extends Resource
 
     protected static ?string $pluralModelLabel = 'doanh nghiệp';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
+    protected static string|UnitEnum|null $navigationGroup = 'Hệ thống';
 
     protected static ?int $navigationSort = 20;
 

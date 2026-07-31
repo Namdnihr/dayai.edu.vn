@@ -34,7 +34,7 @@ class CustomerAccountResource extends Resource
 
     protected static ?string $pluralModelLabel = 'khách hàng thanh toán';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
+    protected static string|UnitEnum|null $navigationGroup = 'CRM & Tuyển sinh';
 
     protected static ?int $navigationSort = 50;
 

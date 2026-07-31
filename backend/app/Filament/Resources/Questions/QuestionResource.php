@@ -22,13 +22,13 @@ class QuestionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::QuestionMarkCircle;
 
-    protected static ?string $navigationLabel = 'C?u h?i';
+    protected static ?string $navigationLabel = 'Câu hỏi';
 
     protected static ?string $modelLabel = 'c?u h?i';
 
     protected static ?string $pluralModelLabel = 'c?u h?i';
 
-    protected static string|UnitEnum|null $navigationGroup = 'LMS & Kh?a h?c';
+    protected static string|UnitEnum|null $navigationGroup = 'Kiểm tra & Đánh giá';
 
     protected static ?int $navigationSort = 51;
 

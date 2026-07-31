@@ -1,7 +1,20 @@
 ﻿"use client";
 
+import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import {
+  DayaiAlert,
+  DayaiBadge,
+  DayaiButton,
+  DayaiEmptyState,
+  DayaiField,
+  DayaiInput,
+  DayaiPanel,
+  DayaiStat,
+  DayaiTabButton,
+  dayaiButtonClasses,
+} from "@/components/ui/dayai-ui";
 
 type PortalData = {
   student: {
@@ -236,6 +249,7 @@ type ActiveQuiz = {
 export function PortalLookup() {
   const [data, setData] = useState<PortalData | null>(null);
   const [message, setMessage] = useState("");
+  const [messageTone, setMessageTone] = useState<"error" | "info" | "success">("info");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [authRequestId, setAuthRequestId] = useState("");
   const [demoOtp, setDemoOtp] = useState("");
@@ -250,6 +264,7 @@ export function PortalLookup() {
     event.preventDefault();
     setIsSubmitting(true);
     setMessage("");
+    setMessageTone("info");
     setData(null);
     setAuthRequestId("");
     setPortalAccessToken("");
@@ -279,8 +294,10 @@ export function PortalLookup() {
       setCredentials(nextCredentials);
       setAuthRequestId(result.request_id);
       setDemoOtp(result.demo_otp ?? "");
+      setMessageTone("success");
       setMessage("Đã tạo mã xác thực portal. Vui lòng nhập mã để tiếp tục.");
     } catch (error) {
+      setMessageTone("error");
       setMessage(error instanceof Error ? error.message : "Có lỗi xảy ra.");
     } finally {
       setIsSubmitting(false);
@@ -291,6 +308,7 @@ export function PortalLookup() {
     event.preventDefault();
     setIsSubmitting(true);
     setMessage("");
+    setMessageTone("info");
     setData(null);
 
     const formData = new FormData(event.currentTarget);
@@ -321,9 +339,11 @@ export function PortalLookup() {
           portal_access_token: result.portal_access_token,
         }),
       );
+      setMessageTone("success");
       setMessage("Xác thực thành công. Đang tải dữ liệu học viên...");
       await loadPortalData(result.portal_access_token);
     } catch (error) {
+      setMessageTone("error");
       setMessage(error instanceof Error ? error.message : "Có lỗi xảy ra.");
     } finally {
       setIsSubmitting(false);
@@ -368,6 +388,7 @@ export function PortalLookup() {
     const applyUrlCredentials = () => {
       queueMicrotask(() => {
         setCredentials(urlCredentials);
+        setMessageTone("info");
         setMessage("Đã điền thông tin học viên từ khóa học. Bấm gửi mã xác thực để vào portal.");
       });
     };
@@ -410,9 +431,11 @@ export function PortalLookup() {
       queueMicrotask(() => {
         setCredentials(restoredCredentials);
         setPortalAccessToken(session.portal_access_token);
+        setMessageTone("info");
         setMessage("Đang khôi phục phiên học viên...");
         void loadPortalData(session.portal_access_token, restoredCredentials).catch((error) => {
           window.sessionStorage.removeItem("dayai_portal_session");
+          setMessageTone("error");
           setMessage(error instanceof Error ? error.message : "Phiên đăng nhập đã hết hạn. Vui lòng xác thực lại.");
         });
       });
@@ -429,6 +452,7 @@ export function PortalLookup() {
     window.sessionStorage.removeItem("dayai_portal_session");
     setData(null);
     setMessage("");
+    setMessageTone("info");
     setAuthRequestId("");
     setPortalAccessToken("");
     setDemoOtp("");
@@ -440,49 +464,52 @@ export function PortalLookup() {
 
   return (
     <div className="space-y-6">
-      <form onSubmit={handleRequestCode} className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-xl shadow-blue-950/5">
-        <div className="mb-5 rounded-3xl bg-blue-50 p-4 text-sm leading-6 text-slate-700">
+      <form onSubmit={handleRequestCode} className="dayai-panel shadow-xl shadow-blue-950/5">
+        <DayaiAlert tone="info" className="mb-5">
           <strong className="text-[#003A99]">Bảo mật Sprint 28:</strong> Portal dùng mã xác thực một lần trước khi hiển thị lịch học, học phí và tiến độ.
-        </div>
+        </DayaiAlert>
         <div className="grid gap-4 sm:grid-cols-2">
-          <label className="grid gap-2">
-            <span className="text-sm font-bold text-slate-700">Số điện thoại</span>
-            <input
+          <DayaiField label="Số điện thoại">
+            <DayaiInput
               name="phone"
               required
               value={credentials.phone}
               onChange={(event) => setCredentials((current) => ({ ...current, phone: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-[#003A99] focus:ring-4 focus:ring-blue-100"
             />
-          </label>
-          <label className="grid gap-2">
-            <span className="text-sm font-bold text-slate-700">Mã học viên</span>
-            <input
+          </DayaiField>
+          <DayaiField label="Mã học viên">
+            <DayaiInput
               name="student_code"
               required
               value={credentials.student_code}
               onChange={(event) => setCredentials((current) => ({ ...current, student_code: event.target.value }))}
-              className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-[#003A99] focus:ring-4 focus:ring-blue-100"
             />
-          </label>
+          </DayaiField>
         </div>
-        <button disabled={isSubmitting} className="mt-5 rounded-full bg-[#003A99] px-7 py-3 font-black text-white shadow-lg shadow-blue-600/20 hover:bg-[#002B73] disabled:opacity-60">
+        <DayaiButton type="submit" disabled={isSubmitting} className="mt-5">
           {isSubmitting ? "Đang gửi mã..." : "Gửi mã xác thực"}
-        </button>
-        {message ? <p className="mt-4 text-sm font-semibold text-red-600">{message}</p> : null}
+        </DayaiButton>
+        {message ? (
+          <DayaiAlert
+            tone={messageTone === "error" ? "danger" : messageTone}
+            className="mt-4"
+          >
+            {message}
+          </DayaiAlert>
+        ) : null}
       </form>
 
       {authRequestId ? (
-        <form onSubmit={handleVerifyCode} className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
+        <form onSubmit={handleVerifyCode} className="dayai-panel">
           <div className="text-sm font-black uppercase tracking-[0.18em] text-[#003A99]">Xác thực portal</div>
           <h3 className="mt-2 text-2xl font-black text-slate-950">Nhập mã 6 số</h3>
           <p className="mt-2 text-sm leading-6 text-slate-600">Mã có hiệu lực trong 10 phút. Khi cấu hình nhà cung cấp email/SMS/Zalo, mã sẽ được gửi qua kênh tương ứng.</p>
-          {demoOtp ? <div className="mt-4 rounded-2xl bg-amber-50 px-4 py-3 text-sm font-bold text-amber-700">Mã demo local: {demoOtp}</div> : null}
+          {demoOtp ? <DayaiAlert tone="warning" className="mt-4">Mã demo local: {demoOtp}</DayaiAlert> : null}
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <input name="code" required inputMode="numeric" minLength={6} maxLength={6} placeholder="Nhập mã OTP" className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-[#003A99] focus:ring-4 focus:ring-blue-100" />
-            <button disabled={isSubmitting} className="rounded-full bg-slate-950 px-7 py-3 font-black text-white hover:bg-slate-800 disabled:opacity-60">
+            <DayaiInput name="code" required inputMode="numeric" minLength={6} maxLength={6} placeholder="Nhập mã OTP" />
+            <DayaiButton type="submit" variant="dark" disabled={isSubmitting} className="shrink-0">
               {isSubmitting ? "Đang xác thực..." : "Xác thực & xem portal"}
-            </button>
+            </DayaiButton>
           </div>
         </form>
       ) : null}
@@ -509,6 +536,9 @@ function PortalResult({ data, credentials, portalAccessToken, onLogout, onReload
   const [quizTexts, setQuizTexts] = useState<Record<string, string>>({});
   const [isQuizSubmitting, setIsQuizSubmitting] = useState(false);
   const latestProgress = data.progress_reports[0];
+  const nextLearning = findNextLearning(data);
+  const nextAssessment = data.available_assessments[0];
+  const hasFinanceDue = data.summary.finance_balance_vnd > 0;
   const tabs = [
     { key: "overview", label: "Tổng quan", badge: data.summary.unread_notifications ? String(data.summary.unread_notifications) : undefined },
     { key: "courses", label: "Khóa học", badge: String(data.lms.courses.length) },
@@ -603,20 +633,31 @@ function PortalResult({ data, credentials, portalAccessToken, onLogout, onReload
 
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+    <div className="grid gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        <section className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
-          <div className="bg-slate-950 p-5 text-white">
-            <div className="text-xs font-black uppercase tracking-[0.2em] text-blue-200">DAYAI LMS</div>
+        <section className="overflow-hidden rounded-[var(--dayai-radius-2xl)] border border-[var(--dayai-border)] bg-white shadow-[var(--dayai-shadow-sm)]">
+          <div className="relative overflow-hidden bg-slate-950 p-5 text-white">
+            <div className="absolute inset-0 opacity-20 dayai-muted-grid" />
+            <div className="relative text-xs font-black uppercase tracking-[0.2em] text-blue-200">DAYAI LMS</div>
             <h2 className="mt-2 text-2xl font-black leading-tight">{cleanText(data.student.full_name) ?? "Học viên DAYAI"}</h2>
             <p className="mt-2 text-sm text-slate-300">{data.student.student_code} · {formatPortalRole(data.student.portal_access_role)}</p>
+            <div className="relative mt-5 rounded-2xl bg-white/10 p-4">
+              <div className="flex items-center justify-between gap-3 text-xs font-black uppercase tracking-[0.16em] text-blue-100">
+                <span>Tiến độ LMS</span>
+                <span>{data.lms.overall_progress_percent}%</span>
+              </div>
+              <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
+                <div className="h-full rounded-full bg-blue-300" style={{ width: `${Math.min(data.lms.overall_progress_percent, 100)}%` }} />
+              </div>
+            </div>
           </div>
 
-          <nav className="space-y-1 p-3">
+          <nav className="space-y-1 p-3" role="tablist" aria-label="Khu vực portal">
             {tabs.map((tab) => (
-              <button
+              <DayaiTabButton
                 key={tab.key}
-                type="button"
+                active={activeTab === tab.key}
+                badge={tab.badge}
                 onClick={() => {
                   setActiveTab(tab.key);
 
@@ -626,44 +667,37 @@ function PortalResult({ data, credentials, portalAccessToken, onLogout, onReload
                     window.history.replaceState(null, "", url);
                   }
                 }}
-                className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left text-sm font-black transition ${
-                  activeTab === tab.key
-                    ? "bg-[#003A99] text-white shadow-lg shadow-blue-900/15"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-[#003A99]"
-                }`}
               >
-                <span>{tab.label}</span>
-                {tab.badge ? (
-                  <span className={`rounded-full px-2 py-0.5 text-xs ${activeTab === tab.key ? "bg-white/20 text-white" : "bg-blue-50 text-[#003A99]"}`}>
-                    {tab.badge}
-                  </span>
-                ) : null}
-              </button>
+                {tab.label}
+              </DayaiTabButton>
             ))}
           </nav>
 
           <div className="border-t border-slate-100 p-4">
-            <button
-              type="button"
+            <DayaiButton
+              variant="secondary"
+              block
               onClick={onLogout}
-              className="w-full rounded-full border border-slate-200 px-5 py-2.5 text-sm font-black text-slate-700 transition hover:border-[#003A99]/40 hover:bg-blue-50 hover:text-[#003A99]"
             >
               Đăng xuất
-            </button>
+            </DayaiButton>
           </div>
         </section>
       </aside>
 
       <main className="min-w-0 space-y-5">
-        <section className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
+        <section className="relative overflow-hidden rounded-[var(--dayai-radius-2xl)] border border-blue-100 bg-white p-6 shadow-[var(--dayai-shadow-xs)]">
+          <div className="absolute right-6 top-6 hidden h-24 w-24 rounded-full bg-blue-50 md:block" />
           <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
-            <div>
-              <div className="text-sm font-black uppercase tracking-[0.2em] text-[#003A99]">Dashboard học tập</div>
+            <div className="relative">
+              <div className="text-sm font-black uppercase tracking-[0.2em] text-[var(--dayai-primary)]">Dashboard học tập</div>
               <h1 className="mt-2 text-3xl font-black tracking-[-0.03em] text-slate-950 md:text-4xl">{tabTitle(activeTab)}</h1>
-              {data.student.learning_goal ? <p className="mt-3 max-w-3xl leading-7 text-slate-600">{cleanText(data.student.learning_goal)}</p> : null}
+              <p className="mt-3 max-w-3xl leading-7 text-slate-600">
+                {data.student.learning_goal ? cleanText(data.student.learning_goal) : "Theo dõi học tập, khóa đã mở, quiz, học phí và thông báo trong một không gian riêng."}
+              </p>
             </div>
-            <div className="rounded-3xl bg-blue-50 px-5 py-4 text-center">
-              <div className="text-3xl font-black text-[#003A99]">{data.lms.overall_progress_percent}%</div>
+            <div className="relative rounded-3xl bg-blue-50 px-5 py-4 text-center">
+              <div className="text-3xl font-black text-[var(--dayai-primary)]">{data.lms.overall_progress_percent}%</div>
               <div className="mt-1 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Tiến độ LMS</div>
             </div>
           </div>
@@ -671,6 +705,33 @@ function PortalResult({ data, credentials, portalAccessToken, onLogout, onReload
 
         {activeTab === "overview" ? (
           <div className="space-y-5">
+            <div className="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
+              <ContinueLearningCard nextLearning={nextLearning} />
+              <section className="rounded-[var(--dayai-radius-2xl)] border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="text-sm font-black uppercase tracking-[0.2em] text-[var(--dayai-primary)]">Việc nên làm</div>
+                <div className="mt-5 grid gap-3">
+                  <QuickAction
+                    title={nextAssessment ? cleanText(nextAssessment.title) ?? "Bài kiểm tra đang mở" : "Chưa có quiz mới"}
+                    description={nextAssessment ? `${formatAssessmentType(nextAssessment.assessment_type)} · ${nextAssessment.question_count} câu` : "Khi mentor mở quiz, học viên sẽ thấy tại đây."}
+                    action="Bài kiểm tra"
+                    onClick={() => setActiveTab("tests")}
+                  />
+                  <QuickAction
+                    title={hasFinanceDue ? "Cần kiểm tra công nợ" : "Học phí đã ổn"}
+                    description={hasFinanceDue ? `Còn ${formatVnd(data.summary.finance_balance_vnd)}` : "Không có công nợ cần xử lý."}
+                    action="Học phí"
+                    onClick={() => setActiveTab("finance")}
+                  />
+                  <QuickAction
+                    title={`${data.notifications.length} thông báo`}
+                    description="Lịch học, tài liệu, học phí hoặc nhận xét mới từ trung tâm."
+                    action="Thông báo"
+                    onClick={() => setActiveTab("notifications")}
+                  />
+                </div>
+              </section>
+            </div>
+
             <div className="grid gap-4 md:grid-cols-4">
               <Metric title="Khóa đang học" value={String(data.summary.active_enrollments)} />
               <Metric title="Tiến độ mới nhất" value={data.summary.latest_progress_percent !== null ? `${data.summary.latest_progress_percent}%` : "Chưa có"} />
@@ -731,17 +792,17 @@ function PortalResult({ data, credentials, portalAccessToken, onLogout, onReload
                     </div>
                   </div>
                   <div className="mt-5 space-y-4">
-                    {course.modules.map((module) => (
-                      <div key={module.title} className="rounded-3xl bg-white p-4 shadow-sm">
+                    {course.modules.map((courseModule) => (
+                      <div key={courseModule.title} className="rounded-3xl bg-white p-4 shadow-sm">
                         <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
                           <div>
-                            <h5 className="font-black text-slate-950">{cleanText(module.title)}</h5>
-                            <p className="mt-1 text-sm leading-6 text-slate-600">{cleanText(module.description) ?? "Module học thực hành của DAYAI."}</p>
+                            <h5 className="font-black text-slate-950">{cleanText(courseModule.title)}</h5>
+                            <p className="mt-1 text-sm leading-6 text-slate-600">{cleanText(courseModule.description) ?? "Module học thực hành của DAYAI."}</p>
                           </div>
-                          <div className="rounded-full bg-blue-50 px-3 py-1 text-xs font-black text-[#003A99]">{module.duration_minutes ?? 0} phút</div>
+                          <div className="rounded-full bg-blue-50 px-3 py-1 text-xs font-black text-[var(--dayai-primary)]">{courseModule.duration_minutes ?? 0} phút</div>
                         </div>
                         <div className="mt-4 divide-y divide-slate-100">
-                          {withEmpty(module.lessons, "Module này chưa có bài học.", (lesson) => (
+                          {withEmpty(courseModule.lessons, "Module này chưa có bài học.", (lesson) => (
                             <LessonRow key={lesson.slug} lesson={lesson} />
                           ))}
                         </div>
@@ -828,16 +889,15 @@ function PortalResult({ data, credentials, portalAccessToken, onLogout, onReload
                     <h4 className="mt-1 font-black text-slate-950">{cleanText(assessment.title)}</h4>
                     <p className="mt-1 text-sm leading-6 text-slate-600">{cleanText(assessment.description) ?? `${cleanText(assessment.course) ?? "Khóa học DAYAI"}${assessment.module ? ` · ${cleanText(assessment.module)}` : ""}`}</p>
                   </div>
-                  <button type="button" disabled={isQuizSubmitting || assessment.question_count === 0} onClick={() => startQuiz(assessment.id)} className="rounded-full bg-[#003A99] px-5 py-2.5 text-sm font-black text-white hover:bg-[#002B73] disabled:opacity-50">
+                  <DayaiButton size="sm" disabled={isQuizSubmitting || assessment.question_count === 0} onClick={() => startQuiz(assessment.id)}>
                     Làm bài
-                  </button>
+                  </DayaiButton>
                 </div>
               ))}
             </Card>
 
-            <section className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-sm">
-              <h3 className="text-xl font-black">Phòng làm bài</h3>
-              {quizMessage ? <div className="mt-4 rounded-2xl bg-blue-50 px-4 py-3 text-sm font-bold text-[#003A99]">{quizMessage}</div> : null}
+            <DayaiPanel title="Phòng làm bài">
+              {quizMessage ? <DayaiAlert tone="info">{quizMessage}</DayaiAlert> : null}
               {activeQuiz ? (
                 <div className="mt-5 space-y-5">
                   <div className="rounded-3xl bg-slate-950 p-5 text-white">
@@ -896,15 +956,20 @@ function PortalResult({ data, credentials, portalAccessToken, onLogout, onReload
                   })}
 
                   {activeQuiz.attempt.status !== "submitted" ? (
-                    <button type="button" disabled={isQuizSubmitting} onClick={submitQuiz} className="rounded-full bg-slate-950 px-7 py-3 font-black text-white hover:bg-slate-800 disabled:opacity-50">
+                    <DayaiButton variant="dark" disabled={isQuizSubmitting} onClick={submitQuiz}>
                       {isQuizSubmitting ? "Đang nộp bài..." : "Nộp bài kiểm tra"}
-                    </button>
+                    </DayaiButton>
                   ) : null}
                 </div>
               ) : (
-                <div className="mt-4 rounded-3xl bg-slate-50 p-6 text-sm leading-6 text-slate-600">Chọn một bài kiểm tra bên trái để bắt đầu. Hệ thống sẽ tạo lượt làm bài riêng và lưu kết quả vào database.</div>
+                <DayaiEmptyState
+                  compact
+                  className="mt-4"
+                  title="Chưa chọn bài kiểm tra"
+                  description="Chọn một bài kiểm tra bên trái để bắt đầu. Hệ thống sẽ tạo lượt làm bài riêng và lưu kết quả vào database."
+                />
               )}
-            </section>
+            </DayaiPanel>
 
             <Card title="Lịch sử làm bài">
               {withEmpty(data.quiz_attempts, "Chưa có lượt làm bài.", (attempt) => (
@@ -941,6 +1006,91 @@ function PortalResult({ data, credentials, portalAccessToken, onLogout, onReload
   );
 }
 
+type NextLearning = {
+  course: PortalData["lms"]["courses"][number];
+  module: PortalData["lms"]["courses"][number]["modules"][number];
+  lesson: PortalData["lms"]["courses"][number]["modules"][number]["lessons"][number];
+} | null;
+
+function ContinueLearningCard({ nextLearning }: { nextLearning: NextLearning }) {
+  if (!nextLearning) {
+    return (
+      <section className="rounded-[var(--dayai-radius-2xl)] border border-emerald-100 bg-gradient-to-br from-emerald-50 to-white p-6 shadow-sm">
+        <div className="text-sm font-black uppercase tracking-[0.2em] text-emerald-700">Học tiếp</div>
+        <h3 className="mt-3 text-3xl font-black text-slate-950">Bạn đã hoàn thành các bài đang mở.</h3>
+        <p className="mt-3 text-sm leading-7 text-slate-600">Khi có bài mới, module mới hoặc quiz mới, portal sẽ đưa vào khu vực học tiếp.</p>
+        <Link href="/khoa-hoc" className={dayaiButtonClasses({ className: "mt-6" })}>
+          Xem thêm khóa học
+        </Link>
+      </section>
+    );
+  }
+
+  const { course, module: courseModule, lesson } = nextLearning;
+
+  return (
+    <section className="relative overflow-hidden rounded-[var(--dayai-radius-2xl)] border border-blue-100 bg-slate-950 p-6 text-white shadow-[var(--dayai-shadow-md)]">
+      <div className="absolute inset-0 opacity-20 dayai-muted-grid" />
+      <div className="relative">
+        <div className="text-sm font-black uppercase tracking-[0.2em] text-blue-200">Học tiếp</div>
+        <h3 className="mt-3 max-w-2xl text-3xl font-black leading-tight">{cleanText(lesson.title)}</h3>
+        <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300">
+          {cleanText(course.course)} · {cleanText(courseModule.title)} · {lesson.duration_minutes ?? 0} phút
+        </p>
+        <div className="mt-6 h-3 overflow-hidden rounded-full bg-white/10">
+          <div className="h-full rounded-full bg-blue-300" style={{ width: `${Math.min(lesson.progress.progress_percent, 100)}%` }} />
+        </div>
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <Link href={`/portal/bai-hoc/${lesson.slug}`} className={dayaiButtonClasses({ variant: "secondary" })}>
+            Vào học tiếp
+          </Link>
+          <span className="rounded-full bg-white/10 px-4 py-2 text-xs font-black text-blue-100">
+            {formatLessonStatus(lesson.progress.status)} · {lesson.progress.progress_percent}%
+          </span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function QuickAction({ title, description, action, onClick }: { title: string; description: string; action: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="group rounded-[var(--dayai-radius-xl)] border border-slate-200 bg-slate-50 p-4 text-left transition hover:-translate-y-0.5 hover:border-blue-200 hover:bg-white hover:shadow-sm"
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <div className="font-black text-slate-950">{title}</div>
+          <div className="mt-1 text-sm leading-6 text-slate-600">{description}</div>
+        </div>
+        <span className="shrink-0 rounded-full bg-blue-50 px-3 py-1 text-xs font-black text-[var(--dayai-primary)] group-hover:bg-[var(--dayai-primary)] group-hover:text-white">
+          {action}
+        </span>
+      </div>
+    </button>
+  );
+}
+
+function findNextLearning(data: PortalData): NextLearning {
+  for (const course of data.lms.courses) {
+    for (const courseModule of course.modules) {
+      const lesson = courseModule.lessons.find((item) => item.progress.status !== "completed");
+
+      if (lesson) {
+        return { course, module: courseModule, lesson };
+      }
+    }
+  }
+
+  const firstCourse = data.lms.courses[0];
+  const firstModule = firstCourse?.modules[0];
+  const firstLesson = firstModule?.lessons[0];
+
+  return firstCourse && firstModule && firstLesson ? { course: firstCourse, module: firstModule, lesson: firstLesson } : null;
+}
+
 function tabTitle(activeTab: string) {
   return {
     overview: "Tổng quan học tập",
@@ -965,34 +1115,27 @@ function LessonRow({ lesson }: { lesson: PortalData["lms"]["courses"][number]["m
         </div>
         <div className="mt-1 text-sm leading-6 text-slate-600">{cleanText(lesson.summary) ?? "Bài học video thực hành có theo dõi tiến độ."}</div>
         <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-100">
-          <div className="h-full rounded-full bg-[#003A99]" style={{ width: `${Math.min(lesson.progress.progress_percent, 100)}%` }} />
+          <div className="h-full rounded-full bg-[var(--dayai-primary)]" style={{ width: `${Math.min(lesson.progress.progress_percent, 100)}%` }} />
         </div>
       </div>
       <div className="rounded-2xl bg-blue-50 px-4 py-3 text-right">
-        <div className="text-sm font-black text-[#003A99]">{formatLessonStatus(lesson.progress.status)}</div>
+        <div className="text-sm font-black text-[var(--dayai-primary)]">{formatLessonStatus(lesson.progress.status)}</div>
         <div className="mt-1 text-xs text-slate-500">{lesson.duration_minutes ?? 0} phút · {lesson.progress.progress_percent}%</div>
-        <a href={`/portal/bai-hoc/${lesson.slug}`} className="mt-3 inline-flex rounded-full bg-[#003A99] px-4 py-2 text-xs font-black text-white hover:bg-[#002B73]">
+        <Link href={`/portal/bai-hoc/${lesson.slug}`} className={dayaiButtonClasses({ size: "sm", className: "mt-3" })}>
           Vào học
-        </a>
+        </Link>
       </div>
     </div>
   );
 }
 
 function Metric({ title, value, tone = "default" }: { title: string; value: string; tone?: "default" | "warning" | "success" }) {
-  const color = tone === "warning" ? "text-amber-600" : tone === "success" ? "text-emerald-600" : "text-slate-950";
-
-  return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
-      <div className="text-sm text-slate-500">{title}</div>
-      <div className={`mt-2 text-2xl font-black ${color}`}>{value}</div>
-    </div>
-  );
+  return <DayaiStat label={title} value={value} tone={tone === "default" ? "info" : tone} />;
 }
 
 function MiniBox({ title, value }: { title: string; value: string }) {
   return (
-    <div className="rounded-3xl border border-blue-100 bg-white p-4">
+    <div className="rounded-[var(--dayai-radius-xl)] border border-blue-100 bg-white p-4">
       <div className="text-sm font-black text-slate-900">{title}</div>
       <div className="mt-2 text-sm leading-6 text-slate-600">{value}</div>
     </div>
@@ -1001,10 +1144,13 @@ function MiniBox({ title, value }: { title: string; value: string }) {
 
 function Card({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-      <h3 className="text-xl font-black">{title}</h3>
-      <div className="mt-4 divide-y divide-slate-100">{children}</div>
-    </section>
+    <DayaiPanel
+      title={title}
+      action={<span className="block h-2 w-12 rounded-full bg-blue-100" aria-hidden="true" />}
+      contentClassName="divide-y divide-slate-100"
+    >
+      {children}
+    </DayaiPanel>
   );
 }
 
@@ -1015,14 +1161,14 @@ function Row({ title, description, meta }: { title: string; description: string;
         <div className="font-bold">{title}</div>
         <div className="mt-1 text-sm leading-6 text-slate-600">{description}</div>
       </div>
-      <div className="shrink-0 rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-[#003A99]">{meta}</div>
+      <DayaiBadge tone="info" className="shrink-0">{meta}</DayaiBadge>
     </div>
   );
 }
 
 function withEmpty<T>(items: T[], emptyText: string, render: (item: T, index: number) => ReactNode) {
   if (!items.length) {
-    return <div className="py-4 text-sm text-slate-500">{emptyText}</div>;
+    return <DayaiEmptyState compact title={emptyText} className="my-2" />;
   }
 
   return items.map(render);

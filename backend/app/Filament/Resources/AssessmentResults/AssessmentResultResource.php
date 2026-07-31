@@ -34,7 +34,7 @@ class AssessmentResultResource extends Resource
 
     protected static ?string $pluralModelLabel = 'kết quả đánh giá';
 
-    protected static string|UnitEnum|null $navigationGroup = 'LMS & Khóa học';
+    protected static string|UnitEnum|null $navigationGroup = 'Kiểm tra & Đánh giá';
 
     protected static ?int $navigationSort = 50;
 

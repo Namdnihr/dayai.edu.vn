@@ -21,7 +21,7 @@ class AffiliateClickResource extends Resource
     protected static ?string $navigationLabel = 'Click affiliate';
     protected static ?string $modelLabel = 'click affiliate';
     protected static ?string $pluralModelLabel = 'click affiliate';
-    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
+    protected static string|UnitEnum|null $navigationGroup = 'Affiliate';
     protected static ?int $navigationSort = 33;
 
     public static function form(Schema $schema): Schema

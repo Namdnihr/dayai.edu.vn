@@ -22,13 +22,13 @@ class QuestionBankResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::RectangleStack;
 
-    protected static ?string $navigationLabel = 'Ng?n h?ng c?u h?i';
+    protected static ?string $navigationLabel = 'Ngân hàng câu hỏi';
 
     protected static ?string $modelLabel = 'ng?n h?ng c?u h?i';
 
     protected static ?string $pluralModelLabel = 'ng?n h?ng c?u h?i';
 
-    protected static string|UnitEnum|null $navigationGroup = 'LMS & Kh?a h?c';
+    protected static string|UnitEnum|null $navigationGroup = 'Kiểm tra & Đánh giá';
 
     protected static ?int $navigationSort = 50;
 

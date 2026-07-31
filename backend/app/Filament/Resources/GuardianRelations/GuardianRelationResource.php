@@ -32,7 +32,7 @@ class GuardianRelationResource extends Resource
 
     protected static ?string $pluralModelLabel = 'quan hệ phụ huynh';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
+    protected static string|UnitEnum|null $navigationGroup = 'Đào tạo & LMS';
 
     protected static ?int $navigationSort = 60;
 

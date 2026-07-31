@@ -57,7 +57,7 @@ class PortalLookupController extends Controller
 
         if (! $student) {
             return response()->json([
-                'message' => 'Kh?ng t?m th?y h?c vi?n v?i th?ng tin ?? nh?p.',
+                'message' => 'Không tìm thấy học viên với thông tin đã nhập.',
             ], 404);
         }
 
@@ -65,7 +65,7 @@ class PortalLookupController extends Controller
 
         if (! $portalAccess) {
             return response()->json([
-                'message' => 'Phi?n portal kh?ng h?p l? ho?c ?? h?t h?n. Vui l?ng x?c th?c l?i.',
+                'message' => 'Phiên portal không hợp lệ hoặc đã hết hạn. Vui lòng xác thực lại.',
             ], 401);
         }
 

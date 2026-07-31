@@ -33,7 +33,7 @@ class OperationalDashboard extends Page
 {
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ChartBar;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
+    protected static string|UnitEnum|null $navigationGroup = 'Tổng quan';
 
     protected static ?string $navigationLabel = 'Dashboard vận hành';
 

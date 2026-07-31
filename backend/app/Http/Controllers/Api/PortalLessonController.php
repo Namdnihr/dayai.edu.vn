@@ -10,6 +10,7 @@ use App\Models\VideoLesson;
 use App\Models\VideoLessonProgress;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PortalLessonController extends Controller
 {
@@ -65,6 +66,19 @@ class PortalLessonController extends Controller
         $validated = $request->validate([
             'progress_percent' => ['required', 'integer', 'min:0', 'max:100'],
             'last_position_seconds' => ['nullable', 'integer', 'min:0'],
+            'checkpoint_answers' => ['sometimes', 'array', 'max:50'],
+            'checkpoint_answers.*.checkpoint_id' => ['required', 'string', 'max:100'],
+            'checkpoint_answers.*.selected_option_id' => ['required', 'string', 'max:100'],
+            'learner_notes' => ['sometimes', 'nullable', 'string', 'max:20000'],
+            'practice_sessions' => ['sometimes', 'array', 'max:20'],
+            'practice_sessions.*.prompt_id' => ['required', 'string', 'max:100'],
+            'practice_sessions.*.result' => ['nullable', 'string', 'max:12000'],
+            'practice_sessions.*.reflection' => ['nullable', 'string', 'max:5000'],
+            'practice_sessions.*.confidence' => ['nullable', 'integer', 'min:1', 'max:5'],
+            'practice_sessions.*.updated_at' => ['nullable', 'date'],
+            'attention_metrics' => ['sometimes', 'array'],
+            'attention_metrics.hidden_pause_count' => ['sometimes', 'integer', 'min:0', 'max:100000'],
+            'attention_metrics.idle_pause_count' => ['sometimes', 'integer', 'min:0', 'max:100000'],
         ]);
 
         $context = $this->resolveContext($request);
@@ -84,29 +98,101 @@ class PortalLessonController extends Controller
 
         $enrollment = $student->enrollments
             ->first(fn ($enrollment) => $enrollment->course_id === $lesson->course_id && $enrollment->status === 'active');
-        $progressPercent = (int) $validated['progress_percent'];
-        $status = $progressPercent >= 95 ? 'completed' : 'in_progress';
-
-        $progress = VideoLessonProgress::query()->updateOrCreate(
-            [
+        $checkpointDefinitions = collect(data_get($lesson->metadata, 'interactive_learning.checkpoints', []))
+            ->filter(fn ($checkpoint): bool => is_array($checkpoint) && filled($checkpoint['id'] ?? null))
+            ->keyBy('id');
+        $existingProgress = VideoLessonProgress::query()
+            ->firstOrNew([
                 'student_profile_id' => $student->id,
                 'video_lesson_id' => $lesson->id,
-            ],
-            [
-                'tenant_id' => $student->tenant_id,
-                'enrollment_id' => $enrollment?->id,
-                'status' => $status,
-                'progress_percent' => $progressPercent,
-                'last_position_seconds' => (int) ($validated['last_position_seconds'] ?? 0),
-                'started_at' => now(),
-                'completed_at' => $status === 'completed' ? now() : null,
-                'last_watched_at' => now(),
-            ]
-        );
+            ]);
+        $checkpointAnswers = array_key_exists('checkpoint_answers', $validated)
+            ? collect($validated['checkpoint_answers'])
+                ->filter(function (array $answer) use ($checkpointDefinitions): bool {
+                    $checkpoint = $checkpointDefinitions->get($answer['checkpoint_id']);
+
+                    if (! is_array($checkpoint)) {
+                        return false;
+                    }
+
+                    return collect($checkpoint['options'] ?? [])
+                        ->contains(fn ($option): bool => is_array($option) && ($option['id'] ?? null) === $answer['selected_option_id']);
+                })
+                ->map(function (array $answer) use ($checkpointDefinitions): array {
+                    $checkpoint = $checkpointDefinitions->get($answer['checkpoint_id']);
+
+                    return [
+                        'checkpoint_id' => $answer['checkpoint_id'],
+                        'selected_option_id' => $answer['selected_option_id'],
+                        'is_correct' => ($checkpoint['correct_option_id'] ?? null) === $answer['selected_option_id'],
+                        'answered_at' => now()->toIso8601String(),
+                    ];
+                })
+                ->unique('checkpoint_id')
+                ->values()
+                ->all()
+            : data_get($existingProgress->interaction_state, 'checkpoint_answers', []);
+        $progressPercent = (int) $validated['progress_percent'];
+
+        if ($progressPercent >= 95 && $checkpointDefinitions->isNotEmpty()) {
+            $answeredCheckpointIds = collect($checkpointAnswers)->pluck('checkpoint_id')->unique();
+            $missingCheckpointIds = $checkpointDefinitions->keys()->diff($answeredCheckpointIds);
+
+            if ($missingCheckpointIds->isNotEmpty()) {
+                return response()->json([
+                    'message' => 'Bạn cần trả lời đủ các câu hỏi nhanh trước khi hoàn thành bài học.',
+                    'pending_checkpoints' => $missingCheckpointIds->values()->all(),
+                ], 422);
+            }
+        }
+
+        $status = $progressPercent >= 95 ? 'completed' : 'in_progress';
+
+        $interactionState = $existingProgress->interaction_state ?? [];
+        $interactionState['checkpoint_answers'] = $checkpointAnswers;
+
+        if (array_key_exists('practice_sessions', $validated)) {
+            $interactionState['practice_sessions'] = collect($validated['practice_sessions'])
+                ->map(fn (array $session): array => [
+                    'prompt_id' => $session['prompt_id'],
+                    'result' => trim((string) ($session['result'] ?? '')),
+                    'reflection' => trim((string) ($session['reflection'] ?? '')),
+                    'confidence' => isset($session['confidence']) ? (int) $session['confidence'] : null,
+                    'updated_at' => $session['updated_at'] ?? now()->toIso8601String(),
+                ])
+                ->unique('prompt_id')
+                ->values()
+                ->all();
+        }
+
+        if (array_key_exists('attention_metrics', $validated)) {
+            $interactionState['attention_metrics'] = [
+                'hidden_pause_count' => (int) data_get($validated, 'attention_metrics.hidden_pause_count', 0),
+                'idle_pause_count' => (int) data_get($validated, 'attention_metrics.idle_pause_count', 0),
+            ];
+        }
+
+        $existingProgress->fill([
+            'tenant_id' => $student->tenant_id,
+            'enrollment_id' => $enrollment?->id,
+            'status' => $status,
+            'progress_percent' => $progressPercent,
+            'last_position_seconds' => (int) ($validated['last_position_seconds'] ?? 0),
+            'interaction_state' => $interactionState,
+            'started_at' => $existingProgress->started_at ?? now(),
+            'completed_at' => $status === 'completed' ? ($existingProgress->completed_at ?? now()) : null,
+            'last_watched_at' => now(),
+        ]);
+
+        if (array_key_exists('learner_notes', $validated)) {
+            $existingProgress->learner_notes = $validated['learner_notes'];
+        }
+
+        $existingProgress->save();
 
         return response()->json([
             'message' => 'Đã cập nhật tiến độ bài học.',
-            'progress' => $this->progressPayload($progress),
+            'progress' => $this->progressPayload($existingProgress),
         ]);
     }
 
@@ -189,9 +275,10 @@ class PortalLessonController extends Controller
             'course' => $lesson->course?->name,
             'module' => $lesson->courseModule?->title,
             'video_provider' => $lesson->video_provider,
-            'video_url' => $lesson->video_url,
+            'video_url' => $this->resolveVideoUrl($lesson),
             'duration_minutes' => $lesson->duration_minutes,
-            'resources' => $lesson->resources ?? [],
+            'resources' => $this->resolveResources($lesson->resources ?? []),
+            'interactive_learning' => data_get($lesson->metadata, 'interactive_learning'),
             'progress' => $this->progressPayload($progress),
         ];
     }
@@ -294,6 +381,37 @@ class PortalLessonController extends Controller
             'last_position_seconds' => (int) ($progress?->last_position_seconds ?? 0),
             'last_watched_at' => $progress?->last_watched_at?->toDateTimeString(),
             'completed_at' => $progress?->completed_at?->toDateTimeString(),
+            'checkpoint_answers' => data_get($progress?->interaction_state, 'checkpoint_answers', []),
+            'practice_sessions' => data_get($progress?->interaction_state, 'practice_sessions', []),
+            'attention_metrics' => data_get($progress?->interaction_state, 'attention_metrics', [
+                'hidden_pause_count' => 0,
+                'idle_pause_count' => 0,
+            ]),
+            'learner_notes' => $progress?->learner_notes ?? '',
         ];
+    }
+
+    protected function resolveVideoUrl(VideoLesson $lesson): ?string
+    {
+        if ($lesson->video_provider === 'internal' && filled($lesson->video_storage_path)) {
+            return Storage::disk('public')->url($lesson->video_storage_path);
+        }
+
+        return $lesson->video_url;
+    }
+
+    protected function resolveResources(array $resources): array
+    {
+        return collect($resources)
+            ->filter(fn ($resource): bool => is_array($resource))
+            ->map(function (array $resource): array {
+                if (filled($resource['file_path'] ?? null)) {
+                    $resource['url'] = Storage::disk('public')->url($resource['file_path']);
+                }
+
+                return $resource;
+            })
+            ->values()
+            ->all();
     }
 }

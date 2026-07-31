@@ -34,7 +34,7 @@ class EnrollmentResource extends Resource
 
     protected static ?string $pluralModelLabel = 'xếp lớp';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Vận hành trung tâm';
+    protected static string|UnitEnum|null $navigationGroup = 'Đào tạo & LMS';
 
     protected static ?int $navigationSort = 100;
 

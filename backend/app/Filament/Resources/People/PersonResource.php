@@ -34,7 +34,7 @@ class PersonResource extends Resource
 
     protected static ?string $pluralModelLabel = 'cá nhân';
 
-    protected static string|UnitEnum|null $navigationGroup = 'Dữ liệu nền';
+    protected static string|UnitEnum|null $navigationGroup = 'Hệ thống';
 
     protected static ?int $navigationSort = 10;
 

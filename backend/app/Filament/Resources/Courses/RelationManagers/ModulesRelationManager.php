@@ -15,6 +15,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class ModulesRelationManager extends RelationManager
 {
@@ -25,6 +26,11 @@ class ModulesRelationManager extends RelationManager
     protected static ?string $modelLabel = 'module khóa học';
 
     protected static ?string $pluralModelLabel = 'module khóa học';
+
+    public static function getBadge(Model $ownerRecord, string $pageClass): ?string
+    {
+        return (string) $ownerRecord->modules()->count();
+    }
 
     public function form(Schema $schema): Schema
     {
